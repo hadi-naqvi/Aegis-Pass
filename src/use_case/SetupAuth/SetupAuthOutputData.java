@@ -1,2 +1,4 @@
-package use_case.SetupAuth;public interface SetupAuthOuputData {
+package use_case.SetupAuth;
+
+public interface SetupAuthOuputData {
 }
