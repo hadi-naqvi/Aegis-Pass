@@ -1,7 +1,35 @@
 package app;
 
+import data_access.FileAuthDataAccessObject;
+import entity.CommonAuthKey;
+import interface_adapter.SetupAuth.SetupAuthViewModel;
+import use_case.SetupAuth.SetupAuthDataAccessInterface;
+import view.AuthenticationView;
+import view.ViewManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
+        //Build the main program window, the main panel containing the
+        //various cards, and the layout, and stitch them together.
+
+        //The main application window
+        JFrame application = new JFrame("");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        CardLayout cardLayout = new CardLayout();
+
+        //The various View objects, only one view is visible at a time
+        JPanel views = new JPanel(cardLayout);
+        application.add(views);
+
+        //Keeps track of the current view being displayed(assuming ViewManagerModel is created
+        // and takes correct arguments)
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        new ViewManager(views, cardLayout, viewManagerModel);
+
 
     }
 }
