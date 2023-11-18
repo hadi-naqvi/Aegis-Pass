@@ -3,13 +3,10 @@ package app;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.SetupAuth.SetupAuthController;
 import interface_adapter.SetupAuth.SetupAuthPresenter;
-import use_case.SetupAuth.SetupAuthDataAccessInterface;
+import use_case.SetupAuth.*;
 import entity.CommonAuthKey;
 import entity.AuthKey;
 import interface_adapter.*;
-import use_case.SetupAuth.SetupAuthInputBoundary;
-import use_case.SetupAuth.SetupAuthUseCaseInteractor;
-import use_case.SetupAuth.SetupAuthOutputBoundary;
 import view.SetupAuthView;
 
 import javax.swing.*;
@@ -29,4 +26,17 @@ public class SetupAuthUseCaseFactory {
 
         return null;
     }
+
+    private static SetupAuthController createSetupAuthUseCase(ViewManagerModel viewManagerModel, SetupAuthViewModel setupAuthViewModel,
+                                                              SetupAuthDataAccessInterface userDataAccessObject) throws IOException{
+        SetupAuthOutputBoundary setupAuthOutputBoundary = new SetupAuthPresenter(viewManagerModel, setupAuthViewModel);
+
+        SetupAuthUseCaseFactory setupAuthUseCaseFactory = new SetupAuthUseCaseFactory();
+
+        SetupAuthInputBoundary SetupAuthUseCaseInteractor = new SetupAuthUseCaseInteractor(
+                userDataAccessObject, setupAuthOutputBoundary, setupAuthUseCaseFactory);
+
+        return new SetupAuthController(SetupAuthUseCaseInteractor);
+    }
+
 }
