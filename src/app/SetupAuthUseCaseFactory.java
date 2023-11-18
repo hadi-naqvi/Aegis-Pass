@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.io.IOException;
 public class SetupAuthUseCaseFactory {
 
-    private SetupAuthUseCaseFactory() {}
+    //private SetupAuthUseCaseFactory() {}
 
     public static SetupAuthView create(
             ViewManagerModel viewManagerModel, SetupAuthViewModel setupAuthViewModel,
