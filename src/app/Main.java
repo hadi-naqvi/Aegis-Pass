@@ -30,6 +30,25 @@ public class Main {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
+        SetupAuthViewModel setupAuthViewModel = new SetupAuthViewModel();
 
+        FileAuthDataAccessObject userDataAccessObject;
+
+        try {
+            userDataAccessObject = new FileAuthDataAccessObject("Authentication",
+                    new AuthenticationUseCaseFactory());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SetupAuthView setupAuthView = SetupAuthUseCaseFactory.create(viewManagerModel, setupAuthViewModel,
+                userDataAccessObject);
+        views.add(setupAuthView, setupAuthView.viewName);
+
+        viewManagerModel.setActiveView(setupAuthView.viewName);
+        viewManagerModel.firePropertyChanged();
+
+        application.pack();
+        application.setVisible(true);
     }
 }
