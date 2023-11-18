@@ -2,9 +2,12 @@ package app;
 
 import data_access.FileAuthDataAccessObject;
 import entity.CommonAuthKey;
+import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
+import interface_adapter.ViewManagerModel;
 import use_case.SetupAuth.SetupAuthDataAccessInterface;
 import view.AuthenticationView;
+import view.SetupAuthView;
 import view.ViewManager;
 
 import javax.swing.*;
@@ -31,17 +34,17 @@ public class Main {
         new ViewManager(views, cardLayout, viewManagerModel);
 
         SetupAuthViewModel setupAuthViewModel = new SetupAuthViewModel();
+        AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
 
         FileAuthDataAccessObject userDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject("Authentication",
-                    new AuthenticationUseCaseFactory());
+            userDataAccessObject = new FileAuthDataAccessObject("Authentication", new SetupAuthUseCaseFactory());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        SetupAuthView setupAuthView = SetupAuthUseCaseFactory.create(viewManagerModel, setupAuthViewModel,
+        SetupAuthView setupAuthView = SetupAuthUseCaseFactory.create(viewManagerModel, setupAuthViewModel, authenticationViewModel,
                 userDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
