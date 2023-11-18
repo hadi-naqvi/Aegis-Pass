@@ -39,7 +39,7 @@ public class Main {
         FileAuthDataAccessObject userDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject("Authentication", new SetupAuthUseCaseFactory());
+            userDataAccessObject = new FileAuthDataAccessObject("Authentication");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
