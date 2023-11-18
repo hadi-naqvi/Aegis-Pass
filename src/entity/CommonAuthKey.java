@@ -1,6 +1,6 @@
 package entity;
 
-public class CommonAuthKey {
+public class CommonAuthKey implements AuthKey {
     private String key;
 
     /**
@@ -15,7 +15,8 @@ public class CommonAuthKey {
      * Getter method for the authkey/password
      * @return the password for the database
      */
-    public String getkey() {
+    @Override
+    public String getKey() {
         return this.key;
     }
 }
