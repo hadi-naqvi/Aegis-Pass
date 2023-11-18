@@ -15,14 +15,14 @@ import java.beans.PropertyChangeListener;
 
 public class SetupAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "Create Aegis Pass Password";
+    public final String viewName = "setup auth";
     private final SetupAuthViewModel setupAuthViewModel;
 
     public final JPasswordField passwordInputField = new JPasswordField(30);
 
     public final JPasswordField repeatPasswordInputField = new JPasswordField(30);
 
-    public final JButton create;
+    public final JButton confirmButton;
     private final SetupAuthController setupAuthController;
 
     /**
@@ -31,32 +31,32 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
      * @param controller the controller for the view
      */
     public SetupAuthView(SetupAuthViewModel viewModel, SetupAuthController controller) {
-        this.setupAuthController = controller;
         this.setupAuthViewModel = viewModel;
+        this.setupAuthController = controller;
         this.setupAuthViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Aegis Pass Setup");
+        JLabel title = new JLabel(setupAuthViewModel.TITLE_LABEL);
 
         JPanel passwordInfo = new JPanel();
-        passwordInfo.add(new JLabel("Password:"));
+        passwordInfo.add(new JLabel(setupAuthViewModel.PASSWORD_LABEL));
         passwordInfo.add(passwordInputField);
         
         JPanel repeatPasswordInfo = new JPanel();
-        passwordInfo.add(new JLabel("Confirm Password:"));
+        passwordInfo.add(new JLabel(setupAuthViewModel.REPEAT_PASSWORD_LABEL));
         passwordInfo.add(repeatPasswordInputField);
 
-        create = new JButton(setupAuthViewModel.CREATE_BUTTON_LABEL);
+        confirmButton = new JButton(setupAuthViewModel.CONFIRM_BUTTON_LABEL);
 
-        create.addActionListener(
+        confirmButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(create)) {
+                        if (e.getSource().equals(confirmButton)) {
                             SetupAuthState currentState = setupAuthViewModel.getState();
 
                             setupAuthController.execute(
                                     currentState.getPassword(),
-                                    currentState.getRepeatPassword()
+                                    currentState.getRepeatedPassword()
                             );
                         }
                     }
@@ -75,7 +75,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                     public void keyTyped(KeyEvent e) {
                         SetupAuthState currentState = setupAuthViewModel.getState();
                         currentState.setPassword(passwordInputField.getText() + e.getKeyChar());
-                        setupAuthViewModel.getState(currentState);
+                        setupAuthViewModel.setState(currentState);
                     }
 
                     /**
@@ -109,8 +109,8 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void keyTyped(KeyEvent e) {
                         SetupAuthState currentState = setupAuthViewModel.getState();
-                        currentState.setRepeatPassword(repeatPasswordInputField.getText() + e.getKeyChar());
-                        setupAuthViewModel.getState(currentState);
+                        currentState.setRepeatedPassword(repeatPasswordInputField.getText() + e.getKeyChar());
+                        setupAuthViewModel.setState(currentState);
                     }
 
                     /**
@@ -138,7 +138,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
         this.add(title);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
-        this.add(create);
+        this.add(confirmButton);
     }
 
     /**

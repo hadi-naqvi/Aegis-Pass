@@ -6,10 +6,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class SetupAuthViewModel extends ViewModel {
-    private static final String TITLE_LABEL = "Aegis Pass Setup";
-    private static final String PASSWORD_LABEL = "Enter your password:";
-    private static final String REPEAT_PASSWORD_LABEL = "Re-enter your password:";
-    private static final String CONFIRM_BUTTON_LABEL = "Confirm";
+    public static final String TITLE_LABEL = "Aegis Pass Setup";
+    public static final String PASSWORD_LABEL = "Enter your password:";
+    public static final String REPEAT_PASSWORD_LABEL = "Re-enter your password:";
+    public static final String CONFIRM_BUTTON_LABEL = "Confirm";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private SetupAuthState state = new SetupAuthState();
 
