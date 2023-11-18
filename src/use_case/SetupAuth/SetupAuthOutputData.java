@@ -1,4 +1,9 @@
 package use_case.SetupAuth;
 
-public interface SetupAuthOuputData {
+public class SetupAuthOutputData {
+    private boolean useCaseFailed;
+
+    public SetupAuthOutputData(boolean useCaseFailed) {
+        this.useCaseFailed = useCaseFailed;
+    }
 }
