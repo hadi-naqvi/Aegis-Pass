@@ -1,4 +1,6 @@
 package interface_adapter.Authentication;
 
-public class AuthenticationViewModel {
+import interface_adapter.ViewModel;
+
+public class AuthenticationViewModel extends ViewModel {
 }
