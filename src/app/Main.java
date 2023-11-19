@@ -2,6 +2,7 @@ package app;
 
 import data_access.FileAuthDataAccessObject;
 import entity.CommonAuthKey;
+import entity.CommonAuthKeyFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
@@ -39,7 +40,7 @@ public class Main {
         FileAuthDataAccessObject userDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject("Authentication");
+            userDataAccessObject = new FileAuthDataAccessObject("Database/Authentication.csv", new CommonAuthKeyFactory());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

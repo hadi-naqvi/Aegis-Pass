@@ -22,11 +22,17 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      */
     @Override
     public void execute(SetupAuthInputData setupAuthInputData) {
+        System.out.println(setupAuthInputData.getPassword());
+        System.out.println(setupAuthInputData.getRepeatPassword());
         if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
-            setupAuthPresenter.prepareFailView("Passwords do not match");
+            setupAuthPresenter.prepareFailView("Passwords do not match.");
+        }
+        else if (setupAuthInputData.getPassword().isEmpty()) {
+            setupAuthPresenter.prepareFailView("You have not entered a password.");
         }
         else {
             CommonAuthKey authKey = new CommonAuthKey(setupAuthInputData.getPassword());
+            System.out.println("test");
             authDataAccessObject.save(authKey);
 
             SetupAuthOutputData setupAuthOutputData = new SetupAuthOutputData(true);
