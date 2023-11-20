@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.io.*;
 
-public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface {
+public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
     private final File csvFile;
 
     private final AuthKey authKey;
@@ -44,6 +44,14 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface {
 
     }
 
+
+    /**
+     * Method which gets the AuthKey for the password database
+     */
+    public AuthKey getAuthKey() {
+        return this.authKey;
+    }
+
     /**
      * Method which saves the AuthKey for the password database
      * @param authKey The authentication key
@@ -67,14 +75,6 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface {
             throw new RuntimeException(e);
         }
     }
-
-//    public String getHashedAuthKey(){
-//        return
-//    }
-
-//    public String getKeySalt(){
-//
-//    }
 
     /**
      * Method which writes the AuthKey to the password database
