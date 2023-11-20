@@ -49,6 +49,10 @@ public class Main {
                 userDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
+        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, setupAuthViewModel, authenticationViewModel,
+                userDataAccessObject);
+        views.add(authenticationView, authenticationView.viewName);
+
         viewManagerModel.setActiveView(setupAuthView.viewName);
         viewManagerModel.firePropertyChanged();
 
