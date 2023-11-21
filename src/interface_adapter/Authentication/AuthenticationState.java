@@ -62,7 +62,6 @@ public class AuthenticationState {
         return "AuthenticationState{" +
                 "password='" + this.password + '\'' +
                 ", passwordError='" + this.passwordError + '\'' +
-                ", repeatPassword='" + this.repeatedPassword + '\'' +
                 '}';
     }
 
