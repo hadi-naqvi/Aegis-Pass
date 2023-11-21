@@ -47,9 +47,8 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(confirmButton)) {
                             AuthenticationState currentState = authenticationViewModel.getState();
-                            authenticationViewModel.execute(
-                                    currentState.getPassword(),
-                                    currentState.getRepeatedPassword()
+                            authenticationController.execute(
+                                    currentState.getPassword()
                             );
                         }
                     }
