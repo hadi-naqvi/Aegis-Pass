@@ -3,6 +3,7 @@ package data_access;
 import entity.AuthKey;
 import entity.AuthKeyFactory;
 import entity.CommonAuthKey;
+import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.SetupAuth.SetupAuthDataAccessInterface;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,7 +13,7 @@ import java.io.*;
 public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
     private final File csvFile;
 
-    private final AuthKey authKey;
+    private AuthKey authKey;
     private final String salt;
 
     private AuthKeyFactory authKeyFactory;
@@ -58,6 +59,7 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
      */
     @Override
     public void save(CommonAuthKey authKey) {
+        this.authKey = authKey;
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(csvFile));

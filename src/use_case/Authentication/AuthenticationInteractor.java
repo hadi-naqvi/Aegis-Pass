@@ -27,7 +27,6 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
             authenticationPresenter.prepareFailView("Passwords is incorrect.");
         }
         else {
-            SetupAuthOutputData setupAuthOutputData = new SetupAuthOutputData(false);
             authenticationPresenter.prepareSuccessView(new AuthenticationOutputData(true));
         }
     }

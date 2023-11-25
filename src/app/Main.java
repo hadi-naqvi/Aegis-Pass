@@ -4,6 +4,7 @@ import data_access.FileAuthDataAccessObject;
 import entity.CommonAuthKey;
 import entity.CommonAuthKeyFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.DisplayDash.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.SetupAuth.SetupAuthDataAccessInterface;
@@ -36,6 +37,7 @@ public class Main {
 
         SetupAuthViewModel setupAuthViewModel = new SetupAuthViewModel();
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
 
         FileAuthDataAccessObject userDataAccessObject;
 
@@ -49,11 +51,16 @@ public class Main {
                 userDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
-        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, setupAuthViewModel, authenticationViewModel,
+        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, authenticationViewModel, dashboardViewModel,
                 userDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 
-        viewManagerModel.setActiveView(setupAuthView.viewName);
+        if (userDataAccessObject.getAuthKey() == null) {
+            viewManagerModel.setActiveView(setupAuthView.viewName);
+        }
+        else {
+            viewManagerModel.setActiveView(authenticationView.viewName);
+        }
         viewManagerModel.firePropertyChanged();
 
         application.pack();
