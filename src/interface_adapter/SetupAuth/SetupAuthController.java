@@ -16,11 +16,12 @@ public class SetupAuthController {
 
     /**
      * Method which is executed/triggered when the user completes the authentication key setup
+     * @param username The authentication username
      * @param password The authentication password
      * @param repeatedPassword The confirmed/repeated authentication password
      */
-    public void execute(String password, String repeatedPassword) {
-        SetupAuthInputData setupAuthInputData = new SetupAuthInputData(password, repeatedPassword);
+    public void execute(String username, String password, String repeatedPassword) {
+        SetupAuthInputData setupAuthInputData = new SetupAuthInputData(username, password, repeatedPassword);
         setupAuthInteractor.execute(setupAuthInputData);
     }
 }
