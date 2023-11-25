@@ -1,6 +1,6 @@
 package use_case.SetupAuth;
 
-import entity.CommonAuthKey;
+import entity.CommonUser;
 
 public class SetupAuthInteractor implements SetupAuthInputBoundary {
     private final SetupAuthDataAccessInterface authDataAccessObject;
@@ -22,18 +22,22 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      */
     @Override
     public void execute(SetupAuthInputData setupAuthInputData) {
+        System.out.println(setupAuthInputData.getUsername());
         System.out.println(setupAuthInputData.getPassword());
         System.out.println(setupAuthInputData.getRepeatPassword());
-        if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
+        if (existsByName(setupAuthInputData.getUsername())){
+            setupAuthPresenter.prepareFailView("Username already exists");
+        }
+        else if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
             setupAuthPresenter.prepareFailView("Passwords do not match.");
         }
         else if (setupAuthInputData.getPassword().isEmpty()) {
             setupAuthPresenter.prepareFailView("You have not entered a password.");
         }
         else {
-            CommonAuthKey authKey = new CommonAuthKey(setupAuthInputData.getPassword());
+            CommonUser user = new CommonUser(setupAuthInputData.getUsername(), setupAuthInputData.getPassword());
             System.out.println("test");
-            authDataAccessObject.save(authKey);
+            authDataAccessObject.save(user);
 
             SetupAuthOutputData setupAuthOutputData = new SetupAuthOutputData(true);
             setupAuthPresenter.prepareSuccessView(setupAuthOutputData);
