@@ -8,7 +8,7 @@ import use_case.SetupAuth.SetupAuthOutputData;
 public class SetupAuthPresenter implements SetupAuthOutputBoundary {
     private final SetupAuthViewModel setupAuthViewModel;
     private final AuthenticationViewModel authenticationViewModel;
-    private ViewManagerModel viewManagerModel;
+    private final ViewManagerModel viewManagerModel;
 
     /**
      * Constructor method for the presenter for the SetupAut use case

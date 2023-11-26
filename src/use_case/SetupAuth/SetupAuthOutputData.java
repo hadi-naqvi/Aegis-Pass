@@ -1,7 +1,7 @@
 package use_case.SetupAuth;
 
 public class SetupAuthOutputData {
-    private boolean useCaseFailed;
+    private final boolean useCaseFailed;
 
     /**
      * Constructor method for the output data in the SetupAuth use case

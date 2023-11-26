@@ -23,11 +23,11 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
      */
     @Override
     public void execute(AuthenticationInputData authenticationInputData) {
-        if (!(userDataAccessObject.getAuthKey().getKey().equals(authenticationInputData.getPassword()))) {
-            authenticationPresenter.prepareFailView("Passwords is incorrect.");
-        }
-        else {
-            authenticationPresenter.prepareSuccessView(new AuthenticationOutputData(true));
-        }
+//        if (!(userDataAccessObject.getAuthKey().getKey().equals(authenticationInputData.getPassword()))) {
+//            authenticationPresenter.prepareFailView("Passwords is incorrect.");
+//        }
+//        else {
+//            authenticationPresenter.prepareSuccessView(new AuthenticationOutputData(true));
+//        }
     }
 }

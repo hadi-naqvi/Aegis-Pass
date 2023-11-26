@@ -22,13 +22,13 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      */
     @Override
     public void execute(SetupAuthInputData setupAuthInputData) {
-        System.out.println(setupAuthInputData.getUsername());
-        System.out.println(setupAuthInputData.getPassword());
-        System.out.println(setupAuthInputData.getRepeatPassword());
-        if (existsByName(setupAuthInputData.getUsername())){
-            setupAuthPresenter.prepareFailView("Username already exists");
+        if (authDataAccessObject.existsByName(setupAuthInputData.getUsername())){
+            setupAuthPresenter.prepareFailView("The username " + setupAuthInputData.getUsername() + " has been taken");
         }
         else if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
+            System.out.println(setupAuthInputData.getUsername());
+            System.out.println(setupAuthInputData.getPassword());
+            System.out.println(setupAuthInputData.getRepeatPassword());
             setupAuthPresenter.prepareFailView("Passwords do not match.");
         }
         else if (setupAuthInputData.getPassword().isEmpty()) {
@@ -36,7 +36,6 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
         }
         else {
             CommonUser user = new CommonUser(setupAuthInputData.getUsername(), setupAuthInputData.getPassword());
-            System.out.println("test");
             authDataAccessObject.save(user);
 
             SetupAuthOutputData setupAuthOutputData = new SetupAuthOutputData(true);

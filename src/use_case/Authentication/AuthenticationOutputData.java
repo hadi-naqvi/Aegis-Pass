@@ -1,7 +1,7 @@
 package use_case.Authentication;
 
 public class AuthenticationOutputData {
-    private boolean useCaseFailed;
+    private final boolean useCaseFailed;
 
     /**
      * Consturctor method for the authentication output data
