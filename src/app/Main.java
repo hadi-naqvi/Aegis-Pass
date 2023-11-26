@@ -1,20 +1,19 @@
 package app;
 
 import data_access.FileAuthDataAccessObject;
-import entity.CommonAuthKey;
-import entity.CommonAuthKeyFactory;
+import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.DisplayDash.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
-import use_case.SetupAuth.SetupAuthDataAccessInterface;
 import view.AuthenticationView;
 import view.SetupAuthView;
 import view.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+import java.sql.SQLException;
+
 public class Main {
     public static void main(String[] args) {
         //Build the main program window, the main panel containing the
@@ -42,8 +41,8 @@ public class Main {
         FileAuthDataAccessObject userDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject("Database/Authentication.csv", new CommonAuthKeyFactory());
-        } catch (IOException e) {
+            userDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
@@ -55,12 +54,8 @@ public class Main {
                 userDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 
-        if (userDataAccessObject.getAuthKey() == null) {
-            viewManagerModel.setActiveView(setupAuthView.viewName);
-        }
-        else {
-            viewManagerModel.setActiveView(authenticationView.viewName);
-        }
+        viewManagerModel.setActiveView(setupAuthView.viewName);
+
         viewManagerModel.firePropertyChanged();
 
         application.pack();
