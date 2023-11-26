@@ -26,9 +26,6 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
             setupAuthPresenter.prepareFailView("The username " + setupAuthInputData.getUsername() + " has been taken");
         }
         else if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
-            System.out.println(setupAuthInputData.getUsername());
-            System.out.println(setupAuthInputData.getPassword());
-            System.out.println(setupAuthInputData.getRepeatPassword());
             setupAuthPresenter.prepareFailView("Passwords do not match.");
         }
         else if (setupAuthInputData.getPassword().isEmpty()) {

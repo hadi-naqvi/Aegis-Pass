@@ -82,7 +82,6 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                         else if (!(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
                             currentState.setUsername(currentState.getUsername() + e.getKeyChar());
                         }
-                        System.out.println(e.getKeyCode());
                         setupAuthViewModel.setState(currentState);
                     }
 
