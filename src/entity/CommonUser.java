@@ -1,11 +1,11 @@
 package entity;
 
 public class CommonUser implements User {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     /**
-     * Constructor method for the AuthKey entity
+     * Constructor method for the User entity
      * @param username The user's username
      * @param password The user's password
      */
