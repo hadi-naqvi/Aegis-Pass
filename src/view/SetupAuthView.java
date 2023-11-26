@@ -14,15 +14,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class SetupAuthView extends JPanel implements ActionListener, PropertyChangeListener {
-
     public final String viewName = "setup auth";
     private final SetupAuthViewModel setupAuthViewModel;
-
-    public final JPasswordField passwordInputField = new JPasswordField(30);
-
-    public final JPasswordField repeatPasswordInputField = new JPasswordField(30);
-
-    public final JButton confirmButton;
+    private JTextField usernameInputField;
+    private JPasswordField passwordInputField;
+    private JPasswordField repeatPasswordInputField;
+    private JButton confirmButton;
+    private JPanel main;
     private final SetupAuthController setupAuthController;
 
     /**
@@ -34,19 +32,6 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
         this.setupAuthViewModel = viewModel;
         this.setupAuthController = controller;
         this.setupAuthViewModel.addPropertyChangeListener(this);
-
-        JLabel title = new JLabel(setupAuthViewModel.TITLE_LABEL);
-
-        JPanel passwordInfo = new JPanel();
-        passwordInfo.add(new JLabel(setupAuthViewModel.PASSWORD_LABEL));
-        passwordInfo.add(passwordInputField);
-        
-        JPanel repeatPasswordInfo = new JPanel();
-        passwordInfo.add(new JLabel(setupAuthViewModel.REPEAT_PASSWORD_LABEL));
-        passwordInfo.add(repeatPasswordInputField);
-
-        confirmButton = new JButton(setupAuthViewModel.CONFIRM_BUTTON_LABEL);
-
         confirmButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -54,6 +39,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                         if (e.getSource().equals(confirmButton)) {
                             SetupAuthState currentState = setupAuthViewModel.getState();
                             setupAuthController.execute(
+                                    currentState.getUsername(),
                                     currentState.getPassword(),
                                     currentState.getRepeatedPassword()
                             );
@@ -62,29 +48,66 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
-        passwordInputField.addKeyListener(
+
+        usernameInputField.addKeyListener(
                 new KeyListener() {
 
                     /**
-                     * Invoked when a key has been typed. Updates text field.
+                     * Invoked when a key has been typed. Empty for now.
                      *
                      * @param e the event to be processed
                      */
                     @Override
                     public void keyTyped(KeyEvent e) {
-//                        SetupAuthState currentState = setupAuthViewModel.getState();
-//                        if (e.getKeyCode() == KeyEvent.VK_DELETE ||
-//                                e.getKeyCode() == KeyEvent.VK_BACK_SPACE ||
-//                                e.getKeyCode() == KeyEvent.VK_ESCAPE ||
-//                                e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                            String newPassword = currentState.getPassword() + e.getKeyChar();
-//                            currentState.setPassword(newPassword.substring(0, newPassword.length() - 1));
-//                        }
-//                        else {
-//                            currentState.setPassword(currentState.getPassword() + e.getKeyChar());
-//                        }
-//                        System.out.println(e.getKeyCode());
-//                        setupAuthViewModel.setState(currentState);
+
+                    }
+
+                    /**
+                     * Invoked when a key has been pressed. Updates textfield.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        SetupAuthState currentState = setupAuthViewModel.getState();
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE ||
+                                e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            String newUsername = currentState.getUsername() + e.getKeyChar();
+                            currentState.setUsername(newUsername.substring(0, newUsername.length() - 1));
+                        }
+                        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && currentState.getUsername().length() != 0) {
+                            String newUsername = currentState.getUsername().substring(0, currentState.getUsername().length() - 1);
+                            currentState.setUsername(newUsername);
+                        }
+                        else if (!(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
+                            currentState.setUsername(currentState.getUsername() + e.getKeyChar());
+                        }
+                        System.out.println(e.getKeyCode());
+                        setupAuthViewModel.setState(currentState);
+                    }
+
+                    /**
+                     * Invoked when a key has been released. Empty for now.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                }
+        );
+
+        passwordInputField.addKeyListener(
+                new KeyListener() {
+
+                    /**
+                     * Invoked when a key has been typed. Empty for now.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
                     }
 
                     /**
@@ -107,7 +130,6 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                         else if (!(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
                             currentState.setPassword(currentState.getPassword() + e.getKeyChar());
                         }
-                        System.out.println(e.getKeyCode());
                         setupAuthViewModel.setState(currentState);
                     }
 
@@ -126,25 +148,13 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                 new KeyListener() {
 
                     /**
-                     * Invoked when a key has been typed. Updates text field.
+                     * Invoked when a key has been typed. Empty for now.
                      *
                      * @param e the event to be processed
                      */
                     @Override
                     public void keyTyped(KeyEvent e) {
-//                        SetupAuthState currentState = setupAuthViewModel.getState();
-//                        if (e.getKeyCode() == KeyEvent.VK_DELETE ||
-//                                e.getKeyCode() == KeyEvent.VK_BACK_SPACE ||
-//                                e.getKeyCode() == KeyEvent.VK_ESCAPE ||
-//                                e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                            System.out.println("hello");
-//                            String newPassword = currentState.getRepeatedPassword() + e.getKeyChar();
-//                            currentState.setRepeatedPassword(newPassword.substring(0, newPassword.length() - 1));
-//                        }
-//                        else {
-//                            currentState.setPassword(currentState.getRepeatedPassword() + e.getKeyChar());
-//                        }
-//                        setupAuthViewModel.setState(currentState);
+
                     }
 
                     /**
@@ -182,12 +192,8 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        this.add(title);
-        this.add(passwordInfo);
-        this.add(repeatPasswordInfo);
-        this.add(confirmButton);
+        this.setLayout(new GridLayout());
+        this.add(main);
     }
 
     /**
