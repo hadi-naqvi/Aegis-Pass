@@ -67,10 +67,9 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
      */
     public boolean validate(String username, String password) {
         try {
-            String query = "SELECT hashed_password FROM users WHERE username = " + "\"" + username + "\"";
+            String query = "SELECT hashed_password FROM users WHERE username = ?";
             PreparedStatement statement = CONNECTION.prepareStatement(query);
             statement.setString(1, username);
-            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return BCrypt.checkpw(password + this.PEPPER, resultSet.getString("hashed_password"));
