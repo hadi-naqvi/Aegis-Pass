@@ -3,6 +3,8 @@ package view;
 import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.SetupAuth.SetupAuthController;
+import interface_adapter.SetupAuth.SetupAuthState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +20,10 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
     public final String viewName = "authentication";
     private final AuthenticationController authenticationController;
     private final AuthenticationViewModel authenticationViewModel;
-
-    public final JPasswordField passwordInputField = new JPasswordField(30);
-
-    public final JButton confirmButton;
+    private JTextField tfUsername;
+    private JPasswordField pfPassword;
+    private JButton btnLogin;
+    private JPanel mainAuthentication;
 
     /**
      * The Constructor for the View. Sets up event listeners and adds JSwing elements to the View.
@@ -33,21 +35,14 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
         this.authenticationController = controller;
         this.authenticationViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel(AuthenticationViewModel.TITLE_LABEL);
-
-        JPanel passwordInfo = new JPanel();
-        passwordInfo.add(new JLabel(AuthenticationViewModel.PASSWORD_LABEL));
-        passwordInfo.add(passwordInputField);
-
-        confirmButton = new JButton(AuthenticationViewModel.CONFIRM_BUTTON_LABEL);
-
-        confirmButton.addActionListener(
+        btnLogin.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(confirmButton)) {
+                        if (e.getSource().equals(btnLogin)) {
                             AuthenticationState currentState = authenticationViewModel.getState();
                             authenticationController.execute(
+                                    currentState.getUsername(),
                                     currentState.getPassword()
                             );
                         }
@@ -55,7 +50,43 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                 }
         );
 
-        passwordInputField.addKeyListener(
+        tfUsername.addKeyListener(
+                new KeyListener() {
+
+                    /**
+                     * Invoked when a key has been typed. Empty for now.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+
+                    }
+
+                    /**
+                     * Invoked when a key has been pressed. Updates textfield.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        AuthenticationState currentState = authenticationViewModel.getState();
+                        currentState.setUsername(tfUsername.getText());
+                        authenticationViewModel.setState(currentState);
+                    }
+
+                    /**
+                     * Invoked when a key has been released. Empty for now.
+                     *
+                     * @param e the event to be processed
+                     */
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                }
+        );
+
+        pfPassword.addKeyListener(
                 new KeyListener() {
 
                     /**
@@ -75,19 +106,7 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                     @Override
                     public void keyPressed(KeyEvent e) {
                         AuthenticationState currentState = authenticationViewModel.getState();
-                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE ||
-                                e.getKeyCode() == KeyEvent.VK_ENTER) {
-                            String newPassword = currentState.getPassword() + e.getKeyChar();
-                            currentState.setPassword(newPassword.substring(0, newPassword.length() - 1));
-                        }
-                        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && currentState.getPassword().length() != 0) {
-                            String newPassword = currentState.getPassword().substring(0, currentState.getPassword().length() - 1);
-                            currentState.setPassword(newPassword);
-                        }
-                        else if (!(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
-                            currentState.setPassword(currentState.getPassword() + e.getKeyChar());
-                        }
-                        System.out.println(e.getKeyCode());
+                        currentState.setPassword(pfPassword.getText());
                         authenticationViewModel.setState(currentState);
                     }
 
@@ -102,11 +121,9 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                 }
         );
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridLayout());
 
-        this.add(title);
-        this.add(passwordInfo);
-        this.add(confirmButton);
+        this.add(mainAuthentication);
     }
 
     /**
