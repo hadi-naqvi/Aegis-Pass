@@ -58,4 +58,27 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
             return false;
         }
     }
+
+    /**
+     * Method which validates the user's password with their corresponding username
+     * @param username The user's inputted username
+     * @param password The user's inputted password
+     * @return whether the password is correct
+     */
+    public boolean validate(String username, String password) {
+        try {
+            String query = "SELECT hashed_password FROM users WHERE username = " + "\"" + username + "\"";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return BCrypt.checkpw(password + this.PEPPER, resultSet.getString("hashed_password"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
