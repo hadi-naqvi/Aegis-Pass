@@ -16,10 +16,11 @@ public class AuthenticationController {
 
     /**
      * Method which is executed/triggered when the user enters their authentication password
+     * @param username The username being entered by the user
      * @param password The password/authentication key being entered by the user
      */
-    public void execute(String password) {
-        AuthenticationInputData authenticationInputData = new AuthenticationInputData(password);
+    public void execute(String username, String password) {
+        AuthenticationInputData authenticationInputData = new AuthenticationInputData(username, password);
         authenticationInteractor.execute(authenticationInputData);
     }
 }
