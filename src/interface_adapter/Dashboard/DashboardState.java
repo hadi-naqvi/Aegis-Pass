@@ -1,4 +1,4 @@
-package interface_adapter.DisplayDash;
+package interface_adapter.Dashboard;
 
 public class DashboardState {
 

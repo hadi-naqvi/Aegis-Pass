@@ -3,7 +3,7 @@ package app;
 import data_access.FileAuthDataAccessObject;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
-import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import view.AuthenticationView;
@@ -41,7 +41,7 @@ public class Main {
         FileAuthDataAccessObject userDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
+            userDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "password1234", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

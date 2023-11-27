@@ -3,7 +3,7 @@ package app;
 import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationPresenter;
 import interface_adapter.Authentication.AuthenticationViewModel;
-import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.Authentication.AuthenticationInputBoundary;

@@ -1,6 +1,5 @@
-package interface_adapter.DisplayDash;
+package interface_adapter.Dashboard;
 
-import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
