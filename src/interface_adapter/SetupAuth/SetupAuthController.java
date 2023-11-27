@@ -24,4 +24,8 @@ public class SetupAuthController {
         SetupAuthInputData setupAuthInputData = new SetupAuthInputData(username, password, repeatedPassword);
         setupAuthInteractor.execute(setupAuthInputData);
     }
+
+    public void switchViews(){
+        setupAuthInteractor.switchViews();
+    }
 }

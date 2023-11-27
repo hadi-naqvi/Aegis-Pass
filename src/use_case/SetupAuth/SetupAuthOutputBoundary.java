@@ -12,4 +12,6 @@ public interface SetupAuthOutputBoundary {
      * @param error The error message which explains why SetupAuth failed
      */
     void prepareFailView(String error);
+
+    void switchViews();
 }

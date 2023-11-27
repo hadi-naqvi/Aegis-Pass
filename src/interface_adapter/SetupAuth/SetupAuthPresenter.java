@@ -44,4 +44,9 @@ public class SetupAuthPresenter implements SetupAuthOutputBoundary {
         setupAuthState.setPasswordError(error);
         setupAuthViewModel.firePropertyChanged();
     }
+
+    public void switchViews(){
+        viewManagerModel.setActiveView(authenticationViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
 }

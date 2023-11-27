@@ -39,4 +39,8 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
             setupAuthPresenter.prepareSuccessView(setupAuthOutputData);
         }
     }
+
+    public void switchViews(){
+        setupAuthPresenter.switchViews();
+    }
 }

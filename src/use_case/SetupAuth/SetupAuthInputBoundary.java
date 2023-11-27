@@ -5,4 +5,6 @@ public interface SetupAuthInputBoundary {
      * @param setupAuthInputData The input data for the use case interactor
      */
     void execute(SetupAuthInputData setupAuthInputData);
+
+    void switchViews();
 }
