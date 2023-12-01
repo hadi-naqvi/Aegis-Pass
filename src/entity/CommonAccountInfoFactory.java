@@ -21,4 +21,12 @@ public class CommonAccountInfoFactory implements AccountInfoFactory {
                               String iconURL, Date date, String notes) {
         return new CommonAccountInfo(title, username, password, secretKey, url, iconURL, date, notes);
     }
+
+    /**
+     * Factory method which creates and returns a new AccountInfo object without any given data
+     * @return A new AccountInfo object that doesn't store any data
+     */
+    public AccountInfo create() {
+        return new CommonAccountInfo();
+    }
 }

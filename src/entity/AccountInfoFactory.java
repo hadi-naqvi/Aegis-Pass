@@ -17,4 +17,5 @@ public interface AccountInfoFactory {
      */
     public AccountInfo create(String title, String username, String password, String secretKey,
                               String url, String iconURL, Date date, String notes);
+    public AccountInfo create();
 }

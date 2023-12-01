@@ -36,6 +36,13 @@ public class CommonAccountInfo implements AccountInfo {
     }
 
     /**
+     * Constructor method for an AccountInfo entity which doesn't store any account details/login info
+     */
+    public CommonAccountInfo() {
+
+    }
+
+    /**
      * Getter method for the title of the account.
      *
      * @return The title of the account.
