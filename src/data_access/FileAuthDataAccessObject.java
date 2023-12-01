@@ -80,4 +80,26 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
         }
         return false;
     }
+
+    /**
+     * Method which returns a username's corresponding user ID in the database
+     * @param username The username
+     * @return The user's corresponding user ID
+     */
+    @Override
+    public int getUserID(String username) {
+        try {
+            String query = "SELECT user_id FROM users WHERE username = ?";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("user_id");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
