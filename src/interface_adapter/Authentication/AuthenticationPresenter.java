@@ -31,6 +31,7 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
     @Override
     public void prepareSuccessView(AuthenticationOutputData authenticationOutputData) {
         DashboardState dashboardState = dashboardViewModel.getState();
+        dashboardState.setCurrentUserID(authenticationOutputData.getUserID());
         this.dashboardViewModel.setState(dashboardState);
 
         this.viewManagerModel.setActiveView(dashboardViewModel.getViewName());

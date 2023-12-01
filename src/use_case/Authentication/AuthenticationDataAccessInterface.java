@@ -9,6 +9,10 @@ public interface AuthenticationDataAccessInterface {
      */
     boolean validate(String username, String password);
 
-
-
+    /**
+     * Method which returns a username's corresponding user ID in the database
+     * @param username The username
+     * @return The user's corresponding user ID
+     */
+    int getUserID(String username);
 }
