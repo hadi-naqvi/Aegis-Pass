@@ -2,21 +2,21 @@ package use_case.Dashboard;
 
 public class DashboardInputData {
 
-    final private String username;
+    final private int userID;
 
     /**
      * Constructor method for the Dashboard use case's input data
-     * @param username The username for which the corresponding accounts need to be displayed
+     * @param userID The user ID for which the corresponding accounts need to be displayed
      */
-    public DashboardInputData(String username) {
-        this.username = username;
+    public DashboardInputData(int userID) {
+        this.userID = userID;
     }
 
     /**
      * Getter method for the username being entered during dashboard display
-     * @return The username being entered during dashboard display
+     * @return The user ID being entered during dashboard display
      */
-    public String getUsername() {
-        return this.username;
+    public int getUserID() {
+        return this.userID;
     }
 }

@@ -11,4 +11,7 @@ public interface DashboardDataAccessInterface {
      * @return returns list of user's accounts
      */
     List<AccountInfo> getAccounts();
+
+    void setCurrentUserID(int userID);
+    int getCurrentUserID();
 }
