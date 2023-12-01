@@ -1,12 +1,15 @@
 package app;
 
 import data_access.FileAuthDataAccessObject;
+import data_access.FileDashDataAccessObject;
+import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import view.AuthenticationView;
+import view.DashboardView;
 import view.SetupAuthView;
 import view.ViewManager;
 
@@ -38,21 +41,27 @@ public class Main {
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
 
-        FileAuthDataAccessObject userDataAccessObject;
+        FileAuthDataAccessObject authDataAccessObject;
+        FileDashDataAccessObject dashDataAccessObject;
 
         try {
-            userDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "password1234", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
+            authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
+            dashDataAccessObject = new FileDashDataAccessObject(new CommonAccountInfoFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         SetupAuthView setupAuthView = SetupAuthUseCaseFactory.create(viewManagerModel, setupAuthViewModel, authenticationViewModel,
-                userDataAccessObject);
+                authDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
         AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, authenticationViewModel, dashboardViewModel,
-                userDataAccessObject);
+                authDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
+
+        DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, dashboardViewModel,
+                dashDataAccessObject);
+        views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
 
