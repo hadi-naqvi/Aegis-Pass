@@ -1,5 +1,6 @@
 package app;
 
+import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.SetupAuth.SetupAuthController;
 import interface_adapter.SetupAuth.SetupAuthPresenter;
@@ -50,7 +51,7 @@ public class SetupAuthUseCaseFactory {
                                                               SetupAuthDataAccessInterface userDataAccessObject) throws IOException{
         SetupAuthOutputBoundary setupAuthOutputBoundary = new SetupAuthPresenter(viewManagerModel, setupAuthViewModel, authenticationViewModel);
 
-        SetupAuthInputBoundary SetupAuthUseCaseInteractor = new SetupAuthInteractor(
+        SetupAuthInputBoundary SetupAuthUseCaseInteractor = new SetupAuthInteractor(new CommonUserFactory(),
                 userDataAccessObject, setupAuthOutputBoundary);
 
         return new SetupAuthController(SetupAuthUseCaseInteractor);

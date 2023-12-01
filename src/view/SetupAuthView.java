@@ -21,6 +21,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
     private JPasswordField repeatPasswordInputField;
     private JButton confirmButton;
     private JPanel main;
+    private JButton btnGoLogin;
     private final SetupAuthController setupAuthController;
 
     /**
@@ -32,6 +33,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
         this.setupAuthViewModel = viewModel;
         this.setupAuthController = controller;
         this.setupAuthViewModel.addPropertyChangeListener(this);
+
         confirmButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -43,6 +45,17 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                                     currentState.getPassword(),
                                     currentState.getRepeatedPassword()
                             );
+                        }
+                    }
+                }
+        );
+
+        btnGoLogin.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(btnGoLogin)) {
+                            setupAuthController.switchViews();
                         }
                     }
                 }
@@ -156,6 +169,10 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                     }
                 }
         );
+
+        btnGoLogin.setBorderPainted(false);
+        btnGoLogin.setFocusPainted(false);
+        btnGoLogin.setContentAreaFilled(false);
 
         this.setLayout(new GridLayout());
         this.add(main);
