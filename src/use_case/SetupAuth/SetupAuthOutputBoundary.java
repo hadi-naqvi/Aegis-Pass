@@ -13,5 +13,8 @@ public interface SetupAuthOutputBoundary {
      */
     void prepareFailView(String error);
 
+    /**
+     * Method which updates the view manager model to display Authentication view if user already has account
+     */
     void switchViews();
 }

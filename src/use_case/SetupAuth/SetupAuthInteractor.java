@@ -43,6 +43,10 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
         }
     }
 
+
+    /**
+     * Method which contains logic for switching views which is triggered if user already has an account
+     */
     public void switchViews(){
         setupAuthPresenter.switchViews();
     }
