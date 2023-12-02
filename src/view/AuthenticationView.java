@@ -3,8 +3,6 @@ package view;
 import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.Authentication.AuthenticationViewModel;
-import interface_adapter.SetupAuth.SetupAuthController;
-import interface_adapter.SetupAuth.SetupAuthState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +22,7 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
     private JPasswordField pfPassword;
     private JButton btnLogin;
     private JPanel mainAuthentication;
+    private JButton btnGoSignup;
 
     /**
      * The Constructor for the View. Sets up event listeners and adds JSwing elements to the View.
@@ -45,6 +44,17 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                                     currentState.getUsername(),
                                     currentState.getPassword()
                             );
+                        }
+                    }
+                }
+        );
+
+        btnGoSignup.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(btnGoSignup)) {
+                            authenticationController.switchViews();
                         }
                     }
                 }
@@ -120,6 +130,10 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                     }
                 }
         );
+
+        btnGoSignup.setBorderPainted(false);
+        btnGoSignup.setFocusPainted(false);
+        btnGoSignup.setContentAreaFilled(false);
 
         this.setLayout(new GridLayout());
 

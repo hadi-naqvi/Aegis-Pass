@@ -5,4 +5,6 @@ public interface AuthenticationInputBoundary {
      * @param authenticationInputData The input data for the use case interactor
      */
     void execute(AuthenticationInputData authenticationInputData);
+
+    void switchViews();
 }

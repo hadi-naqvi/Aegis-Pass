@@ -35,4 +35,8 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
             authenticationPresenter.prepareSuccessView(authenticationOutputData);
         }
     }
+
+    public void switchViews(){
+        authenticationPresenter.switchViews();
+    }
 }

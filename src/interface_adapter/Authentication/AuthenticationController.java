@@ -23,4 +23,8 @@ public class AuthenticationController {
         AuthenticationInputData authenticationInputData = new AuthenticationInputData(username, password);
         authenticationInteractor.execute(authenticationInputData);
     }
+
+    public void switchViews(){
+        authenticationInteractor.switchViews();
+    }
 }

@@ -2,6 +2,7 @@ package interface_adapter.Authentication;
 
 import interface_adapter.DisplayDash.DashboardState;
 import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Authentication.AuthenticationOutputBoundary;
 import use_case.Authentication.AuthenticationOutputData;
@@ -11,6 +12,8 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
     private final DashboardViewModel dashboardViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    private final SetupAuthViewModel setupAuthViewModel;
+
     /**
      * Constructor method for the Authentication use case's presenter
      * @param authenticationViewModel The view model for the authentication view
@@ -18,10 +21,12 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
      */
     public AuthenticationPresenter(ViewManagerModel viewManagerModel,
                                    AuthenticationViewModel authenticationViewModel,
-                                   DashboardViewModel dashboardViewModel) {
+                                   DashboardViewModel dashboardViewModel,
+                                   SetupAuthViewModel setupAuthViewModel) {
         this.authenticationViewModel = authenticationViewModel;
         this.dashboardViewModel = dashboardViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.setupAuthViewModel = setupAuthViewModel;
     }
 
     /**
@@ -31,8 +36,8 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
     @Override
     public void prepareSuccessView(AuthenticationOutputData authenticationOutputData) {
         DashboardState dashboardState = dashboardViewModel.getState();
-        dashboardState.setUserID(authenticationOutputData.getUserID());
-        dashboardState.setUserSalt(authenticationOutputData.getUserSalt());
+//        dashboardState.setUserID(authenticationOutputData.getUserID());
+//        dashboardState.setUserSalt(authenticationOutputData.getUserSalt());
         this.dashboardViewModel.setState(dashboardState);
 
         this.viewManagerModel.setActiveView(dashboardViewModel.getViewName());
@@ -48,5 +53,10 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
         AuthenticationState authenticationState = authenticationViewModel.getState();
         authenticationState.setPasswordError(error);
         authenticationViewModel.firePropertyChanged();
+    }
+
+    public void switchViews(){
+        viewManagerModel.setActiveView(setupAuthViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

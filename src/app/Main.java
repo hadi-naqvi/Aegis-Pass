@@ -50,7 +50,7 @@ public class Main {
                 userDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
-        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, authenticationViewModel, dashboardViewModel,
+        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, authenticationViewModel, setupAuthViewModel, dashboardViewModel,
                 userDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 
