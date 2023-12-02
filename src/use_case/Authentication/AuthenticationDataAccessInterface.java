@@ -15,4 +15,11 @@ public interface AuthenticationDataAccessInterface {
      * @return The user's corresponding user ID
      */
     int getUserID(String username);
+
+    /**
+     * Method which returns a username's corresponding kdf salt in the database
+     * @param username The username
+     * @return The user's corresponding kdf salt
+     */
+    String getUserSalt(String username);
 }

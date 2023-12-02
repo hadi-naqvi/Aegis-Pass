@@ -30,7 +30,8 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
         }
         else {
             AuthenticationOutputData authenticationOutputData = new AuthenticationOutputData(true,
-                    userDataAccessObject.getUserID(authenticationInputData.getUsername()));
+                    userDataAccessObject.getUserID(authenticationInputData.getUsername()),
+                    userDataAccessObject.getUserSalt(authenticationInputData.getUsername()));
             authenticationPresenter.prepareSuccessView(authenticationOutputData);
         }
     }
