@@ -8,6 +8,7 @@ import java.util.List;
 public class DashboardState {
 
     private int userID;
+    private String userSalt;
     private List<AccountInfo> accounts;
 
 
@@ -52,7 +53,21 @@ public class DashboardState {
      */
     public void setUserID(int userID){this.userID = userID;}
 
+    /**
+     * Getter method for the user's kdf salt
+     * @return The user's kdf salt
+     */
+    public String getUserSalt() {
+        return this.userSalt;
+    }
 
+    /**
+     * Setter method for the user's kdf salt
+     * @param userSalt The user's salt
+     */
+    public void setUserSalt(String userSalt) {
+        this.userSalt = userSalt;
+    }
 
     @Override
     public String toString() {
