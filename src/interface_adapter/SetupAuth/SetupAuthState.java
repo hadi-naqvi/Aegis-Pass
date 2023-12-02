@@ -1,6 +1,7 @@
 package interface_adapter.SetupAuth;
 
 public class SetupAuthState {
+    private String username = "";
     private String password = "";
     private String passwordError = null;
     private String repeatedPassword = "";
@@ -10,6 +11,7 @@ public class SetupAuthState {
      * @param copy A copy of the SetupAuth state
      */
     public SetupAuthState(SetupAuthState copy) {
+        this.username = copy.username;
         this.password = copy.password;
         this.passwordError = copy.passwordError;
         this.repeatedPassword = copy.repeatedPassword;
@@ -20,6 +22,14 @@ public class SetupAuthState {
      */
     public SetupAuthState() {
 
+    }
+
+    /**
+     * Getter method for the username
+     * @return The username
+     */
+    public String getUsername() {
+        return this.username;
     }
 
     /**
@@ -68,6 +78,14 @@ public class SetupAuthState {
      */
     public void setRepeatedPassword(String password) {
         this.repeatedPassword = password;
+    }
+
+    /**
+     * Setter method for the username
+     * @param newUsername The new username to be set
+     */
+    public void setUsername(String newUsername) {
+        this.username = newUsername;
     }
 
     /**

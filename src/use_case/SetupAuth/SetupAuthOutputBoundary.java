@@ -12,4 +12,9 @@ public interface SetupAuthOutputBoundary {
      * @param error The error message which explains why SetupAuth failed
      */
     void prepareFailView(String error);
+
+    /**
+     * Method which updates the view manager model to display Authentication view if user already has account
+     */
+    void switchViews();
 }

@@ -1,129 +1,79 @@
 package data_access;
 
-import entity.AuthKey;
-import entity.AuthKeyFactory;
-import entity.CommonAuthKey;
+import entity.User;
+import entity.UserFactory;
+import org.mindrot.jbcrypt.BCrypt;
 import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.SetupAuth.SetupAuthDataAccessInterface;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.security.SecureRandom;
-import java.io.*;
+import java.sql.*;
 
 public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
-    private final File csvFile;
-
-    private AuthKey authKey;
-    private final String salt;
-
-    private AuthKeyFactory authKeyFactory;
-
+    private final UserFactory USERFACTORY;
+    private final Connection CONNECTION;
+    private final String PEPPER;
 
     /**
      * Constructor for FileAuthDataAccessObject
-     * @param csvPath name of csv file in directory
-     * @throws IOException input/output exception
+     * @param userFactory The factory object which will create new user entities
+     * @throws SQLException An exception thrown by SQL database connection
      */
-    public FileAuthDataAccessObject(String csvPath, AuthKeyFactory authKeyFactory) throws IOException {
-        this.csvFile = new File(csvPath);
-        this.authKeyFactory = authKeyFactory;
-
-        if (this.csvFile.length() == 0) {
-            this.authKey = null;
-            this.salt = generateSalt();
-        } else {
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-                String header = reader.readLine();
-                String[] col = header.split(":");
-                this.salt = String.valueOf(col[0]);
-                String authKey = String.valueOf(col[1]);
-                this.authKey = authKeyFactory.create(authKey);
-            }
-        }
-
-
-    }
-
-
-    /**
-     * Method which gets the AuthKey for the password database
-     */
-    public AuthKey getAuthKey() {
-        return this.authKey;
+    public FileAuthDataAccessObject(UserFactory userFactory, String dbURL, String dbUsername, String dbPassword, String pepper) throws SQLException {
+        this.USERFACTORY = userFactory;
+        this.CONNECTION = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+        this.PEPPER = pepper;
     }
 
     /**
-     * Method which saves the AuthKey for the password database
-     * @param authKey The authentication key
+     * Method which saves the user's username and password for the password database
+     * @param user The user which has their corresponding username and password
      */
-    @Override
-    public void save(CommonAuthKey authKey) {
-        this.authKey = authKey;
-        BufferedWriter writer;
+    public void save(User user) {
         try {
-            writer = new BufferedWriter(new FileWriter(csvFile));
-            String hashedSaltedKey = "";
-            try {
-                hashedSaltedKey = hashPassword(this.salt, authKey.getKey());
-            }
-            catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            writer.write(this.salt + ":" + hashedSaltedKey);
-            writer.newLine();
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            String query = "INSERT INTO users (username, hashed_password, salt_for_kdf) VALUES (?, ? ?)";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, BCrypt.hashpw(user.getPassword() + this.PEPPER, BCrypt.gensalt(15)));
+            statement.setString(3, generateRandomSalt());
+            int rowsAffected = statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * Method which writes the AuthKey to the password database
+     * Method which check's if the inputted username already exists
+     * @param username The inputted username that needs to be checked
      */
-    private void save() {
-        BufferedWriter writer;
+    public boolean existsByName(String username) {
         try {
-
-            writer = new BufferedWriter(new FileWriter(csvFile));
-            String line = String.format("%s", authKey.getKey());
-            writer.write(line);
-            writer.newLine();
-
-            writer.close();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            String query = "SELECT * FROM users WHERE username = ?";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
-    private static String generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] saltBytes = new byte[16];
-        random.nextBytes(saltBytes);
-        return bytesToHex(saltBytes);
-    }
+    /**
+     * Method which generates a new random 128-bit salt
+     * @return The random 128-bit salt in a hexadecimal string
+     */
+    private static String generateRandomSalt() {
+        byte[] salt = new byte[16]; // 16 bytes is a common size for salts
+        new SecureRandom().nextBytes(salt);
 
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : bytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        return hexString.toString();
-    }
-
-    public static String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
-        String saltedPassword = salt + password;
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashedBytes = md.digest(saltedPassword.getBytes());
-
-        // Convert bytes to hexadecimal representation
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashedBytes) {
-            sb.append(String.format("%02x", b));
+        StringBuilder hexStringBuilder = new StringBuilder(2 * salt.length);
+        for (byte b : salt) {
+            hexStringBuilder.append(String.format("%02x", b));
         }
 
-        return sb.toString();
+        return hexStringBuilder.toString();
     }
-
 }

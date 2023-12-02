@@ -5,4 +5,9 @@ public interface SetupAuthInputBoundary {
      * @param setupAuthInputData The input data for the use case interactor
      */
     void execute(SetupAuthInputData setupAuthInputData);
+
+    /**
+     * Method which contains logic for switching views which is triggered if user already has an account
+     */
+    void switchViews();
 }

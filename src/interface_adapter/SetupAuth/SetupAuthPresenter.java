@@ -8,7 +8,7 @@ import use_case.SetupAuth.SetupAuthOutputData;
 public class SetupAuthPresenter implements SetupAuthOutputBoundary {
     private final SetupAuthViewModel setupAuthViewModel;
     private final AuthenticationViewModel authenticationViewModel;
-    private ViewManagerModel viewManagerModel;
+    private final ViewManagerModel viewManagerModel;
 
     /**
      * Constructor method for the presenter for the SetupAut use case
@@ -43,5 +43,13 @@ public class SetupAuthPresenter implements SetupAuthOutputBoundary {
         SetupAuthState setupAuthState = setupAuthViewModel.getState();
         setupAuthState.setPasswordError(error);
         setupAuthViewModel.firePropertyChanged();
+    }
+
+    /**
+     * Method which updates the view manager model to display Authentication view if user already has account
+     */
+    public void switchViews(){
+        viewManagerModel.setActiveView(authenticationViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

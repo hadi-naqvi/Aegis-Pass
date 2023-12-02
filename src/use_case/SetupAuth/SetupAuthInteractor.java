@@ -1,8 +1,10 @@
 package use_case.SetupAuth;
 
-import entity.CommonAuthKey;
+import entity.CommonUser;
+import entity.UserFactory;
 
 public class SetupAuthInteractor implements SetupAuthInputBoundary {
+    private final UserFactory userFactory;
     private final SetupAuthDataAccessInterface authDataAccessObject;
     private final SetupAuthOutputBoundary setupAuthPresenter;
 
@@ -11,7 +13,8 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      * @param authDataAccessInterface The data access object for the auth key
      * @param setupAuthPresenter The presenter object for the SetupAuth use case (has the success/fail views)
      */
-    public SetupAuthInteractor(SetupAuthDataAccessInterface authDataAccessInterface, SetupAuthOutputBoundary setupAuthPresenter) {
+    public SetupAuthInteractor(UserFactory userFactory, SetupAuthDataAccessInterface authDataAccessInterface, SetupAuthOutputBoundary setupAuthPresenter) {
+        this.userFactory = userFactory;
         this.authDataAccessObject = authDataAccessInterface;
         this.setupAuthPresenter = setupAuthPresenter;
     }
@@ -22,21 +25,29 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      */
     @Override
     public void execute(SetupAuthInputData setupAuthInputData) {
-        System.out.println(setupAuthInputData.getPassword());
-        System.out.println(setupAuthInputData.getRepeatPassword());
-        if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
+        if (authDataAccessObject.existsByName(setupAuthInputData.getUsername())){
+            setupAuthPresenter.prepareFailView("The username " + setupAuthInputData.getUsername() + " has been taken");
+        }
+        else if (!setupAuthInputData.getPassword().equals(setupAuthInputData.getRepeatPassword())) {
             setupAuthPresenter.prepareFailView("Passwords do not match.");
         }
         else if (setupAuthInputData.getPassword().isEmpty()) {
             setupAuthPresenter.prepareFailView("You have not entered a password.");
         }
         else {
-            CommonAuthKey authKey = new CommonAuthKey(setupAuthInputData.getPassword());
-            System.out.println("test");
-            authDataAccessObject.save(authKey);
+            CommonUser user = new CommonUser(setupAuthInputData.getUsername(), setupAuthInputData.getPassword());
+            authDataAccessObject.save(user);
 
             SetupAuthOutputData setupAuthOutputData = new SetupAuthOutputData(true);
             setupAuthPresenter.prepareSuccessView(setupAuthOutputData);
         }
+    }
+
+
+    /**
+     * Method which contains logic for switching views which is triggered if user already has an account
+     */
+    public void switchViews(){
+        setupAuthPresenter.switchViews();
     }
 }

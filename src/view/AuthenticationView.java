@@ -33,13 +33,13 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
         this.authenticationController = controller;
         this.authenticationViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel(authenticationViewModel.TITLE_LABEL);
+        JLabel title = new JLabel(AuthenticationViewModel.TITLE_LABEL);
 
         JPanel passwordInfo = new JPanel();
-        passwordInfo.add(new JLabel(authenticationViewModel.PASSWORD_LABEL));
+        passwordInfo.add(new JLabel(AuthenticationViewModel.PASSWORD_LABEL));
         passwordInfo.add(passwordInputField);
 
-        confirmButton = new JButton(authenticationViewModel.CONFIRM_BUTTON_LABEL);
+        confirmButton = new JButton(AuthenticationViewModel.CONFIRM_BUTTON_LABEL);
 
         confirmButton.addActionListener(
                 new ActionListener() {
