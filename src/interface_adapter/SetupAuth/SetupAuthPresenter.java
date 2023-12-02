@@ -45,6 +45,9 @@ public class SetupAuthPresenter implements SetupAuthOutputBoundary {
         setupAuthViewModel.firePropertyChanged();
     }
 
+    /**
+     * Method which updates the view manager model to display Authentication view if user already has account
+     */
     public void switchViews(){
         viewManagerModel.setActiveView(authenticationViewModel.getViewName());
         viewManagerModel.firePropertyChanged();

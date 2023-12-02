@@ -6,5 +6,8 @@ public interface SetupAuthInputBoundary {
      */
     void execute(SetupAuthInputData setupAuthInputData);
 
+    /**
+     * Method which contains logic for switching views which is triggered if user already has an account
+     */
     void switchViews();
 }

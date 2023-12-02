@@ -12,4 +12,6 @@ public interface AuthenticationOutputBoundary {
      * @param error The error message which explains why Authentication failed
      */
     void prepareFailView(String error);
+
+    void switchViews();
 }

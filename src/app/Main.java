@@ -55,7 +55,8 @@ public class Main {
                 authDataAccessObject);
         views.add(setupAuthView, setupAuthView.viewName);
 
-        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel, authenticationViewModel, dashboardViewModel,
+        AuthenticationView authenticationView = AuthenticationUseCaseFactory.create(viewManagerModel,
+                authenticationViewModel, dashboardViewModel, setupAuthViewModel,
                 authDataAccessObject, dashDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 

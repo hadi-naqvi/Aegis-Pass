@@ -25,6 +25,9 @@ public class SetupAuthController {
         setupAuthInteractor.execute(setupAuthInputData);
     }
 
+    /**
+     * Method for switching to LogIn view
+     */
     public void switchViews(){
         setupAuthInteractor.switchViews();
     }

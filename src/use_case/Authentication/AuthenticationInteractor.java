@@ -73,4 +73,8 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
 
         return Hex.toHexString(key);
     }
+
+    public void switchViews(){
+        authenticationPresenter.switchViews();
+    }
 }
