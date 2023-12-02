@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface AccountInfoFactory {
@@ -16,6 +17,6 @@ public interface AccountInfoFactory {
      * @return A new AccountInfo object that stores the account details
      */
     public AccountInfo create(String title, String username, String password, String secretKey,
-                              String url, String iconURL, Date date, String notes);
+                              String url, String iconURL, LocalDateTime date, String notes);
     public AccountInfo create();
 }

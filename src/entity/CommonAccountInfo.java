@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CommonAccountInfo implements AccountInfo {
@@ -9,7 +10,7 @@ public class CommonAccountInfo implements AccountInfo {
     private String secretKey;
     private String url;
     private String iconURL;
-    private Date date;
+    private LocalDateTime date;
     private String notes;
 
     /**
@@ -24,7 +25,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @param notes The notes for the account
      */
     public CommonAccountInfo(String title, String username, String password, String secretKey,
-                             String url, String iconURL, Date date, String notes) {
+                             String url, String iconURL, LocalDateTime date, String notes) {
         this.title = title;
         this.username = username;
         this.password = password;
@@ -168,7 +169,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @return The date of the last update.
      */
     @Override
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return this.date;
     }
 
@@ -178,7 +179,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @param date The new date of the last update.
      */
     @Override
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

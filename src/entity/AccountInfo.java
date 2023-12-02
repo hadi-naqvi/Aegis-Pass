@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface AccountInfo {
@@ -79,13 +80,13 @@ public interface AccountInfo {
      * Getter method for the date when the account information was last updated.
      * @return The date of the last update.
      */
-    public Date getDate();
+    public LocalDateTime getDate();
 
     /**
      * Setter method for the date when the account information was last updated.
      * @param date The new date of the last update.
      */
-    public void setDate(Date date);
+    public void setDate(LocalDateTime date);
 
     /**
      * Getter method for any additional notes or information related to the account.

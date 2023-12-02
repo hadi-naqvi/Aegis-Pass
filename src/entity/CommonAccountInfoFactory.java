@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CommonAccountInfoFactory implements AccountInfoFactory {
@@ -18,7 +19,7 @@ public class CommonAccountInfoFactory implements AccountInfoFactory {
      */
     @Override
     public AccountInfo create(String title, String username, String password, String secretKey, String url,
-                              String iconURL, Date date, String notes) {
+                              String iconURL, LocalDateTime date, String notes) {
         return new CommonAccountInfo(title, username, password, secretKey, url, iconURL, date, notes);
     }
 
