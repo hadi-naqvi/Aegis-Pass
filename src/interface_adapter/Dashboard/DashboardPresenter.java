@@ -27,7 +27,7 @@ public class DashboardPresenter implements DashboardOutputBoundary {
     public void prepareSuccessView(DashboardOutputData dashboardOutputData) {
         DashboardState dashboardState = dashboardViewModel.getState();
         dashboardState.setAccounts(dashboardOutputData.getAccounts());
-        this.viewManagerModel.firePropertyChanged();
+        dashboardViewModel.setState(dashboardState);
     }
 
     /**

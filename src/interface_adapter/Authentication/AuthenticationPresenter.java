@@ -37,6 +37,7 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
 
         this.viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+        this.dashboardViewModel.firePropertyChanged();
     }
 
     /**

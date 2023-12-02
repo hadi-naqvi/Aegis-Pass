@@ -4,14 +4,14 @@ import use_case.Dashboard.DashboardInputBoundary;
 import use_case.Dashboard.DashboardInputData;
 
 public class DashboardController {
-    public final DashboardInputBoundary authenticationInteractor;
+    public final DashboardInputBoundary dashboardInteractor;
 
     /**
      * Constructor method for the controller for the authentication use case
      * @param dashboardInteractor The use case interactor object for the displayDash use case
      */
     public DashboardController(DashboardInputBoundary dashboardInteractor) {
-        this.authenticationInteractor = dashboardInteractor;
+        this.dashboardInteractor = dashboardInteractor;
     }
 
     /**
@@ -20,6 +20,6 @@ public class DashboardController {
      */
     public void execute(int userID) {
         DashboardInputData dashboardInputData = new DashboardInputData(userID);
-        authenticationInteractor.execute(dashboardInputData);
+        dashboardInteractor.execute(dashboardInputData);
     }
 }

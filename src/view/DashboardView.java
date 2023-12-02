@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -19,16 +18,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final DashboardController dashboardController;
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
-    private DefaultTableModel defaultTableModel;
+    private DefaultTableModel acccountsTableModel;
     private JTable accounts;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController){
+    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.dashboardViewModel.addPropertyChangeListener(this);
-
-
-
     }
 
     /**
@@ -50,9 +46,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     public void propertyChange(PropertyChangeEvent evt) {
         Object state = evt.getNewValue();
         if (state instanceof DashboardState) {
+            this.dashboardController.execute(this.dashboardViewModel.getState().getUserID());
             DashboardState dashboardState = (DashboardState) evt.getNewValue();
             for (AccountInfo account: dashboardState.getAccounts() ){
-                defaultTableModel.addRow(new Object[]{account.getIconURL(), account.getTitle(), account.getURL(), account.getDate()});
+                acccountsTableModel.addRow(new Object[]{account.getIconURL(), account.getTitle(), account.getURL(), account.getDate()});
             }
         }
 
