@@ -46,7 +46,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     public void propertyChange(PropertyChangeEvent evt) {
         Object state = evt.getNewValue();
         if (state instanceof DashboardState) {
-            this.dashboardController.execute(this.dashboardViewModel.getState().getUserID());
+            this.dashboardController.execute();
             DashboardState dashboardState = (DashboardState) evt.getNewValue();
             for (AccountInfo account: dashboardState.getAccounts() ){
                 acccountsTableModel.addRow(new Object[]{account.getIconURL(), account.getTitle(), account.getURL(), account.getDate()});
