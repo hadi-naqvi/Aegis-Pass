@@ -1,8 +1,10 @@
 package use_case.SetupAuth;
 
 import entity.CommonUser;
+import entity.UserFactory;
 
 public class SetupAuthInteractor implements SetupAuthInputBoundary {
+    private final UserFactory userFactory;
     private final SetupAuthDataAccessInterface authDataAccessObject;
     private final SetupAuthOutputBoundary setupAuthPresenter;
 
@@ -11,7 +13,8 @@ public class SetupAuthInteractor implements SetupAuthInputBoundary {
      * @param authDataAccessInterface The data access object for the auth key
      * @param setupAuthPresenter The presenter object for the SetupAuth use case (has the success/fail views)
      */
-    public SetupAuthInteractor(SetupAuthDataAccessInterface authDataAccessInterface, SetupAuthOutputBoundary setupAuthPresenter) {
+    public SetupAuthInteractor(UserFactory userFactory, SetupAuthDataAccessInterface authDataAccessInterface, SetupAuthOutputBoundary setupAuthPresenter) {
+        this.userFactory = userFactory;
         this.authDataAccessObject = authDataAccessInterface;
         this.setupAuthPresenter = setupAuthPresenter;
     }
