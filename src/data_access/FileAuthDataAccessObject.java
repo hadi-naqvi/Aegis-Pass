@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.SetupAuth.SetupAuthDataAccessInterface;
 
+import java.security.SecureRandom;
 import java.sql.*;
 
 public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
@@ -30,10 +31,11 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
      */
     public void save(User user) {
         try {
-            String query = "INSERT INTO users (username, hashed_password) VALUES (?, ?)";
+            String query = "INSERT INTO users (username, hashed_password, salt_for_kdf) VALUES (?, ? ?)";
             PreparedStatement statement = CONNECTION.prepareStatement(query);
             statement.setString(1, user.getUsername());
             statement.setString(2, BCrypt.hashpw(user.getPassword() + this.PEPPER, BCrypt.gensalt(15)));
+            statement.setString(3, generateRandomSalt());
             int rowsAffected = statement.executeUpdate();
         }
         catch (SQLException e) {
@@ -96,10 +98,25 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
             if (resultSet.next()) {
                 return resultSet.getInt("user_id");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    /**
+     * Method which generates a new random 128-bit salt
+     * @return The random 128-bit salt in a hexadecimal string
+     */
+    private static String generateRandomSalt() {
+        byte[] salt = new byte[16]; // 16 bytes is a common size for salts
+        new SecureRandom().nextBytes(salt);
+
+        StringBuilder hexStringBuilder = new StringBuilder(2 * salt.length);
+        for (byte b : salt) {
+            hexStringBuilder.append(String.format("%02x", b));
+        }
+
+        return hexStringBuilder.toString();
     }
 }
