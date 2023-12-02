@@ -22,8 +22,7 @@ public class DashboardInteractor implements DashboardInputBoundary {
     @Override
     public void execute(DashboardInputData dashboardInputData) {
         userDataAccessObject.setCurrentUserID(dashboardInputData.getUserID());
-        userDataAccessObject.getAccounts();
-        DashboardOutputData dashboardOutputData = new DashboardOutputData(true);
+        DashboardOutputData dashboardOutputData = new DashboardOutputData(true, userDataAccessObject.getAccounts());
         dashboardPresenter.prepareSuccessView(dashboardOutputData);
         }
     }
