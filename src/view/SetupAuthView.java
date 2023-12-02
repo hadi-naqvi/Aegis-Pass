@@ -19,7 +19,7 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
     private JTextField usernameInputField;
     private JPasswordField passwordInputField;
     private JPasswordField repeatPasswordInputField;
-    private JButton confirmButton;
+    private JButton btnConfirm;
     private JPanel main;
     private JButton btnGoLogin;
     private final SetupAuthController setupAuthController;
@@ -34,11 +34,11 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
         this.setupAuthController = controller;
         this.setupAuthViewModel.addPropertyChangeListener(this);
 
-        confirmButton.addActionListener(
+        btnConfirm.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(confirmButton)) {
+                        if (e.getSource().equals(btnConfirm)) {
                             SetupAuthState currentState = setupAuthViewModel.getState();
                             setupAuthController.execute(
                                     currentState.getUsername(),
