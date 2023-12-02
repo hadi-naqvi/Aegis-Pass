@@ -14,4 +14,16 @@ public interface DashboardDataAccessInterface {
 
     void setCurrentUserID(int userID);
     int getCurrentUserID();
+
+    /**
+     * Getter method for the encryption key
+     * @return The encryption key
+     */
+    String getEncryptionKey();
+
+    /**
+     * Setter method for the encryption key
+     * @param key
+     */
+    void setEncryptionKey(String key);
 }

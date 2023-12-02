@@ -16,10 +16,9 @@ public class DashboardController {
 
     /**
      * Method which is executed/triggered when the user enters the dashbaord view
-     * @param userID The currently signed in user's ID
      */
-    public void execute(int userID) {
-        DashboardInputData dashboardInputData = new DashboardInputData(userID);
+    public void execute() {
+        DashboardInputData dashboardInputData = new DashboardInputData();
         dashboardInteractor.execute(dashboardInputData);
     }
 }
