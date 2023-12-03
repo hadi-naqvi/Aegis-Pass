@@ -1,5 +1,6 @@
 package use_case.Authentication;
 
+
 import use_case.SetupAuth.SetupAuthOutputData;
 
 public class AuthenticationInteractor implements AuthenticationInputBoundary {
@@ -23,11 +24,19 @@ public class AuthenticationInteractor implements AuthenticationInputBoundary {
      */
     @Override
     public void execute(AuthenticationInputData authenticationInputData) {
-//        if (!(userDataAccessObject.getAuthKey().getKey().equals(authenticationInputData.getPassword()))) {
-//            authenticationPresenter.prepareFailView("Passwords is incorrect.");
-//        }
-//        else {
-//            authenticationPresenter.prepareSuccessView(new AuthenticationOutputData(true));
-//        }
+        if (!(userDataAccessObject.validate(authenticationInputData.getUsername(),
+                authenticationInputData.getPassword()))) {
+            authenticationPresenter.prepareFailView("Passwords is incorrect.");
+        }
+        else {
+            AuthenticationOutputData authenticationOutputData = new AuthenticationOutputData(true,
+                    userDataAccessObject.getUserID(authenticationInputData.getUsername()),
+                    userDataAccessObject.getUserSalt(authenticationInputData.getUsername()));
+            authenticationPresenter.prepareSuccessView(authenticationOutputData);
+        }
+    }
+
+    public void switchViews(){
+        authenticationPresenter.switchViews();
     }
 }

@@ -4,6 +4,7 @@ import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationPresenter;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.Authentication.AuthenticationInputBoundary;
@@ -23,10 +24,14 @@ public class AuthenticationUseCaseFactory {
      * @return A new Authentication view
      */
     public static AuthenticationView create(
-            ViewManagerModel viewManagerModel, AuthenticationViewModel authenticationViewModel, DashboardViewModel dashboardViewModel, AuthenticationDataAccessInterface userDataAccessObject){
+            ViewManagerModel viewManagerModel,
+            AuthenticationViewModel authenticationViewModel,
+            SetupAuthViewModel setupAuthViewModel,
+            DashboardViewModel dashboardViewModel,
+            AuthenticationDataAccessInterface userDataAccessObject){
 
         try{
-            AuthenticationController authenticationController = createAuthenticationUseCase(viewManagerModel, authenticationViewModel, dashboardViewModel, userDataAccessObject);
+            AuthenticationController authenticationController = createAuthenticationUseCase(viewManagerModel, authenticationViewModel, setupAuthViewModel, dashboardViewModel, userDataAccessObject);
             return new AuthenticationView(authenticationViewModel, authenticationController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
@@ -43,9 +48,15 @@ public class AuthenticationUseCaseFactory {
      * @param userDataAccessObject The data access object for authentication/setupAuth
      * @return A new controller for the Authentication use case
      */
-    private static AuthenticationController createAuthenticationUseCase(ViewManagerModel viewManagerModel, AuthenticationViewModel authenticationViewModel, DashboardViewModel dashboardViewModel,
-                                                              AuthenticationDataAccessInterface userDataAccessObject) throws IOException{
-        AuthenticationOutputBoundary authenticationPresenter = new AuthenticationPresenter(viewManagerModel, authenticationViewModel, dashboardViewModel);
+    private static AuthenticationController createAuthenticationUseCase(ViewManagerModel viewManagerModel,
+                                                                        AuthenticationViewModel authenticationViewModel,
+                                                                        SetupAuthViewModel setupAuthViewModel,
+                                                                        DashboardViewModel dashboardViewModel,
+                                                                        AuthenticationDataAccessInterface userDataAccessObject) throws IOException{
+        AuthenticationOutputBoundary authenticationPresenter = new AuthenticationPresenter(viewManagerModel,
+                        authenticationViewModel,
+                dashboardViewModel,
+                setupAuthViewModel);
 
         AuthenticationInputBoundary AuthenticationUseCaseInteractor = new AuthenticationInteractor(
                 userDataAccessObject, authenticationPresenter);

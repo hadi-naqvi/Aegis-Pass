@@ -7,9 +7,9 @@ import java.beans.PropertyChangeSupport;
 
 public class AuthenticationViewModel extends ViewModel {
 
-    public static final String TITLE_LABEL = "Aegis Pass Authentication";
-    public static final String PASSWORD_LABEL = "Enter your password:";
-    public static final String CONFIRM_BUTTON_LABEL = "Confirm";
+//    public static final String TITLE_LABEL = "Aegis Pass Authentication";
+//    public static final String PASSWORD_LABEL = "Enter your password:";
+//    public static final String CONFIRM_BUTTON_LABEL = "Confirm";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private AuthenticationState state = new AuthenticationState();
 

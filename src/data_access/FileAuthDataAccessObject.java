@@ -62,6 +62,70 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
     }
 
     /**
+     * Method which validates the user's password with their corresponding username
+     * @param username The user's inputted username
+     * @param password The user's inputted password
+     * @return whether the password is correct
+     */
+    public boolean validate(String username, String password) {
+        try {
+            String query = "SELECT hashed_password FROM users WHERE username = ?";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return BCrypt.checkpw(password + this.PEPPER, resultSet.getString("hashed_password"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Method which returns a username's corresponding user ID in the database
+     * @param username The username
+     * @return The user's corresponding user ID
+     */
+    @Override
+    public int getUserID(String username) {
+        try {
+            String query = "SELECT user_id FROM users WHERE username = ?";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("user_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * Method which returns a username's corresponding kdf salt in the database
+     * @param username The username
+     * @return The user's corresponding kdf salt
+     */
+    @Override
+    public String getUserSalt(String username) {
+        try {
+            String query = "SELECT salt_for_kdf FROM users WHERE username = ?";
+            PreparedStatement statement = CONNECTION.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("salt_for_kdf");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
      * Method which generates a new random 128-bit salt
      * @return The random 128-bit salt in a hexadecimal string
      */
