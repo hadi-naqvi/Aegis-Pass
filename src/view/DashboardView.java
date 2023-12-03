@@ -69,6 +69,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         signOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Removes the passwords in the UI/view model when logging out to prevent this sensitive data leaking
+                DashboardState state = dashboardViewModel.getState();
+                state.setAccounts(null);
+                dashboardViewModel.setState(state);
+                dashboardViewModel.firePropertyChanged();
+
+                // Logs the user out
                 logOutController.execute();
             }
         });
