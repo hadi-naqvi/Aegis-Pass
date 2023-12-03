@@ -1,13 +1,256 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.DashboardView">
-  <grid id="27dc6" row-count="1" column-count="1" layout-manager="GridLayoutManager">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="main" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
-      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+      <xy x="20" y="20" width="1280" height="720"/>
     </constraints>
-    <properties/>
+    <properties>
+      <maximumSize width="1280" height="720"/>
+      <minimumSize width="1280" height="720"/>
+      <preferredSize width="1280" height="720"/>
+      <requestFocusEnabled value="false"/>
+    </properties>
     <border type="none"/>
-    <children/>
+    <children>
+      <grid id="367c" binding="leftPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="West"/>
+        <properties>
+          <background color="-13749184"/>
+          <minimumSize width="200" height="215"/>
+        </properties>
+        <border type="empty">
+          <size top="10" left="10" bottom="10" right="10"/>
+        </border>
+        <children>
+          <grid id="2bd8f" binding="buttonPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints border-constraint="Center"/>
+            <properties>
+              <background color="-13749184"/>
+              <maximumSize width="100" height="100"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="54402" class="javax.swing.JButton" binding="generatePasswordButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-4234902"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="Generate Password"/>
+                </properties>
+              </component>
+              <component id="5d5e2" class="javax.swing.JButton" binding="generateEmailButton" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-3111056"/>
+                  <text value="Generate Email"/>
+                </properties>
+              </component>
+              <component id="f62b2" class="javax.swing.JButton" binding="haveibeenpwnedButton" default-binding="true">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1324149"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="Haveibeenpwned?"/>
+                </properties>
+              </component>
+              <component id="ee7db" class="javax.swing.JButton" binding="scanFileURLButton" default-binding="true">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-6046068"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <text value="Scan File/URL"/>
+                </properties>
+              </component>
+              <component id="e926b" class="javax.swing.JButton" binding="signOutButton" default-binding="true">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-4944211"/>
+                  <text value="Sign Out"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="f6bb2" class="javax.swing.JLabel" binding="logo">
+            <constraints border-constraint="North"/>
+            <properties>
+              <text value="Label"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="83280" binding="rightPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="ddefb" binding="topBar" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints border-constraint="North"/>
+            <properties>
+              <background color="-11774358"/>
+            </properties>
+            <border type="empty">
+              <size top="10" left="10" bottom="10" right="10"/>
+            </border>
+            <children>
+              <component id="38c87" class="javax.swing.JButton" binding="createButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Create"/>
+                </properties>
+              </component>
+              <component id="3ce33" class="javax.swing.JButton" binding="editViewButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Edit/View"/>
+                </properties>
+              </component>
+              <component id="9b1e4" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Delete"/>
+                </properties>
+              </component>
+              <component id="931dd" class="javax.swing.JButton" binding="copyUButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Copy U"/>
+                </properties>
+              </component>
+              <component id="cd25c" class="javax.swing.JButton" binding="copyPButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Copy P"/>
+                </properties>
+              </component>
+              <component id="12e73" class="javax.swing.JButton" binding="copyUPButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Copy UP"/>
+                </properties>
+              </component>
+              <component id="b6542" class="javax.swing.JButton" binding="autotypeUAndPButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Autotype U and P"/>
+                </properties>
+              </component>
+              <component id="82c4c" class="javax.swing.JButton" binding="autotypePButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Autotype P"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="b9a1" binding="cardPanel" layout-manager="GridBagLayout">
+            <constraints border-constraint="South"/>
+            <properties>
+              <background color="-11774358"/>
+            </properties>
+            <border type="empty">
+              <size top="10" left="10" bottom="10" right="10"/>
+            </border>
+            <children>
+              <component id="41534" class="javax.swing.JLabel" binding="Username">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="e7d28" class="javax.swing.JLabel" binding="Password">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="c1552" class="javax.swing.JLabel" binding="URL">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="c24fe" class="javax.swing.JLabel" binding="Notes">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="c4fbf" class="javax.swing.JLabel" binding="Date">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <grid id="a366f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="862c2" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="2e32f" class="javax.swing.JLabel" binding="Title">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="Label"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="f6bde" class="javax.swing.JTable" binding="table">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <inheritsPopupMenu value="false"/>
+              <maximumSize width="2147483647" height="2147483647"/>
+              <minimumSize width="30" height="32"/>
+            </properties>
+          </component>
+          <component id="6136b" class="javax.swing.JScrollBar" binding="scrollbar">
+            <constraints border-constraint="East"/>
+            <properties/>
+          </component>
+        </children>
+      </grid>
+    </children>
   </grid>
 </form>

@@ -12,6 +12,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -118,16 +119,15 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface {
      */
     private static String encrypt(String plaintext, String key) {
         try {
-            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), ALGORITHM);
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-            byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+            byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes());
             return byteArrayToHexString(encryptedBytes);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**
@@ -138,16 +138,16 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface {
      */
     private static String decrypt(String ciphertext, String key) {
         try {
-            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), ALGORITHM);
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-
-            byte[] decryptedBytes = cipher.doFinal(hexStringToByteArray(ciphertext));
-            return new String(decryptedBytes, StandardCharsets.UTF_8);
+            byte[] decodedBytes = Base64.getDecoder().decode(ciphertext);
+            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+            return new String(decryptedBytes, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**

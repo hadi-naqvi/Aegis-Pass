@@ -25,6 +25,8 @@ public class Main {
         //The main application window
         JFrame application = new JFrame("");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setSize(1280, 720);
+        application.setResizable(false);
 
         CardLayout cardLayout = new CardLayout();
 
