@@ -5,6 +5,8 @@ import interface_adapter.SetupAuth.SetupAuthState;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,114 +63,74 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                 }
         );
 
+        usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-        usernameInputField.addKeyListener(
-                new KeyListener() {
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been typed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyTyped(KeyEvent e) {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
 
-                    }
+            private void updateState() {
+                SetupAuthState currentState = setupAuthViewModel.getState();
+                currentState.setUsername(usernameInputField.getText());
+                setupAuthViewModel.setState(currentState);
+            }
+        });
 
-                    /**
-                     * Invoked when a key has been pressed. Updates textfield.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        SetupAuthState currentState = setupAuthViewModel.getState();
-                        currentState.setUsername(usernameInputField.getText());
-                        setupAuthViewModel.setState(currentState);
-                    }
+        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been released. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                }
-        );
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-        passwordInputField.addKeyListener(
-                new KeyListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
 
-                    /**
-                     * Invoked when a key has been typed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyTyped(KeyEvent e) {
+            private void updateState() {
+                SetupAuthState currentState = setupAuthViewModel.getState();
+                currentState.setPassword(passwordInputField.getText());
+                setupAuthViewModel.setState(currentState);
+            }
+        });
 
-                    }
+        repeatPasswordInputField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been pressed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        SetupAuthState currentState = setupAuthViewModel.getState();
-                        currentState.setPassword(passwordInputField.getText());
-                        setupAuthViewModel.setState(currentState);
-                    }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been released. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                }
-        );
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
 
-        repeatPasswordInputField.addKeyListener(
-                new KeyListener() {
-
-                    /**
-                     * Invoked when a key has been typed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-
-                    }
-
-                    /**
-                     * Invoked when a key has been pressed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        SetupAuthState currentState = setupAuthViewModel.getState();
-                        currentState.setRepeatedPassword(repeatPasswordInputField.getText());
-                        setupAuthViewModel.setState(currentState);
-                    }
-
-                    /**
-                     * Invoked when a key has been released. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                }
-        );
+            private void updateState() {
+                SetupAuthState currentState = setupAuthViewModel.getState();
+                currentState.setRepeatedPassword(repeatPasswordInputField.getText());
+                setupAuthViewModel.setState(currentState);
+            }
+        });
 
         btnGoLogin.setBorderPainted(false);
         btnGoLogin.setFocusPainted(false);

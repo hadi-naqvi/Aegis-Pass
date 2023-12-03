@@ -47,8 +47,15 @@ public class Main {
         FileDashDataAccessObject dashDataAccessObject;
 
         try {
-            authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%", "htBEnpF4W10ebPa/kid92loeO2dUeHEZi9DYA8vJw4E=");
-            dashDataAccessObject = new FileDashDataAccessObject(new CommonAccountInfoFactory(), "jdbc:mysql://localhost:3306/aegis_pass", "admin", "Password1234%");
+            authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(),
+                    System.getenv("DB_URL"),
+                    System.getenv("DB_USERNAME"),
+                    System.getenv("DB_PASSWORD"),
+                    System.getenv("DB_PEPPER"));
+            dashDataAccessObject = new FileDashDataAccessObject(new CommonAccountInfoFactory(),
+                    System.getenv("DB_URL"),
+                    System.getenv("DB_USERNAME"),
+                    System.getenv("DB_PASSWORD"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

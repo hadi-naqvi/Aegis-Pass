@@ -3,8 +3,11 @@ package view;
 import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.SetupAuth.SetupAuthState;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,76 +63,51 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                 }
         );
 
-        tfUsername.addKeyListener(
-                new KeyListener() {
+        tfUsername.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been typed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyTyped(KeyEvent e) {
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
 
-                    /**
-                     * Invoked when a key has been pressed. Updates textfield.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        AuthenticationState currentState = authenticationViewModel.getState();
-                        currentState.setUsername(tfUsername.getText());
-                        authenticationViewModel.setState(currentState);
-                    }
+            private void updateState() {
+                AuthenticationState currentState = authenticationViewModel.getState();
+                currentState.setUsername(tfUsername.getText());
+                authenticationViewModel.setState(currentState);
+            }
+        });
 
-                    /**
-                     * Invoked when a key has been released. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                }
-        );
+        pfPassword.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-        pfPassword.addKeyListener(
-                new KeyListener() {
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
 
-                    /**
-                     * Invoked when a key has been typed. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                    }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
 
-                    /**
-                     * Invoked when a key has been pressed. Updates text field and authenticationState.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        AuthenticationState currentState = authenticationViewModel.getState();
-                        currentState.setPassword(pfPassword.getText());
-                        authenticationViewModel.setState(currentState);
-                    }
-
-                    /**
-                     * Invoked when a key has been released. Empty for now.
-                     *
-                     * @param e the event to be processed
-                     */
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                }
-        );
+            private void updateState() {
+                AuthenticationState currentState = authenticationViewModel.getState();
+                currentState.setPassword(pfPassword.getText());
+                authenticationViewModel.setState(currentState);
+            }
+        });
 
         btnGoSignup.setBorderPainted(false);
         btnGoSignup.setFocusPainted(false);
