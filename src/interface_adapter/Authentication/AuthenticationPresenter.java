@@ -1,7 +1,7 @@
 package interface_adapter.Authentication;
 
-import interface_adapter.DisplayDash.DashboardState;
-import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.Dashboard.DashboardState;
+import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Authentication.AuthenticationOutputBoundary;
@@ -36,12 +36,11 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
     @Override
     public void prepareSuccessView(AuthenticationOutputData authenticationOutputData) {
         DashboardState dashboardState = dashboardViewModel.getState();
-//        dashboardState.setUserID(authenticationOutputData.getUserID());
-//        dashboardState.setUserSalt(authenticationOutputData.getUserSalt());
         this.dashboardViewModel.setState(dashboardState);
 
         this.viewManagerModel.setActiveView(dashboardViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+        this.dashboardViewModel.firePropertyChanged();
     }
 
     /**

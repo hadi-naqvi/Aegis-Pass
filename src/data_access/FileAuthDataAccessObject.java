@@ -31,7 +31,7 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
      */
     public void save(User user) {
         try {
-            String query = "INSERT INTO users (username, hashed_password, salt_for_kdf) VALUES (?, ? ?)";
+            String query = "INSERT INTO users (username, hashed_password, salt_for_kdf) VALUES (?, ?, ?)";
             PreparedStatement statement = CONNECTION.prepareStatement(query);
             statement.setString(1, user.getUsername());
             statement.setString(2, BCrypt.hashpw(user.getPassword() + this.PEPPER, BCrypt.gensalt(15)));
