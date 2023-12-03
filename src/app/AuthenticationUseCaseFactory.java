@@ -3,13 +3,14 @@ package app;
 import interface_adapter.Authentication.AuthenticationController;
 import interface_adapter.Authentication.AuthenticationPresenter;
 import interface_adapter.Authentication.AuthenticationViewModel;
-import interface_adapter.DisplayDash.DashboardViewModel;
+import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Authentication.AuthenticationDataAccessInterface;
 import use_case.Authentication.AuthenticationInputBoundary;
 import use_case.Authentication.AuthenticationInteractor;
 import use_case.Authentication.AuthenticationOutputBoundary;
+import use_case.Dashboard.DashboardDataAccessInterface;
 import view.AuthenticationView;
 
 import javax.swing.*;
@@ -24,14 +25,14 @@ public class AuthenticationUseCaseFactory {
      * @return A new Authentication view
      */
     public static AuthenticationView create(
-            ViewManagerModel viewManagerModel,
-            AuthenticationViewModel authenticationViewModel,
-            SetupAuthViewModel setupAuthViewModel,
-            DashboardViewModel dashboardViewModel,
-            AuthenticationDataAccessInterface userDataAccessObject){
+            ViewManagerModel viewManagerModel, AuthenticationViewModel authenticationViewModel,
+            DashboardViewModel dashboardViewModel, SetupAuthViewModel setupAuthViewModel,
+            AuthenticationDataAccessInterface userDataAccessObject,
+            DashboardDataAccessInterface dashboardDataAccessObject){
 
         try{
-            AuthenticationController authenticationController = createAuthenticationUseCase(viewManagerModel, authenticationViewModel, setupAuthViewModel, dashboardViewModel, userDataAccessObject);
+            AuthenticationController authenticationController = createAuthenticationUseCase(viewManagerModel,
+            authenticationViewModel, setupAuthViewModel, dashboardViewModel, userDataAccessObject, dashboardDataAccessObject);
             return new AuthenticationView(authenticationViewModel, authenticationController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
@@ -49,19 +50,14 @@ public class AuthenticationUseCaseFactory {
      * @return A new controller for the Authentication use case
      */
     private static AuthenticationController createAuthenticationUseCase(ViewManagerModel viewManagerModel,
-                                                                        AuthenticationViewModel authenticationViewModel,
-                                                                        SetupAuthViewModel setupAuthViewModel,
-                                                                        DashboardViewModel dashboardViewModel,
-                                                                        AuthenticationDataAccessInterface userDataAccessObject) throws IOException{
+                AuthenticationViewModel authenticationViewModel,
+                    SetupAuthViewModel setupAuthViewModel, DashboardViewModel dashboardViewModel,
+                    AuthenticationDataAccessInterface userDataAccessObject,
+                    DashboardDataAccessInterface dashDataAccessObject) throws IOException {
         AuthenticationOutputBoundary authenticationPresenter = new AuthenticationPresenter(viewManagerModel,
-                        authenticationViewModel,
-                dashboardViewModel,
-                setupAuthViewModel);
-
-        AuthenticationInputBoundary AuthenticationUseCaseInteractor = new AuthenticationInteractor(
-                userDataAccessObject, authenticationPresenter);
-
-        return new AuthenticationController(AuthenticationUseCaseInteractor);
+                authenticationViewModel, dashboardViewModel, setupAuthViewModel);
+        AuthenticationInputBoundary authenticationUseCaseInteractor = new AuthenticationInteractor(
+                userDataAccessObject, dashDataAccessObject, authenticationPresenter);
+        return new AuthenticationController(authenticationUseCaseInteractor);
     }
-
 }
