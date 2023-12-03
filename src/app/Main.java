@@ -62,8 +62,8 @@ public class Main {
                 authDataAccessObject, dashDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 
-        DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, dashboardViewModel,
-                dashDataAccessObject);
+        DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
+                dashboardViewModel, dashDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
