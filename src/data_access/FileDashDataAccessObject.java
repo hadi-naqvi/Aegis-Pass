@@ -3,6 +3,7 @@ package data_access;
 import entity.AccountInfo;
 import entity.AccountInfoFactory;
 import use_case.Dashboard.DashboardDataAccessInterface;
+import use_case.LogOut.LogOutDataAccessInterface;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-public class FileDashDataAccessObject implements DashboardDataAccessInterface {
+public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;

@@ -141,6 +141,10 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
             if (authenticationState.getPasswordError() != null) {
                 JOptionPane.showMessageDialog(this, authenticationState.getPasswordError());
             }
+            else {
+                this.tfUsername.setText(((AuthenticationState) state).getUsername());
+                this.pfPassword.setText(((AuthenticationState) state).getPassword());
+            }
         }
     }
 
