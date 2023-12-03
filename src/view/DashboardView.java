@@ -4,6 +4,7 @@ import entity.AccountInfo;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.LogOut.LogOutController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,6 +18,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     public final String viewName = "display dash";
     private final DashboardController dashboardController;
+    private final LogOutController logOutController;
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
@@ -51,9 +53,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Date;
     private JScrollPane tableScrollPane;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController) {
+    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
+        this.logOutController = logOutController;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         this.accountsTableModel = new DefaultTableModel();
@@ -62,6 +65,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.tableScrollPane = new JScrollPane(table);
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
+
+        signOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logOutController.execute();
+            }
+        });
 
         this.add(main);
     }
