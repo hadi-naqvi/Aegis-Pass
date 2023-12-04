@@ -5,6 +5,7 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
+import view.ScanItemView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final DashboardController dashboardController;
     private final LogOutController logOutController;
     private final DashboardViewModel dashboardViewModel;
+
+    private final ScanItemView scanItemView;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
     private JTable accounts;
@@ -53,10 +56,14 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Date;
     private JScrollPane tableScrollPane;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController) {
+    public DashboardView(DashboardViewModel dashboardViewModel,
+                         DashboardController dashboardController,
+                         LogOutController logOutController,
+                         ScanItemView scanItemView) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
+        this.scanItemView = scanItemView;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         this.accountsTableModel = new DefaultTableModel();
@@ -77,6 +84,26 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
                 // Logs the user out
                 logOutController.execute();
+            }
+        });
+
+        scanFileURLButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Remove the current view from the main panel
+                main.remove(rightPanel);
+
+                // Swap the views
+                JPanel temp = rightPanel;
+                rightPanel = scanItemView.scanRightPanel;
+                scanItemView.scanRightPanel = temp;
+
+                // Add the new view to the main panel
+                main.add(rightPanel, BorderLayout.CENTER);
+
+                // Repaint and validate to reflect the changes
+                main.revalidate();
+                main.repaint();
             }
         });
 
