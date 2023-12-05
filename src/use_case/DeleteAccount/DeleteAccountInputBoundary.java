@@ -8,4 +8,6 @@ public interface DeleteAccountInputBoundary {
      */
     void execute(DeleteAccountInputData deleteAccountInputData);
 
+    void switchView();
+
 }
