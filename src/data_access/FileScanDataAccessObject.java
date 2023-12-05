@@ -1,5 +1,6 @@
 package data_access;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.ScanItem.ScanItemDataAccessInterface;
@@ -59,7 +60,7 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
         return scanId;
     }
 
-    public String sendPostRequestUrl(String url) throws IOException, InterruptedException, URISyntaxException {
+    public String sendPostRequestUrl(String url) throws IOException, InterruptedException {
         String encodedUrl = URLEncoder.encode(url, "UTF-8");
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -152,10 +153,30 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
      * @return True if the URL is valid, false otherwise
      */
     public boolean isValidUrl(String url) {
-        String urlRegex = "^https?://.*$";
-        System.out.println(url);
-        System.out.println(urlRegex);
-        return url.matches(urlRegex);
+        // Check if the input is not empty
+        if (url.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            String scanResponse = sendPostRequestUrl(url);
+            JSONObject jsonResponse = new JSONObject(scanResponse);
+
+            // Check if the JSON response contains an "error" field
+            if (jsonResponse.has("error")) {
+                // Check if the error message indicates an invalid URL
+                JSONObject errorObject = jsonResponse.getJSONObject("error");
+                String errorMessage = errorObject.getString("message");
+                return errorMessage != null && errorMessage.contains("Unable to canonicalize url");
+            }
+
+            // If there is no error, consider it a valid URL
+            return true;
+        } catch (IOException | InterruptedException | JSONException e) {
+            // Print the stack trace for debugging
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
