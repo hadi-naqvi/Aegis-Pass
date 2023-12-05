@@ -1,14 +1,14 @@
 package view;
 
-import interface_adapter.Dashboard.DashboardController;
-import interface_adapter.Dashboard.DashboardState;
-import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemState;
 import interface_adapter.ScanItem.ScanItemViewModel;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -42,6 +42,8 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
     private JButton selectFileButton;
     private JTextField typeURLTextField;
     private JPanel main;
+    private JButton confirmButton;
+    private JPanel scanPanel;
 
     public ScanItemView(ScanItemViewModel scanItemViewModel, ScanItemController scanItemController, LogOutController logOutController){
         this.scanItemViewModel = scanItemViewModel;
@@ -55,12 +57,14 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
 
         selectFileButton.setEnabled(false);
         typeURLTextField.setEnabled(false);
+        confirmButton.setEnabled(false);
 
         scanFileRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectFileButton.setEnabled(true);
                 typeURLTextField.setEnabled(false);
+                confirmButton.setEnabled(false);
             }
         });
 
@@ -69,6 +73,7 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
             public void actionPerformed(ActionEvent e) {
                 selectFileButton.setEnabled(false);
                 typeURLTextField.setEnabled(true);
+                confirmButton.setEnabled(true);
             }
         });
 
@@ -80,7 +85,7 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
                 if (result == JFileChooser.APPROVE_OPTION) {
                     String selectedFile = fileChooser.getSelectedFile().getAbsolutePath();
                     // Use the selected file as needed
-                    JOptionPane.showMessageDialog(ScanItemView.this, "File selected: " + selectedFile);
+                    scanItemController.scanFile(selectedFile);
                 }
             }
         });
@@ -96,6 +101,42 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
 
                 // Logs the user out
                 logOutController.execute();
+            }
+        });
+
+        confirmButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(confirmButton)) {
+                            ScanItemState currentState = scanItemViewModel.getState();
+
+                            scanItemController.scanUrl(currentState.getUrl());
+                        }
+                    }
+                }
+        );
+
+        typeURLTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateState();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateState();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Plain text components don't fire these events
+            }
+
+            private void updateState() {
+                ScanItemState currentState = scanItemViewModel.getState();
+                currentState.setUrl(typeURLTextField.getText());
+                scanItemViewModel.setState(currentState);
             }
         });
 
@@ -120,6 +161,14 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        Object state = evt.getNewValue();
+        if (state instanceof ScanItemState){
+            ScanItemState scanItemState = (ScanItemState) evt.getNewValue();
+            if (scanItemState.getError() == null) {
+                JOptionPane.showMessageDialog(this, scanItemState.getResults());
+            } else {
+                JOptionPane.showMessageDialog(this, scanItemState.getError());
+            }
+        }
     }
 }
