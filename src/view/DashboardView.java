@@ -8,6 +8,8 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 
 import javax.swing.*;
@@ -58,14 +60,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private JPanel generatePasswordPanel;
     private JScrollPane tableScrollPane;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController,
-                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
+    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController,
+                         LogOutController logOutController, CreateAccountController createAccountController,
+                         CreateAccountViewModel createAccountViewModel,
+                         GeneratePasswordController generatePasswordController,
+                         GeneratePasswordViewModel generatePasswordViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
+        this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, generatePasswordController);
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         this.accountsTableModel = new DefaultTableModel();
@@ -96,6 +103,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(createAccountPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("create account");
+            }
+        });
+
+        generatePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(generatePasswordPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("generate password");
             }
         });
         this.setLayout(new GridLayout());
