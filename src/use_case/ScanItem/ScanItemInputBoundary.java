@@ -10,4 +10,6 @@ public interface ScanItemInputBoundary {
     void scanFile(ScanItemInputData scanItemInputData);
 
     void scanUrl(ScanItemInputData scanItemInputData);
+
+    void switchView();
 }

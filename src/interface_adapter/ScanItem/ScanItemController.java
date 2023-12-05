@@ -29,4 +29,8 @@ public class ScanItemController {
         ScanItemInputData scanItemInputData = new ScanItemInputData("", url);
         scanItemInteractor.scanUrl(scanItemInputData);
     }
+
+    public void switchView(){
+        scanItemInteractor.switchView();
+    }
 }

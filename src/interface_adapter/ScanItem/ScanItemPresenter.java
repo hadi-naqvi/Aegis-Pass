@@ -13,6 +13,7 @@ import use_case.ScanItem.ScanItemOutputData;
 public class ScanItemPresenter implements ScanItemOutputBoundary {
     private final ScanItemViewModel scanItemViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final DashboardViewModel dashboardViewModel;
 
     /**
      * Constructor method for the Scan Item use case's presenter
@@ -20,9 +21,11 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
      * @param viewManagerModel The view model
      */
     public ScanItemPresenter(ViewManagerModel viewManagerModel,
-                              ScanItemViewModel scanItemViewModel) {
+                              ScanItemViewModel scanItemViewModel,
+                             DashboardViewModel dashboardViewModel) {
         this.scanItemViewModel = scanItemViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.dashboardViewModel = dashboardViewModel;
     }
 
 
@@ -49,5 +52,12 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
         ScanItemState scanItemState = scanItemViewModel.getState();
         scanItemState.setError(error);
         scanItemViewModel.firePropertyChanged();
+    }
+
+    public void switchView(){
+        DashboardState dashboardState = dashboardViewModel.getState();
+        dashboardState.setRightPanelView("dashboard");
+        dashboardViewModel.setState(dashboardState);
+        this.dashboardViewModel.firePropertyChanged();
     }
 }

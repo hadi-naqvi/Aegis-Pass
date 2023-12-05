@@ -47,4 +47,8 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
             }
         }
     }
+
+    public void switchView(){
+        scanItemPresenter.switchView();
+    }
 }
