@@ -13,6 +13,8 @@ import interface_adapter.LogOut.LogOutController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -75,6 +77,59 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
 
+        copyUPButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String username = selectedAccount.getUsername();
+                    String password = selectedAccount.getPassword();
+
+                    if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
+                        String userAndPassword = "Username: " + username + "; Password: " + password;
+                        copyToClipboard(userAndPassword);
+                    }
+                }
+            }
+        });
+
+
+        copyPButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String password = selectedAccount.getPassword();
+
+                    if (password != null && !password.isEmpty()) {
+                        copyToClipboard(password);
+                    }
+                }
+            }
+        });
+
+
+        copyUButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String username = selectedAccount.getUsername();
+
+                    if (username != null && !username.isEmpty()) {
+                        copyToClipboard(username);
+                    }
+                }
+            }
+        });
+
+
         signOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,6 +155,12 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         });
         this.setLayout(new GridLayout());
         this.add(main);
+    }
+
+    private void copyToClipboard(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(text);
+        clipboard.setContents(selection, null);
     }
 
     private void setRightPanelName(String name){
