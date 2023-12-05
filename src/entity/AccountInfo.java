@@ -80,13 +80,13 @@ public interface AccountInfo {
      * Getter method for the date when the account information was last updated.
      * @return The date of the last update.
      */
-    public LocalDateTime getDate();
+    public String getDate();
 
     /**
      * Setter method for the date when the account information was last updated.
      * @param date The new date of the last update.
      */
-    public void setDate(LocalDateTime date);
+    public void setDate(String date);
 
     /**
      * Getter method for any additional notes or information related to the account.

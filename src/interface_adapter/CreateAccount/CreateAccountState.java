@@ -1,54 +1,65 @@
-package entity;
+package interface_adapter.CreateAccount;
+
+import entity.AccountInfo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
-public class CommonAccountInfo implements AccountInfo {
-    private String title;
-    private String username;
-    private String password;
-    private String secretKey;
-    private String url;
-    private String iconURL;
+public class CreateAccountState {
+    private List<AccountInfo> accounts;
+    private String title = "";
+    private String username = "";
+    private String usernameError = null;
+    private String password = "";
+    private String secretKey = "";
+    private String url = "";
+    private String iconURL = "";
     private String date;
-    private String notes;
+    private String notes = "";
+
 
     /**
-     * Constructor method for an AccountInfo entity which stores account details/login info
-     * @param title The title of the account
-     * @param username The username of the account
-     * @param password The password of the account
-     * @param secretKey The 2FA secret key of the account
-     * @param url The URL of the account
-     * @param iconURL The URL for the icon of the account
-     * @param date The last modified date of the account
-     * @param notes The notes for the account
+     * Constructor method for the CreateAccount's view state
+     * @param copy a copy of the Create Account state
      */
-    public CommonAccountInfo(String title, String username, String password, String secretKey,
-                             String url, String iconURL, String date, String notes) {
-        this.title = title;
-        this.username = username;
-        this.password = password;
-        this.secretKey = secretKey;
-        this.url = url;
-        this.iconURL = iconURL;
-        this.date = date;
-        this.notes = notes;
+    public CreateAccountState(CreateAccountState copy) {
+        this.accounts = copy.accounts;
+        this.title = copy.title;
+        this.username = copy.username;
+        this.usernameError = copy.usernameError;
+        this.password = copy.password;
+        this.secretKey = copy.secretKey;
+        this.url = copy.url;
+        this.iconURL = copy.iconURL;
+        this.date = copy.date;
+        this.notes = copy.notes;
     }
 
     /**
-     * Constructor method for an AccountInfo entity which doesn't store any account details/login info
+     * Alternative constructor method for the CreateAccount state for no copy
+     * which keeps attributes initialized as null/empty strings
      */
-    public CommonAccountInfo() {
-
+    public CreateAccountState() {
     }
+
+    /**
+     * Getter method for the user's accounts
+     * @return The user's accounts
+     */
+    public List<AccountInfo> getAccounts() { return this.accounts; }
+
+
+    /**
+     * Setter method for the user's accounts
+     * @param accounts the user's accounts
+     */
+    public void setAccounts(List<AccountInfo> accounts){this.accounts = accounts;}
 
     /**
      * Getter method for the title of the account.
      *
      * @return The title of the account.
      */
-    @Override
     public String getTitle() {
         return this.title;
     }
@@ -58,7 +69,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param title The new title for the account.
      */
-    @Override
     public void setTitle(String title) {
         this.title = title;
     }
@@ -68,7 +78,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The username of the account.
      */
-    @Override
     public String getUsername() {
         return this.username;
     }
@@ -78,9 +87,24 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param username The new username for the account.
      */
-    @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * Getter method for the username error
+     * @return The error message to be displayed for createAccount failure due to username
+     */
+    public String getUsernameError() {
+        return this.usernameError;
+    }
+
+    /**
+     * Setter method for the username error
+     * @param error The error message to be set for a createAccount failure due to username
+     */
+    public void setUsernameError(String error) {
+        this.usernameError = error;
     }
 
     /**
@@ -88,7 +112,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The password of the account.
      */
-    @Override
     public String getPassword() {
         return this.password;
     }
@@ -98,7 +121,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param password The new password for the account.
      */
-    @Override
     public void setPassword(String password) {
         this.password = password;
     }
@@ -108,7 +130,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The secret key of the account.
      */
-    @Override
     public String getSecretKey() {
         return this.secretKey;
     }
@@ -118,7 +139,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param secretKey The new secret key for the account.
      */
-    @Override
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
@@ -128,7 +148,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The URL of the account.
      */
-    @Override
     public String getURL() {
         return this.url;
     }
@@ -138,7 +157,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param url The new URL for the account.
      */
-    @Override
     public void setURL(String url) {
         this.url = url;
     }
@@ -148,7 +166,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The URL of the icon.
      */
-    @Override
     public String getIconURL() {
         return this.iconURL;
     }
@@ -158,7 +175,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param iconURL The new URL for the icon.
      */
-    @Override
     public void setIconURL(String iconURL) {
         this.iconURL = iconURL;
     }
@@ -168,7 +184,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return The date of the last update.
      */
-    @Override
     public String getDate() {
         return this.date;
     }
@@ -178,7 +193,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param date The new date of the last update.
      */
-    @Override
     public void setDate(String date) {
         this.date = date;
     }
@@ -188,7 +202,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @return Additional notes or information about the account.
      */
-    @Override
     public String getNotes() {
         return this.notes;
     }
@@ -198,7 +211,6 @@ public class CommonAccountInfo implements AccountInfo {
      *
      * @param notes The new notes for the account.
      */
-    @Override
     public void setNotes(String notes) {
         this.notes = notes;
     }

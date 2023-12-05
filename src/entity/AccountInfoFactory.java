@@ -17,6 +17,6 @@ public interface AccountInfoFactory {
      * @return A new AccountInfo object that stores the account details
      */
     public AccountInfo create(String title, String username, String password, String secretKey,
-                              String url, String iconURL, LocalDateTime date, String notes);
+                              String url, String iconURL, String date, String notes);
     public AccountInfo create();
 }
