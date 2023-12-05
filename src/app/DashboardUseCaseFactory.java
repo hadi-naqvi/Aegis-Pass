@@ -6,6 +6,7 @@ import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
+import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.Dashboard.DashboardInputBoundary;
@@ -15,7 +16,9 @@ import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
 import use_case.LogOut.LogOutOutputBoundary;
+import use_case.ScanItem.ScanItemDataAccessInterface;
 import view.DashboardView;
+import view.ScanItemView;
 
 public class DashboardUseCaseFactory {
     /**
@@ -28,12 +31,17 @@ public class DashboardUseCaseFactory {
     public static DashboardView create(ViewManagerModel viewManagerModel,
                                        AuthenticationViewModel authenticationViewModel,
                                        DashboardViewModel dashboardViewModel,
-                                       DashboardDataAccessInterface userDataAccessObject) {
+                                       DashboardDataAccessInterface userDataAccessObject,
+                                       ScanItemViewModel scanItemViewModel,
+                                       ScanItemDataAccessInterface scanItemDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
         LogOutController logOutController = createLogOutUseCase(viewManagerModel, authenticationViewModel,
                 (LogOutDataAccessInterface) userDataAccessObject);
-        return new DashboardView(dashboardViewModel, dashboardController, logOutController);
+
+        return new DashboardView(dashboardViewModel, dashboardController, logOutController,
+                ScanItemUseCaseFactory.create(viewManagerModel, scanItemViewModel, authenticationViewModel,
+                        scanItemDataAccessObject));
     }
 
     /**

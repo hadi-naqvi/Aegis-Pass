@@ -2,16 +2,16 @@ package app;
 
 import data_access.FileAuthDataAccessObject;
 import data_access.FileDashDataAccessObject;
+import data_access.FileScanDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
-import view.AuthenticationView;
-import view.DashboardView;
-import view.SetupAuthView;
-import view.ViewManager;
+import use_case.ScanItem.ScanItemDataAccessInterface;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,9 +42,11 @@ public class Main {
         SetupAuthViewModel setupAuthViewModel = new SetupAuthViewModel();
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
+        ScanItemViewModel scanItemViewModel = new ScanItemViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
+        FileScanDataAccessObject scanDataAccessObject;
 
         try {
             authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(),
@@ -56,6 +58,9 @@ public class Main {
                     System.getenv("DB_URL"),
                     System.getenv("DB_USERNAME"),
                     System.getenv("DB_PASSWORD"));
+            scanDataAccessObject = new FileScanDataAccessObject(
+                    System.getenv("VT_APIKEY1")
+            );
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -69,8 +74,12 @@ public class Main {
                 authDataAccessObject, dashDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
 
+        ScanItemView scanItemView = ScanItemUseCaseFactory.create(viewManagerModel, scanItemViewModel, authenticationViewModel,
+                scanDataAccessObject);
+        views.add(scanItemView, scanItemView.viewName);
+
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, dashDataAccessObject);
+                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
