@@ -6,5 +6,4 @@ public interface DashboardOutputBoundary {
      */
     void prepareSuccessView(DashboardOutputData dashboardOutputData);
     void prepareFailView(String error);
-
 }

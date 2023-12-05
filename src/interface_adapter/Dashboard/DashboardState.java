@@ -7,6 +7,7 @@ import java.util.List;
 
 public class DashboardState {
     private List<AccountInfo> accounts;
+    private String rightPanelView;
 
 
     /**
@@ -15,6 +16,7 @@ public class DashboardState {
      */
     public DashboardState(DashboardState copy) {
         this.accounts = copy.accounts;
+        this.rightPanelView = copy.rightPanelView;
     }
 
     /**
@@ -36,4 +38,17 @@ public class DashboardState {
      * @param accounts the user's accounts
      */
     public void setAccounts(List<AccountInfo> accounts){this.accounts = accounts;}
+
+    /**
+     * Getter method for the right panel's view
+     * @return The right panel view
+     */
+    public String getRightPanelView() { return this.rightPanelView; }
+
+
+    /**
+     * Setter method for the right panel's view
+     * @param rightPanelView the right panel view
+     */
+    public void setRightPanelView(String rightPanelView){this.rightPanelView = rightPanelView;}
 }

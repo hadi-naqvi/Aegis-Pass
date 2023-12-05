@@ -7,7 +7,7 @@ public class DashboardController {
     public final DashboardInputBoundary dashboardInteractor;
 
     /**
-     * Constructor method for the controller for the authentication use case
+     * Constructor method for the controller for the dashboard use case
      * @param dashboardInteractor The use case interactor object for the displayDash use case
      */
     public DashboardController(DashboardInputBoundary dashboardInteractor) {

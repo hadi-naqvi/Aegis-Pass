@@ -19,7 +19,7 @@ public class CommonAccountInfoFactory implements AccountInfoFactory {
      */
     @Override
     public AccountInfo create(String title, String username, String password, String secretKey, String url,
-                              String iconURL, LocalDateTime date, String notes) {
+                              String iconURL, String date, String notes) {
         return new CommonAccountInfo(title, username, password, secretKey, url, iconURL, date, notes);
     }
 

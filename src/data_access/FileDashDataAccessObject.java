@@ -2,6 +2,7 @@ package data_access;
 
 import entity.AccountInfo;
 import entity.AccountInfoFactory;
+import use_case.CreateAccount.CreateAccountDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
 
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface {
+public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;
@@ -51,6 +52,42 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
     }
 
     /**
+     * method which adds an account to the list of accounts and stores in database
+     * @param title the account's title
+     * @param username the account's username
+     * @param password the account's password
+     * @param secretKey the account's secretKey
+     * @param url the account's url
+     * @param iconURL the account's iconURL
+     * @param date the account's date
+     * @param notes the account's notes
+     */
+    @Override
+    public void addAccount(String title, String username, String password, String secretKey,
+                           String url, String iconURL, String date, String notes) {
+        AccountInfo account = ACCOUNTFACTORY.create(title, username, password, secretKey, url, iconURL, date, notes);
+        accounts.add(account);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String sql = "INSERT INTO password_manager_data (user_id, title, username, password, two_factor_secret_key, url, icon_url, date, notes) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
+            statement.setInt(1, this.currentUserID);
+            statement.setString(2, encrypt(account.getTitle(), this.encryptionKey));
+            statement.setString(3, encrypt(account.getUsername(), this.encryptionKey));
+            statement.setString(4, encrypt(account.getPassword(), this.encryptionKey));
+            statement.setString(5, encrypt(account.getSecretKey(), this.encryptionKey));
+            statement.setString(6, encrypt(account.getURL(), this.encryptionKey));
+            statement.setString(7, encrypt(account.getIconURL(), this.encryptionKey));
+            statement.setString(8, encrypt(account.getDate(), this.encryptionKey));
+            statement.setString(9, encrypt(account.getNotes(), this.encryptionKey));
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Method which retrieves all of the currently signed in user's accounts from the
      * database and saved them to the in-memory list of accounts
      */
@@ -69,7 +106,7 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
                     account.setSecretKey(decrypt(resultSet.getString("two_factor_secret_key"), this.encryptionKey));
                     account.setURL(decrypt(resultSet.getString("url"), this.encryptionKey));
                     account.setIconURL(decrypt(resultSet.getString("icon_url"), this.encryptionKey));
-                    account.setDate(LocalDateTime.parse(decrypt(resultSet.getString("date"), this.encryptionKey), formatter));
+                    account.setDate(decrypt(resultSet.getString("date"), this.encryptionKey));
                     account.setNotes(decrypt(resultSet.getString("notes"), this.encryptionKey));
 
                     accounts.add(account);
@@ -119,6 +156,9 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
      * @return The encrypted data in a hexadecimal string
      */
     private static String encrypt(String plaintext, String key) {
+        if (plaintext.equals("")){
+            return "";
+        }
         try {
             Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
             Cipher cipher = Cipher.getInstance("AES");
@@ -138,6 +178,9 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
      * @return The decrypted ciphertext as a string of regular characters
      */
     private static String decrypt(String ciphertext, String key) {
+        if (ciphertext.equals("")){
+            return "";
+        }
         try {
             Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
