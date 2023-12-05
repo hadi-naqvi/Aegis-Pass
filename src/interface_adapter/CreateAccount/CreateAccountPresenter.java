@@ -49,6 +49,9 @@ public class CreateAccountPresenter implements CreateAccountOutputBoundary {
         this.createAccountViewModel.firePropertyChanged();
     }
 
+    /**
+     * Method for switching to Dashboard view
+     */
     public void switchView(){
         DashboardState dashboardState = dashboardViewModel.getState();
         dashboardState.setRightPanelView("dashboard");

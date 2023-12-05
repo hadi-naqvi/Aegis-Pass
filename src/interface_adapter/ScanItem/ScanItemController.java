@@ -30,6 +30,9 @@ public class ScanItemController {
         scanItemInteractor.scanUrl(scanItemInputData);
     }
 
+    /**
+     * Method for switching to Dashboard view
+     */
     public void switchView(){
         scanItemInteractor.switchView();
     }

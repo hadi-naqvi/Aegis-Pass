@@ -4,12 +4,19 @@ import use_case.Dashboard.DashboardInputData;
 
 public interface ScanItemInputBoundary {
     /**
-     * Method which contains the logic for the Scan Item use case (interactor) which is triggered to complete use case
+     * Method which contains the logic for scanning a file in the Scan Item use case
      * @param scanItemInputData The input data for the use case interactor
      */
     void scanFile(ScanItemInputData scanItemInputData);
 
+    /**
+     * Method which contains the logic for scanning a url in the Scan Item use case
+     * @param scanItemInputData The input data for the use case interactor
+     */
     void scanUrl(ScanItemInputData scanItemInputData);
 
+    /**
+     * Method for switching to Dashboard view
+     */
     void switchView();
 }

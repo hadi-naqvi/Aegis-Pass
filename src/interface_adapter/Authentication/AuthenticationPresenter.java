@@ -54,6 +54,9 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
         authenticationViewModel.firePropertyChanged();
     }
 
+    /**
+     * Method for switching to Setup Auth view
+     */
     public void switchViews(){
         viewManagerModel.setActiveView(setupAuthViewModel.getViewName());
         viewManagerModel.firePropertyChanged();

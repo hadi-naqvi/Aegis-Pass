@@ -13,6 +13,10 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
         this.scanItemPresenter = scanItemOutputBoundary;
     }
 
+    /**
+     * Method which contains the logic for scanning a file in the Scan Item use case
+     * @param scanItemInputData The input data for the use case interactor
+     */
     @Override
     public void scanFile(ScanItemInputData scanItemInputData) {
         try {
@@ -27,6 +31,10 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
         }
     }
 
+    /**
+     * Method which contains the logic for scanning a url in the Scan Item use case
+     * @param scanItemInputData The input data for the use case interactor
+     */
     @Override
     public void scanUrl(ScanItemInputData scanItemInputData) {
         if (!(scanItemDataAccessObject.isValidUrl(scanItemInputData.getUrl()))) {
@@ -48,6 +56,9 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
         }
     }
 
+    /**
+     * Method for switching to Dashboard view
+     */
     public void switchView(){
         scanItemPresenter.switchView();
     }

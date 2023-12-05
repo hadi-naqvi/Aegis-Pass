@@ -29,6 +29,9 @@ public class CreateAccountController {
         createAccountInteractor.execute(createAccountInputData);
     }
 
+    /**
+     * Method for switching to Dashboard view
+     */
     public void switchView(){
         createAccountInteractor.switchView();
     }

@@ -20,10 +20,6 @@ import java.util.Base64;
 public class FileScanDataAccessObject implements ScanItemDataAccessInterface, LogOutDataAccessInterface {
     private final String API_KEY;
 
-    // System.getenv("VT_APIKEY");
-
-    private static final String SCAN_FILE = "https://www.virustotal.com/api/v3/files";
-    private static final String REPORT_FILE = "https://www.virustotal.com/vtapi/v2/file/report";
     private int currentUserID;
     private String encryptionKey;
 
@@ -60,6 +56,12 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
         return scanId;
     }
 
+
+    /**
+     * Method which uses Virus Total's API to scan URL for a POST request
+     * @param url the url being scanned
+     * @return returns the path parameter that is passed into Virus Total's GET request
+     */
     public String sendPostRequestUrl(String url) throws IOException, InterruptedException {
         String encodedUrl = URLEncoder.encode(url, "UTF-8");
 
@@ -71,11 +73,15 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
                 .method("POST", HttpRequest.BodyPublishers.ofString("url=" + encodedUrl))
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         String self = extractSelfFromResponse(response.body());
         return self;
     }
 
+    /**
+     * Method which uses Virus Total's API to scan file for a POST request
+     * @param filePath the path of the file being scanned
+     * @return returns the path parameter that is passed into Virus Total's GET request
+     */
     public String sendPostRequestFile(String filePath) throws IOException, InterruptedException {
         Path selectedFile = Path.of(filePath);
 
@@ -102,6 +108,11 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
         return self;
     }
 
+    /**
+     * Method which uses Virus Total's API to get results of scanned item
+     * @param scanResponse the path parameter for the API call
+     * @return returns the analysis from the scan report
+     */
     public String getResponse(String scanResponse) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(scanResponse))
@@ -110,11 +121,15 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
         String stats = results(response.body());
         return stats;
     }
 
+    /**
+     * Helper method for extracting the path parameter for the GET request
+     * @param jsonResponse the json that is returned after the POST request
+     * @return returns the path parameter that is passed into Virus Total's GET request
+     */
     private String extractSelfFromResponse(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
 
@@ -124,6 +139,11 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
         return self;
     }
 
+    /**
+     * Helper method for returning the results of the report
+     * @param jsonResponse the json that is returned after the GET request
+     * @return returns the analysis from the scan report
+     */
     private String results(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
 

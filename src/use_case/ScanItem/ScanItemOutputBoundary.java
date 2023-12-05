@@ -14,5 +14,8 @@ public interface ScanItemOutputBoundary {
      */
     void prepareFailView(String error);
 
+    /**
+     * Method for switching to Dashboard view
+     */
     void switchView();
 }

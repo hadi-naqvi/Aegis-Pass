@@ -14,8 +14,8 @@ import use_case.LogOut.LogOutOutputBoundary;
          * Method which creates and returns a new controller object for the Log Out use case
          * @param viewManagerModel The view manager model
          * @param authenticationViewModel The view model for the Authentication view
-         * @param userDataAccessObject The data access object for scanItem
-         * @return A new controller for the scan Item use case
+         * @param userDataAccessObject The data access object for LogOut
+         * @return A new controller for the Log Out use case
          */
         public static LogOutController createLogOutUseCase(ViewManagerModel viewManagerModel,
                                                             AuthenticationViewModel authenticationViewModel,

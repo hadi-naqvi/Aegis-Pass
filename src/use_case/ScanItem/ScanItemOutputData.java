@@ -16,6 +16,9 @@ public class ScanItemOutputData {
         this.results = results;
     }
 
+    /**
+     * Getter method for the results of the report
+     */
     public String getResults() {
         return results;
     }

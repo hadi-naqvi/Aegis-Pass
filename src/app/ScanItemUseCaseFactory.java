@@ -53,11 +53,11 @@ public class ScanItemUseCaseFactory {
     }
 
     /**
-     * Method which creates and returns a new controller object for the Authentication use case
+     * Method which creates and returns a new controller object for the Scan Item use case
      * @param viewManagerModel The view manager model
      * @param scanItemViewModel The view model for the scanItem view
      * @param userDataAccessObject The data access object for scanItem
-     * @return A new controller for the scan Item use case
+     * @return A new controller for the Scan Item use case
      */
     public static ScanItemController createScanItemUseCase(ViewManagerModel viewManagerModel,
                                                               ScanItemViewModel scanItemViewModel,

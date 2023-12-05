@@ -20,11 +20,11 @@ import view.CreateAccountView;
 
     public class CreateAccountUseCaseFactory {
         /**
-         * Method which creates a new ScanItem view by instantiating all necessary interface adapters
+         * Method which creates a new CreateAccount view by instantiating all necessary interface adapters
          * @param viewManagerModel The view manager model
          * @param createAccountViewModel The view model for the create account view
-         * @param userDataAccessObject The data access object scanItem
-         * @return A new ScanItem view
+         * @param userDataAccessObject The data access object createAccount
+         * @return A new CreateAccount view
          */
         public static CreateAccountView create(
                 ViewManagerModel viewManagerModel, CreateAccountViewModel createAccountViewModel,
@@ -35,12 +35,12 @@ import view.CreateAccountView;
         }
 
         /**
-         * Method which creates and returns a new controller object for the Authentication use case
+         * Method which creates and returns a new controller object for the CreateAccount use case
          * @param viewManagerModel The view manager model
          * @param createAccountViewModel The view model for the Create Account view
-         * @param userDataAccessObject The data access object for scanItem
+         * @param userDataAccessObject The data access object for createAccount
          * @param dashboardViewModel The view model for the Dashboard View
-         * @return A new controller for the scan Item use case
+         * @return A new controller for the Create Account use case
          */
         public static CreateAccountController createAccountUseCase(ViewManagerModel viewManagerModel,
                                                                 CreateAccountViewModel createAccountViewModel,
