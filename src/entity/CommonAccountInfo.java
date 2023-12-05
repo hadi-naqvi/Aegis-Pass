@@ -10,7 +10,7 @@ public class CommonAccountInfo implements AccountInfo {
     private String secretKey;
     private String url;
     private String iconURL;
-    private LocalDateTime date;
+    private String date;
     private String notes;
 
     /**
@@ -25,7 +25,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @param notes The notes for the account
      */
     public CommonAccountInfo(String title, String username, String password, String secretKey,
-                             String url, String iconURL, LocalDateTime date, String notes) {
+                             String url, String iconURL, String date, String notes) {
         this.title = title;
         this.username = username;
         this.password = password;
@@ -169,7 +169,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @return The date of the last update.
      */
     @Override
-    public LocalDateTime getDate() {
+    public String getDate() {
         return this.date;
     }
 
@@ -179,7 +179,7 @@ public class CommonAccountInfo implements AccountInfo {
      * @param date The new date of the last update.
      */
     @Override
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
