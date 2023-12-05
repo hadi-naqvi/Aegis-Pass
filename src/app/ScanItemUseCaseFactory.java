@@ -41,18 +41,15 @@ public class ScanItemUseCaseFactory {
      * Method which creates a new ScanItem view by instantiating all necessary interface adapters
      * @param viewManagerModel The view manager model
      * @param scanItemViewModel The view model for the scan item view
-     * @param authenticationViewModel The view model for the authentication view
      * @param userDataAccessObject The data access object scanItem
      * @return A new ScanItem view
      */
     public static ScanItemView create(
-            ViewManagerModel viewManagerModel, ScanItemViewModel scanItemViewModel,
-            AuthenticationViewModel authenticationViewModel, ScanItemDataAccessInterface userDataAccessObject){
+            ViewManagerModel viewManagerModel, ScanItemViewModel scanItemViewModel, ScanItemDataAccessInterface userDataAccessObject,
+            DashboardViewModel dashboardViewModel){
         ScanItemController scanItemController = createScanItemUseCase(viewManagerModel, scanItemViewModel,
-                userDataAccessObject);
-        LogOutController logOutController = createLogOutUseCase(viewManagerModel, authenticationViewModel,
-                (LogOutDataAccessInterface) userDataAccessObject);
-        return new ScanItemView(scanItemViewModel, scanItemController, logOutController);
+                userDataAccessObject, dashboardViewModel);
+        return new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
     }
 
     /**
@@ -62,31 +59,15 @@ public class ScanItemUseCaseFactory {
      * @param userDataAccessObject The data access object for scanItem
      * @return A new controller for the scan Item use case
      */
-    private static ScanItemController createScanItemUseCase(ViewManagerModel viewManagerModel,
+    public static ScanItemController createScanItemUseCase(ViewManagerModel viewManagerModel,
                                                               ScanItemViewModel scanItemViewModel,
-                                                              ScanItemDataAccessInterface userDataAccessObject) {
-        ScanItemOutputBoundary scanItemPresenter = new ScanItemPresenter(viewManagerModel, scanItemViewModel);
+                                                              ScanItemDataAccessInterface userDataAccessObject,
+                                                            DashboardViewModel dashboardViewModel) {
+        ScanItemOutputBoundary scanItemPresenter = new ScanItemPresenter(viewManagerModel, scanItemViewModel, dashboardViewModel);
 
         ScanItemInputBoundary scanItemUseCaseInteractor = new ScanItemInteractor(userDataAccessObject,
                 scanItemPresenter);
 
         return new ScanItemController(scanItemUseCaseInteractor);
-    }
-
-    /**
-     * Method which creates and returns a new controller object for the LogOut use case
-     * @param viewManagerModel The view manager model
-     * @param authenticationViewModel The authentication view model
-     * @param userDataAccessObject The data access object
-     * @return A new controller for the LogOut use case
-     */
-    private static LogOutController createLogOutUseCase(ViewManagerModel viewManagerModel,
-                                                        AuthenticationViewModel authenticationViewModel,
-                                                        LogOutDataAccessInterface userDataAccessObject) {
-        LogOutOutputBoundary logOutPresenter = new LogOutPresenter(viewManagerModel, authenticationViewModel);
-
-        LogOutInputBoundary logOutUseCaseInteractor = new LogOutInteractor(userDataAccessObject, logOutPresenter);
-
-        return new LogOutController(logOutUseCaseInteractor);
     }
 }

@@ -1,7 +1,6 @@
 package view;
 
-import interface_adapter.Authentication.AuthenticationState;
-import interface_adapter.LogOut.LogOutController;
+import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemState;
 import interface_adapter.ScanItem.ScanItemViewModel;
@@ -9,6 +8,7 @@ import interface_adapter.ScanItem.ScanItemViewModel;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -18,25 +18,8 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
     public final String viewName = "scan item";
     private final ScanItemViewModel scanItemViewModel;
     private final ScanItemController scanItemController;
-    private final LogOutController logOutController;
-    private JPanel leftPanel;
-    private JPanel buttonPanel;
-    private JButton generatePasswordButton;
-    private JButton generateEmailButton;
-    private JButton haveibeenpwnedButton;
-    private JButton scanFileURLButton;
-    private JButton signOutButton;
-    private JLabel logo;
+    private final DashboardViewModel dashboardViewModel;
     JPanel scanRightPanel;
-    private JPanel topBar;
-    private JButton createButton;
-    private JButton editViewButton;
-    private JButton deleteButton;
-    private JButton copyUButton;
-    private JButton copyPButton;
-    private JButton copyUPButton;
-    private JButton autotypeUAndPButton;
-    private JButton autotypePButton;
     private JRadioButton scanFileRadioButton;
     private JRadioButton scanURLRadioButton;
     private JButton selectFileButton;
@@ -44,11 +27,13 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
     private JPanel main;
     private JButton confirmButton;
     private JPanel scanPanel;
+    private JButton backButton;
 
-    public ScanItemView(ScanItemViewModel scanItemViewModel, ScanItemController scanItemController, LogOutController logOutController){
+    public ScanItemView(ScanItemViewModel scanItemViewModel,
+                        ScanItemController scanItemController, DashboardViewModel dashboardViewModel){
         this.scanItemViewModel = scanItemViewModel;
         this.scanItemController = scanItemController;
-        this.logOutController = logOutController;
+        this.dashboardViewModel = dashboardViewModel;
         this.scanItemViewModel.addPropertyChangeListener(this);
 
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -90,17 +75,11 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
             }
         });
 
-        signOutButton.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Removes the passwords in the UI/view model when logging out to prevent this sensitive data leaking
-                ScanItemState state = scanItemViewModel.getState();
-                // state.setAccounts(null); not sure if this is needed will add again if so
-                scanItemViewModel.setState(state);
-                scanItemViewModel.firePropertyChanged();
+                scanItemController.switchView();
 
-                // Logs the user out
-                logOutController.execute();
             }
         });
 
@@ -140,7 +119,9 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
             }
         });
 
+        this.setLayout(new GridLayout());
         this.add(main);
+
     }
 
     /**
