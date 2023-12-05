@@ -63,7 +63,7 @@ public class Main {
                     System.getenv("DB_USERNAME"),
                     System.getenv("DB_PASSWORD"));
             scanDataAccessObject = new FileScanDataAccessObject(
-                    System.getenv("VT_APIKEY1"));
+                    System.getenv("VT_APIKEY"));
             createDataAccessObject = dashDataAccessObject;
         } catch (SQLException e) {
             throw new RuntimeException(e);
