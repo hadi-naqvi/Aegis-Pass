@@ -21,7 +21,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final DashboardController dashboardController;
     private final LogOutController logOutController;
     private final DashboardViewModel dashboardViewModel;
-
     private final ScanItemView scanItemView;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
@@ -90,20 +89,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         scanFileURLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Remove the current view from the main panel
                 main.remove(rightPanel);
-
-                // Swap the views
-                JPanel temp = rightPanel;
-                rightPanel = scanItemView.scanRightPanel;
-                scanItemView.scanRightPanel = temp;
-
-                // Add the new view to the main panel
-                main.add(rightPanel, BorderLayout.CENTER);
-
-                // Repaint and validate to reflect the changes
-                main.revalidate();
-                main.repaint();
+                main.add(createAccountPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("create account");
             }
         });
 
