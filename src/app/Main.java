@@ -5,13 +5,12 @@ import data_access.FileDashDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CreateAccount.CreateAccountController;
+import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
-import view.AuthenticationView;
-import view.DashboardView;
-import view.SetupAuthView;
-import view.ViewManager;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +41,7 @@ public class Main {
         SetupAuthViewModel setupAuthViewModel = new SetupAuthViewModel();
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
+        CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
@@ -70,8 +70,9 @@ public class Main {
         views.add(authenticationView, authenticationView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, dashDataAccessObject);
+                dashboardViewModel, createAccountViewModel, dashDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
+
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
 
