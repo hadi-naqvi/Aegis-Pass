@@ -7,6 +7,8 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
 import interface_adapter.ViewManagerModel;
@@ -35,6 +37,7 @@ public class DashboardUseCaseFactory {
     public static DashboardView create(ViewManagerModel viewManagerModel,
                                        AuthenticationViewModel authenticationViewModel,
                                        DashboardViewModel dashboardViewModel, CreateAccountViewModel createAccountViewModel,
+                                       GeneratePasswordViewModel generatePasswordViewModel,
                                        DashboardDataAccessInterface userDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
@@ -42,8 +45,9 @@ public class DashboardUseCaseFactory {
                 (LogOutDataAccessInterface) userDataAccessObject);
         CreateAccountController createAccountController = createCreateAccountUseCase(viewManagerModel, createAccountViewModel,
                 dashboardViewModel, (CreateAccountDataAccessInterface) userDataAccessObject);
+        GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.create(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, createAccountController,
-                createAccountViewModel);
+                createAccountViewModel, generatePasswordController, generatePasswordViewModel);
     }
 
     /**

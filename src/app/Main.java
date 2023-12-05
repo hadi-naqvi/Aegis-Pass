@@ -8,6 +8,7 @@ import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.ViewManagerModel;
 import view.*;
@@ -42,6 +43,7 @@ public class Main {
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
+        GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
@@ -70,7 +72,7 @@ public class Main {
         views.add(authenticationView, authenticationView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, createAccountViewModel, dashDataAccessObject);
+                dashboardViewModel, createAccountViewModel, generatePasswordViewModel, dashDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
 
