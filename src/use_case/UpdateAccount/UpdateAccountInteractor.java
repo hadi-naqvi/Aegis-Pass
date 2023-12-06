@@ -26,10 +26,10 @@ public class UpdateAccountInteractor implements  UpdateAccountInputBoundary{
         boolean duplicate = isDuplicateAccount(updateAccountInputData.getTitle(), updateAccountInputData.getUsername());
         if (duplicate){
             updateAccountPresenter.prepareFailView("Duplicate Account found");
-        } else if (updateAccountInputData.getAccountIndex() == -1) {
-            updateAccountPresenter.prepareFailView("No account selected");
-        } else {
-            userDataAccessObject.updateAccount(updateAccountInputData.getAccountIndex(), updateAccountInputData.getTitle(), updateAccountInputData.getUsername(),
+        }
+        else {
+            userDataAccessObject.updateAccount(updateAccountInputData.getOriginalTitle(),
+                    updateAccountInputData.getOriginalUser(), updateAccountInputData.getTitle(), updateAccountInputData.getUsername(),
                     updateAccountInputData.getPassword(), updateAccountInputData.getSecretKey(), updateAccountInputData.getURL(),
                     updateAccountInputData.getIconURL(), updateAccountInputData.getDate(), updateAccountInputData.getNotes());
             UpdateAccountOutputData updateAccoutOutputData = new UpdateAccountOutputData(true, userDataAccessObject.getAccounts());

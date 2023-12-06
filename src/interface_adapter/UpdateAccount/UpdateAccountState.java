@@ -8,6 +8,8 @@ import java.util.List;
 public class UpdateAccountState {
     private List<AccountInfo> accounts;
     private int accountIndex;
+    private String originalTitle = "";
+    private String originalUser = "";
     private String title = "";
     private String username = "";
     private String usernameError = null;
@@ -25,6 +27,8 @@ public class UpdateAccountState {
      */
     public UpdateAccountState(UpdateAccountState copy) {
         this.accounts = copy.accounts;
+        this.originalTitle = copy.originalTitle;
+        this.originalUser = copy.originalUser;
         this.title = copy.title;
         this.username = copy.username;
         this.usernameError = copy.usernameError;
@@ -61,8 +65,8 @@ public class UpdateAccountState {
      *
      * @return The accountIndex of the account.
      */
-    public int getAccountIndex() {
-        return this.accountIndex;
+    public String getOriginalTitle() {
+        return this.originalTitle;
     }
 
     /**
@@ -70,8 +74,26 @@ public class UpdateAccountState {
      *
      * @param index The new accountIndex for the account.
      */
-    public void setAccountIndex(int index) {
-        this.accountIndex= index;
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle= originalTitle;
+    }
+
+    /**
+     * Getter method for the accountIndex of the account.
+     *
+     * @return The accountIndex of the account.
+     */
+    public String getOriginalUser() {
+        return this.originalUser;
+    }
+
+    /**
+     * Setter method for the accountIndex of the account.
+     *
+     * @param index The new accountIndex for the account.
+     */
+    public void setOriginalUser(String originalUser) {
+        this.originalUser= originalUser;
     }
 
     /**

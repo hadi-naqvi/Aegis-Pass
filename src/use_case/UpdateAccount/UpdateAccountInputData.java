@@ -1,7 +1,8 @@
 package use_case.UpdateAccount;
 
 public class UpdateAccountInputData {
-    final private int accountIndex;
+    final private String originalTitle;
+    final private String originalUser;
     final private String title;
     final private String username;
     final private String password;
@@ -23,9 +24,10 @@ public class UpdateAccountInputData {
      * @param date The last modified date of the account
      * @param notes The notes for the account
      */
-    public UpdateAccountInputData(int accountIndex, String title, String username, String password, String secretKey,
+    public UpdateAccountInputData(String originalTitle, String originalUser, String title, String username, String password, String secretKey,
                                   String url, String iconURL, String date, String notes) {
-        this.accountIndex = accountIndex;
+        this.originalTitle = originalTitle;
+        this.originalUser = originalUser;
         this.title = title;
         this.username = username;
         this.password = password;
@@ -38,12 +40,21 @@ public class UpdateAccountInputData {
 
 
     /**
-     * Getter method for the title of the account.
+     * Getter method for the original title of the account.
      *
      * @return The title of the account.
      */
-    public int getAccountIndex() {
-        return this.accountIndex;
+    public String getOriginalTitle() {
+        return this.originalTitle;
+    }
+
+    /**
+     * Getter method for the original user of the account.
+     *
+     * @return The title of the account.
+     */
+    public String getOriginalUser() {
+        return this.originalUser;
     }
 
     /**

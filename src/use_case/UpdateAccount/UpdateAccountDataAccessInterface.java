@@ -23,6 +23,6 @@ public interface UpdateAccountDataAccessInterface {
      * @param date
      * @param notes
      */
-    void updateAccount(int accountIndex, String title, String username, String password, String secret, String url,
+    void updateAccount(String originalTitle, String originalUser, String title, String username, String password, String secret, String url,
                     String iconURL, String date, String notes);
 }

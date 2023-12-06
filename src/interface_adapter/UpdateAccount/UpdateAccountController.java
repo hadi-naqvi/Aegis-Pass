@@ -20,10 +20,10 @@ public class UpdateAccountController {
     /**
      * Method which is executed/triggered when the user enters the updateAccount view
      */
-    public void execute(int accountIndex, String title, String username, String password, String secretKey, String url,
+    public void execute(String originaltitle, String originaluser, String title, String username, String password, String secretKey, String url,
                         String iconURL, LocalDateTime date, String notes) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        UpdateAccountInputData updateAccountInputData = new UpdateAccountInputData(accountIndex, title, username, password,
+        UpdateAccountInputData updateAccountInputData = new UpdateAccountInputData(originaltitle, originaluser, title, username, password,
                 secretKey, url, iconURL, formatter.format(date), notes);
         updateAccountInteractor.execute(updateAccountInputData);
     }
