@@ -9,6 +9,9 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
+import interface_adapter.ScanItem.ScanItemController;
+import interface_adapter.ScanItem.ScanItemViewModel;
+import view.ScanItemView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -58,14 +61,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController,
+    public DashboardView(DashboardViewModel dashboardViewModel,
+                         DashboardController dashboardController, LogOutController logOutController,
+                         ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
+        this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
+
         this.dashboardViewModel.addPropertyChangeListener(this);
 
         this.accountsTableModel = new DefaultTableModel();
@@ -86,6 +94,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
                 // Logs the user out
                 logOutController.execute();
+            }
+        });
+
+        scanFileURLButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(scanItemPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("scan item");
             }
         });
 
