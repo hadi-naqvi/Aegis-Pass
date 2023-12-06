@@ -9,6 +9,7 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountController;
+import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordState;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
