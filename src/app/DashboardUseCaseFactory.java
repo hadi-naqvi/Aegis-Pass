@@ -1,6 +1,7 @@
 package app;
 
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
@@ -12,6 +13,7 @@ import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
+import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.UpdateAccount.UpdateAccountController;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
@@ -57,16 +59,18 @@ public class DashboardUseCaseFactory {
                 userDataAccessObject);
         LogOutController logOutController = LogOutUseCaseFactory.createLogOutUseCase(viewManagerModel, authenticationViewModel,
                 (LogOutDataAccessInterface) userDataAccessObject);
+        ScanItemController scanItemController = ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
+                dashboardViewModel);
+        GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.createGeneratePasswordUseCase(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
+        UpdateAccountController updateAccountController = UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
+                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject);
+        CreateAccountController createAccountController = CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
+                createAccountDataAccessObject, dashboardViewModel);
+        DeleteAccountController deleteAccountController = DeleteAccountUseCaseFactory.createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel, dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject);
 
-        return new DashboardView(dashboardViewModel, dashboardController, logOutController,
-                ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
-                        dashboardViewModel), scanItemViewModel,
-                CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
-                        createAccountDataAccessObject, dashboardViewModel), createAccountViewModel, UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
-                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject), updateAccountViewModel,
-                                GeneratePasswordUseCaseFactory.create(viewManagerModel, dashboardViewModel, generatePasswordViewModel),
-                                generatePasswordViewModel, createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel,
-                dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject););
+        return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
+                scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
+                deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel);
     }
 
     /**
@@ -85,14 +89,5 @@ public class DashboardUseCaseFactory {
                 dashboardPresenter);
 
         return new DashboardController(dashboardUseCaseInteractor);
-    }
-
-
-    private static DeleteAccountController createDeleteAccountUseCase(ViewManagerModel viewManagerModel,
-                                                                      DeleteAccountViewModel deleteAccountViewModel, DashboardViewModel dashboardViewModel,
-                                                                      DeleteAccountDataAccessInterface userDataAccessObject) {
-        DeleteAccountOutputBoundary deleteAccountPresenter = new DeleteAccountPresenter(viewManagerModel, deleteAccountViewModel, dashboardViewModel);
-        DeleteAccountInputBoundary deleteAccountUseCaseInteractor = new DeleteAccountInteractor(userDataAccessObject, deleteAccountPresenter);
-        return new DeleteAccountController(deleteAccountUseCaseInteractor);
     }
 }

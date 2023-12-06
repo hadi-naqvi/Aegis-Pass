@@ -23,11 +23,9 @@ public class GeneratePasswordUseCaseFactory {
      * @param generatePasswordViewModel The generate password view model
      * @return A new controller object for the generate password use case
      */
-    public static GeneratePasswordController create(ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel, GeneratePasswordViewModel generatePasswordViewModel) {
+    public static GeneratePasswordController createGeneratePasswordUseCase(ViewManagerModel viewManagerModel, DashboardViewModel dashboardViewModel, GeneratePasswordViewModel generatePasswordViewModel) {
         GeneratePasswordOutputBoundary generatePasswordPresenter = new GeneratePasswordPresenter(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
-
         GeneratePasswordInputBoundary generatePasswordInteractor = new GeneratePasswordInteractor(generatePasswordPresenter);
-
         return new GeneratePasswordController(generatePasswordInteractor);
     }
 }
