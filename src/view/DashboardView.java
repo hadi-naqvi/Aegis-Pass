@@ -9,10 +9,12 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
+import interface_adapter.UpdateAccount.UpdateAccountController;
+import interface_adapter.UpdateAccount.UpdateAccountState;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import view.ScanItemView;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -61,20 +63,23 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
 
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
-                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
+                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
+                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
-
+        this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
+
 
         this.accountsTableModel = new DefaultTableModel();
         this.accountsTableModel.setColumnIdentifiers(new Object[]{"Icon", "Title", "Username", "URL", "Notes", "Date"});
@@ -116,8 +121,41 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 setRightPanelName("create account");
             }
         });
+
+
+        editViewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int rowIndex = table.getSelectedRow();
+                if (rowIndex == -1){
+                    updateAccountNoAccount();
+                }
+                UpdateAccountState state = updateAccountViewModel.getState();
+                state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                state.setUsernameError(null);
+                updateAccountViewModel.setState(state);
+                main.remove(rightPanel);
+                main.add(updateAccountPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("update account");
+
+                updateAccountPanel.setTitleText(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                updateAccountPanel.setUsernameText(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                updateAccountPanel.setPasswordText(dashboardViewModel.getState().getAccounts().get(rowIndex).getPassword());
+                updateAccountPanel.set2FAKeyText(dashboardViewModel.getState().getAccounts().get(rowIndex).getSecretKey());
+                updateAccountPanel.setURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getURL());
+                updateAccountPanel.setIconURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getIconURL());
+                updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
+            }
+        });
+
         this.setLayout(new GridLayout());
         this.add(main);
+    }
+
+    private void updateAccountNoAccount(){
+        JOptionPane.showMessageDialog(this, "no account selected");
     }
 
     private void setRightPanelName(String name){

@@ -10,6 +10,7 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
 import use_case.ScanItem.ScanItemDataAccessInterface;
@@ -46,6 +47,7 @@ public class Main {
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         ScanItemViewModel scanItemViewModel = new ScanItemViewModel();
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
+        UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
@@ -84,7 +86,7 @@ public class Main {
         views.add(scanItemView, scanItemView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel,
+                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, updateAccountViewModel,
                 createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 

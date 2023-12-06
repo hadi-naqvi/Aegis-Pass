@@ -5,6 +5,7 @@ import entity.AccountInfoFactory;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
+import use_case.UpdateAccount.UpdateAccountDataAccessInterface;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,7 +19,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface {
+public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface
+, UpdateAccountDataAccessInterface {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;
@@ -80,6 +82,44 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
             statement.setString(7, encrypt(account.getIconURL(), this.encryptionKey));
             statement.setString(8, encrypt(account.getDate(), this.encryptionKey));
             statement.setString(9, encrypt(account.getNotes(), this.encryptionKey));
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * method to update the account's changes in the database
+     * @param index
+     * @param updatedTitle
+     * @param updatedUsername
+     * @param updatedPassword
+     * @param updatedKey
+     * @param updatedURL
+     * @param updatedIconURL
+     * @param updatedDate
+     * @param updatedNotes
+     */
+    public void updateAccount(String originalTitle, String originalUser, String updatedTitle, String updatedUsername, String updatedPassword,
+                              String updatedKey, String updatedURL, String updatedIconURL,
+                              String updatedDate, String updatedNotes) {
+        String sql = "UPDATE password_manager_data " +
+                "SET title = ?, username = ?, password = ?, two_factor_secret_key = ?, " +
+                "url = ?, icon_url = ?, date = ?, notes = ? " +
+                "WHERE title = ? AND username = ?";
+
+        try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
+            statement.setString(1, encrypt(updatedTitle, this.encryptionKey));
+            statement.setString(2, encrypt(updatedUsername, this.encryptionKey));
+            statement.setString(3, encrypt(updatedPassword, this.encryptionKey));
+            statement.setString(4, encrypt(updatedKey, this.encryptionKey));
+            statement.setString(5, encrypt(updatedURL, this.encryptionKey));
+            statement.setString(6, encrypt(updatedIconURL, this.encryptionKey));
+            statement.setString(7, encrypt(updatedDate, this.encryptionKey));
+            statement.setString(8, encrypt(updatedNotes, this.encryptionKey));
+            statement.setString(9, encrypt(originalTitle, this.encryptionKey));
+            statement.setString(10, encrypt(originalUser, this.encryptionKey));
 
             statement.executeUpdate();
         } catch (SQLException e) {

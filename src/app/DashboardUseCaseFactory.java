@@ -7,6 +7,8 @@ import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
+import interface_adapter.UpdateAccount.UpdateAccountController;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
@@ -18,6 +20,7 @@ import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
 import use_case.LogOut.LogOutOutputBoundary;
+import use_case.UpdateAccount.UpdateAccountDataAccessInterface;
 import use_case.ScanItem.ScanItemDataAccessInterface;
 import view.DashboardView;
 import view.ScanItemView;
@@ -37,6 +40,7 @@ public class DashboardUseCaseFactory {
                                        ScanItemViewModel scanItemViewModel,
                                        ScanItemDataAccessInterface scanItemDataAccessObject,
                                        CreateAccountViewModel createAccountViewModel,
+                                       UpdateAccountViewModel updateAccountViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
@@ -47,7 +51,8 @@ public class DashboardUseCaseFactory {
                 ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
                         dashboardViewModel), scanItemViewModel,
                 CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
-                        createAccountDataAccessObject, dashboardViewModel), createAccountViewModel);
+                        createAccountDataAccessObject, dashboardViewModel), createAccountViewModel, UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
+                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject), updateAccountViewModel);
     }
 
     /**
