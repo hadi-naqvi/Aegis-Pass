@@ -9,6 +9,9 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.LogOut.LogOutController;
+import interface_adapter.UpdateAccount.UpdateAccountController;
+import interface_adapter.UpdateAccount.UpdateAccountState;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -58,15 +61,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private JPanel updateAccountPanel;
     private JScrollPane tableScrollPane;
 
     public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController,
-                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
+                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
+                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
+        this.updateAccountPanel = new UpdateAccountView(dashboardViewModel ,updateAccountViewModel, updateAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
+
 
         this.accountsTableModel = new DefaultTableModel();
         this.accountsTableModel.setColumnIdentifiers(new Object[]{"Icon", "Title", "Username", "URL", "Notes", "Date"});
@@ -98,8 +105,32 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 setRightPanelName("create account");
             }
         });
+
+
+        editViewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int rowIndex = table.getSelectedRow();
+                if (rowIndex == -1){
+                    updateAccountNoAccount();
+                }
+                UpdateAccountState state = updateAccountViewModel.getState();
+                state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                updateAccountViewModel.setState(state);
+                main.remove(rightPanel);
+                main.add(updateAccountPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("update account");
+            }
+        });
+
         this.setLayout(new GridLayout());
         this.add(main);
+    }
+
+    private void updateAccountNoAccount(){
+        JOptionPane.showMessageDialog(this, "no account selected");
     }
 
     private void setRightPanelName(String name){
