@@ -140,6 +140,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     }
 
     private void updateView(){
+        this.validate();
         this.repaint();
     }
     /**
