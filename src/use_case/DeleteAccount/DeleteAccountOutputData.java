@@ -18,6 +18,10 @@ public class DeleteAccountOutputData {
         this.accounts = accounts;
     }
 
+    /**
+     * Getter method for the in-memory list of accounts
+     * @return the list of accounts
+     */
     public List<AccountInfo> getAccounts(){
         return this.accounts;
     }
