@@ -16,12 +16,11 @@ public class GeneratePasswordInputData {
     private String alsoIncludeFrom;
     private String excludeFrom;
 
-    public GeneratePasswordInputData(String passwordField, int passwordQuality, int passwordLength, boolean lowerAlpha,
+    public GeneratePasswordInputData(int passwordQuality, int passwordLength, boolean lowerAlpha,
                                      boolean upperAlpha, boolean numericalChars, boolean extendedAscii,
                                      boolean punctuationOne, boolean punctuationTwo, boolean punctuationThree,
                                      boolean punctuationFour, boolean punctuationFive, String alsoIncludeFrom,
                                      String excludeFrom) {
-        this.passwordField = passwordField;
         this.passwordQuality = passwordQuality;
         this.passwordLength = passwordLength;
         this.lowerAlpha = lowerAlpha;
@@ -35,22 +34,6 @@ public class GeneratePasswordInputData {
         this.punctuationFive = punctuationFive;
         this.alsoIncludeFrom = alsoIncludeFrom;
         this.excludeFrom = excludeFrom;
-    }
-
-    /**
-     * Getter method for the password field text
-     * @return The password field text
-     */
-    public String getPasswordField() {
-        return passwordField;
-    }
-
-    /**
-     * Setter method for the password field text
-     * @param passwordField The password field text to be set
-     */
-    public void setPasswordField(String passwordField) {
-        this.passwordField = passwordField;
     }
 
     /**

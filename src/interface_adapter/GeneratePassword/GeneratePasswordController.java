@@ -19,12 +19,12 @@ public class GeneratePasswordController {
     /**
      * Method which is executed/triggered when the user generates a new password
      */
-    public void execute(String passwordField, int passwordQuality, int passwordLength, boolean lowerAlpha,
+    public void execute(int passwordQuality, int passwordLength, boolean lowerAlpha,
                         boolean upperAlpha, boolean numericalChars, boolean extendedAscii,
                         boolean punctuationOne, boolean punctuationTwo, boolean punctuationThree,
                         boolean punctuationFour, boolean punctuationFive, String alsoIncludeFrom,
                         String excludeFrom) {
-        GeneratePasswordInputData generatePasswordInputData = new GeneratePasswordInputData(passwordField, passwordQuality, passwordLength,
+        GeneratePasswordInputData generatePasswordInputData = new GeneratePasswordInputData(passwordQuality, passwordLength,
                 lowerAlpha, upperAlpha, numericalChars, extendedAscii, punctuationOne, punctuationTwo, punctuationThree,
                 punctuationFour, punctuationFive, alsoIncludeFrom, excludeFrom);
         generatePasswordInteractor.execute(generatePasswordInputData);
