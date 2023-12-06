@@ -15,6 +15,7 @@ public class GeneratePasswordState {
     private boolean punctuationFive;
     private String alsoIncludeFrom;
     private String excludeFrom;
+    private String generatePasswordError;
     public GeneratePasswordState() {
 
     }
@@ -241,5 +242,21 @@ public class GeneratePasswordState {
      */
     public void setExcludeFrom(String excludeFrom) {
         this.excludeFrom = excludeFrom;
+    }
+
+    /**
+     * Getter method for the generate password error
+     * @return The generate password error
+     */
+    public String getGeneratePasswordError() {
+        return this.generatePasswordError;
+    }
+
+    /**
+     * Setter method for the generate password error
+     * @param error The generate password error
+     */
+    public void setGeneratePasswordError(String error) {
+        this.generatePasswordError = error;
     }
 }
