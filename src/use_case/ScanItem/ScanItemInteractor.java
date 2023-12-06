@@ -36,7 +36,7 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
      * @param scanItemInputData The input data for the use case interactor
      */
     @Override
-    public void scanUrl(ScanItemInputData scanItemInputData) {
+    public void scanUrl(ScanItemInputData scanItemInputData) throws IOException, InterruptedException {
         if (!(scanItemDataAccessObject.isValidUrl(scanItemInputData.getUrl()))) {
             scanItemPresenter.prepareFailView("Invalid URL");
         }

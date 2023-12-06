@@ -24,5 +24,5 @@ public interface ScanItemDataAccessInterface {
      * @param url The URL to check
      * @return True if the URL is valid, false otherwise
      */
-    public boolean isValidUrl(String url);
+    public boolean isValidUrl(String url) throws IOException, InterruptedException;
 }

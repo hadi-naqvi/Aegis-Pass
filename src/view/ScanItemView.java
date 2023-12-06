@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
 public class ScanItemView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "scan item";
@@ -90,7 +91,13 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
                         if (e.getSource().equals(confirmButton)) {
                             ScanItemState currentState = scanItemViewModel.getState();
 
-                            scanItemController.scanUrl(currentState.getUrl());
+                            try {
+                                scanItemController.scanUrl(currentState.getUrl());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
                 }

@@ -52,6 +52,7 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
     @Override
     public String scanUrl(String url) throws IOException, InterruptedException, URISyntaxException {
         String scanResponse = sendPostRequestUrl(url);
+        System.out.println(scanResponse);
         String scanId = getResponse(scanResponse);
         return scanId;
     }
@@ -177,24 +178,11 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
         if (url.trim().isEmpty()) {
             return false;
         }
-
         try {
-            String scanResponse = sendPostRequestUrl(url);
-            JSONObject jsonResponse = new JSONObject(scanResponse);
+            sendPostRequestUrl(url);
 
-            // Check if the JSON response contains an "error" field
-            if (jsonResponse.has("error")) {
-                // Check if the error message indicates an invalid URL
-                JSONObject errorObject = jsonResponse.getJSONObject("error");
-                String errorMessage = errorObject.getString("message");
-                return errorMessage != null && errorMessage.contains("Unable to canonicalize url");
-            }
-
-            // If there is no error, consider it a valid URL
             return true;
         } catch (IOException | InterruptedException | JSONException e) {
-            // Print the stack trace for debugging
-            e.printStackTrace();
             return false;
         }
     }

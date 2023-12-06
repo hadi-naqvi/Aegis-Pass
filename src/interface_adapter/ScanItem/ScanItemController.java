@@ -3,6 +3,8 @@ package interface_adapter.ScanItem;
 import use_case.ScanItem.ScanItemInputBoundary;
 import use_case.ScanItem.ScanItemInputData;
 
+import java.io.IOException;
+
 public class ScanItemController {
     public final ScanItemInputBoundary scanItemInteractor;
 
@@ -25,7 +27,7 @@ public class ScanItemController {
     /**
      * Method which is executed when the user scans a URL
      */
-    public void scanUrl(String url) {
+    public void scanUrl(String url) throws IOException, InterruptedException {
         ScanItemInputData scanItemInputData = new ScanItemInputData("", url);
         scanItemInteractor.scanUrl(scanItemInputData);
     }
