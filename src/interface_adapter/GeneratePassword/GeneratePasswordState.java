@@ -3,18 +3,18 @@ package interface_adapter.GeneratePassword;
 public class GeneratePasswordState {
     private String passwordField;
     private int passwordQuality;
-    private int passwordLength;
-    private boolean lowerAlpha;
-    private boolean upperAlpha;
-    private boolean numericalChars;
-    private boolean extendedAscii;
-    private boolean punctuationOne;
-    private boolean punctuationTwo;
-    private boolean punctuationThree;
-    private boolean punctuationFour;
-    private boolean punctuationFive;
-    private String alsoIncludeFrom;
-    private String excludeFrom;
+    private int passwordLength = 16;
+    private boolean lowerAlpha = true;
+    private boolean upperAlpha = true;
+    private boolean numericalChars = true;
+    private boolean extendedAscii = false;
+    private boolean punctuationOne = false;
+    private boolean punctuationTwo = false;
+    private boolean punctuationThree = false;
+    private boolean punctuationFour = false;
+    private boolean punctuationFive = false;
+    private String alsoIncludeFrom = "";
+    private String excludeFrom = "";
     private String generatePasswordError;
     public GeneratePasswordState() {
 

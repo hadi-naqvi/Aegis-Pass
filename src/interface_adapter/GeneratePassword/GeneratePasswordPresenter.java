@@ -25,6 +25,7 @@ public class GeneratePasswordPresenter implements GeneratePasswordOutputBoundary
     public void prepareSuccessView(GeneratePasswordOutputData generatePasswordOutputData) {
         GeneratePasswordState state = generatePasswordViewModel.getState();
         state.setPasswordField(generatePasswordOutputData.getPassword());
+        state.setGeneratePasswordError(null);
         generatePasswordViewModel.setState(state);
         generatePasswordViewModel.firePropertyChanged();
     }
