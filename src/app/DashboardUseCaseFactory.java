@@ -5,6 +5,9 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.DeleteAccount.DeleteAccountController;
+import interface_adapter.DeleteAccount.DeleteAccountPresenter;
+import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
@@ -18,6 +21,10 @@ import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.Dashboard.DashboardInputBoundary;
 import use_case.Dashboard.DashboardInteractor;
 import use_case.Dashboard.DashboardOutputBoundary;
+import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
+import use_case.DeleteAccount.DeleteAccountInputBoundary;
+import use_case.DeleteAccount.DeleteAccountInteractor;
+import use_case.DeleteAccount.DeleteAccountOutputBoundary;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
@@ -42,6 +49,7 @@ public class DashboardUseCaseFactory {
                                        ScanItemViewModel scanItemViewModel,
                                        ScanItemDataAccessInterface scanItemDataAccessObject,
                                        CreateAccountViewModel createAccountViewModel,
+                                       DeleteAccountViewModel deleteAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
                                        GeneratePasswordViewModel generatePasswordViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
@@ -57,7 +65,8 @@ public class DashboardUseCaseFactory {
                         createAccountDataAccessObject, dashboardViewModel), createAccountViewModel, UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
                 updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject), updateAccountViewModel,
                                 GeneratePasswordUseCaseFactory.create(viewManagerModel, dashboardViewModel, generatePasswordViewModel),
-                                generatePasswordViewModel);
+                                generatePasswordViewModel, createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel,
+                dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject););
     }
 
     /**
@@ -76,5 +85,14 @@ public class DashboardUseCaseFactory {
                 dashboardPresenter);
 
         return new DashboardController(dashboardUseCaseInteractor);
+    }
+
+
+    private static DeleteAccountController createDeleteAccountUseCase(ViewManagerModel viewManagerModel,
+                                                                      DeleteAccountViewModel deleteAccountViewModel, DashboardViewModel dashboardViewModel,
+                                                                      DeleteAccountDataAccessInterface userDataAccessObject) {
+        DeleteAccountOutputBoundary deleteAccountPresenter = new DeleteAccountPresenter(viewManagerModel, deleteAccountViewModel, dashboardViewModel);
+        DeleteAccountInputBoundary deleteAccountUseCaseInteractor = new DeleteAccountInteractor(userDataAccessObject, deleteAccountPresenter);
+        return new DeleteAccountController(deleteAccountUseCaseInteractor);
     }
 }
