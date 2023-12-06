@@ -8,6 +8,9 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordState;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.UpdateAccount.UpdateAccountController;
 import interface_adapter.UpdateAccount.UpdateAccountState;
@@ -63,6 +66,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
@@ -71,12 +75,14 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
-                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel) {
+                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
+                         GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
+        this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, generatePasswordController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -122,6 +128,22 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
+        generatePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(generatePasswordPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("generate password");
+                generatePasswordPanel.lengthSlider.setValue(16);
+                GeneratePasswordState generatePasswordState = generatePasswordViewModel.getState();
+                generatePasswordController.execute(generatePasswordState.getPasswordQuality(), generatePasswordState.getPasswordLength(),
+                        generatePasswordState.isLowerAlpha(), generatePasswordState.isUpperAlpha(), generatePasswordState.isNumericalChars(), generatePasswordState.isExtendedAscii(),
+                        generatePasswordState.isPunctuationOne(), generatePasswordState.isPunctuationTwo(), generatePasswordState.isPunctuationThree(),
+                        generatePasswordState.isPunctuationFour(), generatePasswordState.isPunctuationFive(), generatePasswordState.getAlsoIncludeFrom(),
+                        generatePasswordState.getExcludeFrom());
+            }
+        });
 
         editViewButton.addActionListener(new ActionListener() {
             @Override

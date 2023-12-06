@@ -5,6 +5,8 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
 import interface_adapter.UpdateAccount.UpdateAccountController;
@@ -41,6 +43,7 @@ public class DashboardUseCaseFactory {
                                        ScanItemDataAccessInterface scanItemDataAccessObject,
                                        CreateAccountViewModel createAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
+                                       GeneratePasswordViewModel generatePasswordViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
@@ -52,7 +55,9 @@ public class DashboardUseCaseFactory {
                         dashboardViewModel), scanItemViewModel,
                 CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
                         createAccountDataAccessObject, dashboardViewModel), createAccountViewModel, UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
-                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject), updateAccountViewModel);
+                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject), updateAccountViewModel,
+                                GeneratePasswordUseCaseFactory.create(viewManagerModel, dashboardViewModel, generatePasswordViewModel),
+                                generatePasswordViewModel);
     }
 
     /**

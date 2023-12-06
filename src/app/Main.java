@@ -8,6 +8,7 @@ import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
@@ -47,6 +48,7 @@ public class Main {
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         ScanItemViewModel scanItemViewModel = new ScanItemViewModel();
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
+        GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
         UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
@@ -87,7 +89,7 @@ public class Main {
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, updateAccountViewModel,
-                createDataAccessObject);
+                generatePasswordViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
