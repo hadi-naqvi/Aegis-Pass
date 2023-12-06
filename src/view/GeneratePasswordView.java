@@ -1,6 +1,5 @@
 package view;
 
-import interface_adapter.CreateAccount.CreateAccountState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordState;
@@ -25,7 +24,7 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
     private JTextField passwordField;
     private JProgressBar passwordQuality;
     private JPanel middlePanel;
-    private JSlider lengthSlider;
+    public JSlider lengthSlider;
     private JButton regenerateButton;
     private JButton copyButton;
     private JPanel charsetSelection;
@@ -62,6 +61,15 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
         this.generatePasswordController = generatePasswordController;
         this.generatePasswordViewModel.addPropertyChangeListener(this);
 
+        lengthSlider.setMinimum(1);
+        lengthSlider.setMaximum(128);
+        lengthSlider.setMajorTickSpacing(10);
+        lengthSlider.setMinorTickSpacing(1);
+        lengthSlider.setValue(16);
+        aZButton.setBackground(new Color(0xA3BE8C));
+        a09Button.setBackground(new Color(0xA3BE8C));
+        lowerazButton.setBackground(new Color(0xA3BE8C));
+
         this.regenerateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,9 +95,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
         this.lengthSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                GeneratePasswordState state = generatePasswordViewModel.getState();
-                state.setPasswordLength(lengthSlider.getValue());
-                generatePasswordViewModel.setState(state);
+                JSlider source = (JSlider) e.getSource();
+                if (!source.getValueIsAdjusting()) {
+                    GeneratePasswordState state = generatePasswordViewModel.getState();
+                    state.setPasswordLength(source.getValue());
+                    lengthLabel.setText("Length: " + String.valueOf(state.getPasswordLength()));
+                    generatePasswordViewModel.setState(state);
+                    generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                            state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                            state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                            state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                            state.getExcludeFrom());
+                }
             }
         });
 
@@ -98,7 +115,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setUpperAlpha(!state.isUpperAlpha());
+                if (state.isUpperAlpha()) {
+                    aZButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    aZButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -107,7 +135,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setLowerAlpha(!state.isLowerAlpha());
+                if (state.isLowerAlpha()) {
+                    lowerazButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    lowerazButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -116,7 +155,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setNumericalChars(!state.isNumericalChars());
+                if (state.isNumericalChars()) {
+                    a09Button.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    a09Button.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -124,8 +174,19 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             @Override
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
-                state.setUpperAlpha(!state.isUpperAlpha());
+                state.setExtendedAscii(!state.isExtendedAscii());
+                if (state.isExtendedAscii()) {
+                    extendedASCIIButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    extendedASCIIButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -134,7 +195,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setPunctuationOne(!state.isPunctuationOne());
+                if (state.isPunctuationOne()) {
+                    punctOneButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    punctOneButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -143,7 +215,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setPunctuationTwo(!state.isPunctuationTwo());
+                if (state.isPunctuationTwo()) {
+                    punctTwoButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    punctTwoButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -152,7 +235,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setPunctuationThree(!state.isPunctuationThree());
+                if (state.isPunctuationThree()) {
+                    punctThreeButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    punctThreeButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -161,7 +255,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setPunctuationFour(!state.isPunctuationFour());
+                if (state.isPunctuationFour()) {
+                    punctFourButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    punctFourButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -170,7 +275,18 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             public void actionPerformed(ActionEvent e) {
                 GeneratePasswordState state = generatePasswordViewModel.getState();
                 state.setPunctuationFive(!state.isPunctuationFive());
+                if (state.isPunctuationFive()) {
+                    punctFiveButton.setBackground(new Color(0xA3BE8C));
+                }
+                else {
+                    punctFiveButton.setBackground(new Color(0xD8DEE9));
+                }
                 generatePasswordViewModel.setState(state);
+                generatePasswordController.execute(state.getPasswordQuality(), state.getPasswordLength(),
+                        state.isLowerAlpha(), state.isUpperAlpha(), state.isNumericalChars(), state.isExtendedAscii(),
+                        state.isPunctuationOne(), state.isPunctuationTwo(), state.isPunctuationThree(),
+                        state.isPunctuationFour(), state.isPunctuationFive(), state.getAlsoIncludeFrom(),
+                        state.getExcludeFrom());
             }
         });
 
@@ -193,6 +309,11 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
                 GeneratePasswordState currentState = generatePasswordViewModel.getState();
                 currentState.setAlsoIncludeFrom(includeFrom.getText());
                 generatePasswordViewModel.setState(currentState);
+                generatePasswordController.execute(currentState.getPasswordQuality(), currentState.getPasswordLength(),
+                        currentState.isLowerAlpha(), currentState.isUpperAlpha(), currentState.isNumericalChars(), currentState.isExtendedAscii(),
+                        currentState.isPunctuationOne(), currentState.isPunctuationTwo(), currentState.isPunctuationThree(),
+                        currentState.isPunctuationFour(), currentState.isPunctuationFive(), currentState.getAlsoIncludeFrom(),
+                        currentState.getExcludeFrom());
             }
         });
 
@@ -215,12 +336,45 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
                 GeneratePasswordState currentState = generatePasswordViewModel.getState();
                 currentState.setExcludeFrom(excludeFrom.getText());
                 generatePasswordViewModel.setState(currentState);
+                generatePasswordController.execute(currentState.getPasswordQuality(), currentState.getPasswordLength(),
+                        currentState.isLowerAlpha(), currentState.isUpperAlpha(), currentState.isNumericalChars(), currentState.isExtendedAscii(),
+                        currentState.isPunctuationOne(), currentState.isPunctuationTwo(), currentState.isPunctuationThree(),
+                        currentState.isPunctuationFour(), currentState.isPunctuationFive(), currentState.getAlsoIncludeFrom(),
+                        currentState.getExcludeFrom());
             }
         });
 
         this.closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GeneratePasswordState state = generatePasswordViewModel.getState();
+
+                // Resetting the UI/state upon exiting
+                state.setPasswordField("");
+                state.setPasswordLength(16);
+                state.setUpperAlpha(true);
+                state.setLowerAlpha(true);
+                state.setNumericalChars(true);
+                state.setPunctuationOne(false);
+                state.setPunctuationTwo(false);
+                state.setPunctuationThree(false);
+                state.setPunctuationFour(false);
+                state.setPunctuationFive(false);
+                state.setAlsoIncludeFrom("");
+                state.setExcludeFrom("");
+                passwordField.setText("");
+                aZButton.setBackground(new Color(0xA3BE8C));
+                lowerazButton.setBackground(new Color(0xA3BE8C));
+                a09Button.setBackground(new Color(0xA3BE8C));
+                punctOneButton.setBackground(new Color(0xD8DEE9));
+                punctTwoButton.setBackground(new Color(0xD8DEE9));
+                punctThreeButton.setBackground(new Color(0xD8DEE9));
+                punctFourButton.setBackground(new Color(0xD8DEE9));
+                punctFiveButton.setBackground(new Color(0xD8DEE9));
+                includeFrom.setText("");
+                excludeFrom.setText("");
+
+                dashboardViewModel.getState().setRightPanelView("dashboard");
                 dashboardViewModel.firePropertyChanged();
             }
         });
@@ -248,13 +402,13 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Object state = evt.getNewValue();
-        if (state instanceof CreateAccountState) {
+        if (state instanceof GeneratePasswordState) {
             GeneratePasswordState generatePasswordState = (GeneratePasswordState) evt.getNewValue();
             if (generatePasswordState.getGeneratePasswordError() != null) {
                 JOptionPane.showMessageDialog(this, generatePasswordState.getGeneratePasswordError());
             }
             else {
-                passwordField.setText(((CreateAccountState) state).getPassword());
+                passwordField.setText(((GeneratePasswordState) state).getPasswordField());
             }
         }
     }
