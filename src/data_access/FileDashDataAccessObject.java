@@ -101,13 +101,13 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
      * @param updatedDate
      * @param updatedNotes
      */
-    public void updateAccount(int index, String updatedTitle, String updatedUsername, String updatedPassword,
+    public void updateAccount(String originalTitle, String originalUser, String updatedTitle, String updatedUsername, String updatedPassword,
                               String updatedKey, String updatedURL, String updatedIconURL,
                               String updatedDate, String updatedNotes) {
         String sql = "UPDATE password_manager_data " +
                 "SET title = ?, username = ?, password = ?, two_factor_secret_key = ?, " +
                 "url = ?, icon_url = ?, date = ?, notes = ? " +
-                "WHERE id = ?";
+                "WHERE title = ? AND username = ?";
 
         try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setString(1, encrypt(updatedTitle, this.encryptionKey));
@@ -118,7 +118,8 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
             statement.setString(6, encrypt(updatedIconURL, this.encryptionKey));
             statement.setString(7, encrypt(updatedDate, this.encryptionKey));
             statement.setString(8, encrypt(updatedNotes, this.encryptionKey));
-            statement.setInt(9, index + 1); // Assuming 'id' starts from 1
+            statement.setString(9, encrypt(originalTitle, this.encryptionKey));
+            statement.setString(10, encrypt(originalUser, this.encryptionKey));
 
             statement.executeUpdate();
         } catch (SQLException e) {
