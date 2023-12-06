@@ -7,6 +7,9 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.DeleteAccount.DeleteAccountController;
+import interface_adapter.DeleteAccount.DeleteAccountPresenter;
+import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
 import interface_adapter.ViewManagerModel;
@@ -18,6 +21,10 @@ import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.Dashboard.DashboardInputBoundary;
 import use_case.Dashboard.DashboardInteractor;
 import use_case.Dashboard.DashboardOutputBoundary;
+import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
+import use_case.DeleteAccount.DeleteAccountInputBoundary;
+import use_case.DeleteAccount.DeleteAccountInteractor;
+import use_case.DeleteAccount.DeleteAccountOutputBoundary;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
@@ -35,15 +42,17 @@ public class DashboardUseCaseFactory {
     public static DashboardView create(ViewManagerModel viewManagerModel,
                                        AuthenticationViewModel authenticationViewModel,
                                        DashboardViewModel dashboardViewModel, CreateAccountViewModel createAccountViewModel,
-                                       DashboardDataAccessInterface userDataAccessObject) {
+                                       DeleteAccountViewModel deleteAccountViewModel, DashboardDataAccessInterface userDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
         LogOutController logOutController = createLogOutUseCase(viewManagerModel, authenticationViewModel,
                 (LogOutDataAccessInterface) userDataAccessObject);
         CreateAccountController createAccountController = createCreateAccountUseCase(viewManagerModel, createAccountViewModel,
                 dashboardViewModel, (CreateAccountDataAccessInterface) userDataAccessObject);
+        DeleteAccountController deleteAccountController = createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel,
+                dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject);
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, createAccountController,
-                createAccountViewModel);
+                createAccountViewModel, deleteAccountController);
     }
 
     /**
@@ -96,5 +105,13 @@ public class DashboardUseCaseFactory {
         CreateAccountInputBoundary createAccountUseCaseInteractor = new CreateAccountInteractor(userDataAccessObject, createAccountPresenter);
 
         return new CreateAccountController(createAccountUseCaseInteractor);
+    }
+
+    private static DeleteAccountController createDeleteAccountUseCase(ViewManagerModel viewManagerModel,
+                                                                      DeleteAccountViewModel deleteAccountViewModel, DashboardViewModel dashboardViewModel,
+                                                                      DeleteAccountDataAccessInterface userDataAccessObject) {
+        DeleteAccountOutputBoundary deleteAccountPresenter = new DeleteAccountPresenter(viewManagerModel, deleteAccountViewModel, dashboardViewModel);
+        DeleteAccountInputBoundary deleteAccountUseCaseInteractor = new DeleteAccountInteractor(userDataAccessObject, deleteAccountPresenter);
+        return new DeleteAccountController(deleteAccountUseCaseInteractor);
     }
 }
