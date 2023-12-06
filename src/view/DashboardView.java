@@ -8,9 +8,12 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.DeleteAccount.DeleteAccountController;
 import interface_adapter.LogOut.LogOutController;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,12 +22,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "display dash";
     private final DashboardController dashboardController;
     private final LogOutController logOutController;
+    private final DeleteAccountController deleteAccountController;
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
@@ -61,10 +68,11 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JScrollPane tableScrollPane;
 
     public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController, LogOutController logOutController,
-                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
+                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel, DeleteAccountController deleteAccountController) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
+        this.deleteAccountController = deleteAccountController;
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -100,6 +108,22 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         });
         this.setLayout(new GridLayout());
         this.add(main);
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Loops through selected rows and deletes accounts (implicitly does nothing if no rows are selected)
+                List<String> titlesToDelete = new ArrayList<>();
+                List<String> usernamesToDelete = new ArrayList<>();
+                for (int row : table.getSelectedRows()) {
+                    titlesToDelete.add((String) table.getValueAt(row, 1));
+                    usernamesToDelete.add((String) table.getValueAt(row, 2));
+                }
+                for (int i = 0; i < titlesToDelete.toArray().length; i++) {
+                    deleteAccountController.execute(titlesToDelete.get(i), usernamesToDelete.get(i));
+                }
+            }
+        });
     }
 
     private void setRightPanelName(String name){
