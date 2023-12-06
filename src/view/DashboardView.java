@@ -17,6 +17,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
@@ -76,6 +77,42 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.tableScrollPane = new JScrollPane(table);
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
+
+        autotypeUAndPButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String username = selectedAccount.getUsername();
+                    String password = selectedAccount.getPassword();
+
+                    if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
+                        copyToClipboard(username + "\t" + password); // Use "\t" for tab separation
+                        autoType();
+                    }
+                }
+            }
+        });
+
+
+        autotypePButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String password = selectedAccount.getPassword();
+
+                    if (password != null && !password.isEmpty()) {
+                        copyToClipboard(password);
+                        autoType();
+                    }
+                }
+            }
+        });
 
         copyUPButton.addActionListener(new ActionListener() {
             @Override
@@ -155,6 +192,25 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         });
         this.setLayout(new GridLayout());
         this.add(main);
+    }
+
+    private void autoType() {
+        try {
+            Robot robot = new Robot();
+            robot.delay(1000); // Initial delay, adjust as needed
+
+            // Simulate Ctrl + V to paste from clipboard
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+
+            // Press Enter to submit
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     private void copyToClipboard(String text) {
