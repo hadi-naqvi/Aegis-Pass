@@ -112,18 +112,21 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Loops through selected rows and deletes accounts (implicitly does nothing if no rows are selected)
-                List<String> titlesToDelete = new ArrayList<>();
-                List<String> usernamesToDelete = new ArrayList<>();
-                for (int row : table.getSelectedRows()) {
-                    titlesToDelete.add((String) table.getValueAt(row, 1));
-                    usernamesToDelete.add((String) table.getValueAt(row, 2));
-                }
-                for (int i = 0; i < titlesToDelete.toArray().length; i++) {
-                    deleteAccountController.execute(titlesToDelete.get(i), usernamesToDelete.get(i));
+                // Gets most recent
+                int rowIndex = table.getSelectedRow();
+                if (rowIndex == -1){
+                    deleteAccountNoAccount();
+                } else {
+                    String titleToDelete = (String) table.getValueAt(rowIndex, 1);
+                    String usernameToDelete = (String) table.getValueAt(rowIndex, 2);
+                    deleteAccountController.execute(titleToDelete, usernameToDelete);
                 }
             }
         });
+    }
+
+    private void deleteAccountNoAccount() {
+        JOptionPane.showMessageDialog(this, "no account selected");
     }
 
     private void setRightPanelName(String name){
