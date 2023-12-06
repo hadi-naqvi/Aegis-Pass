@@ -91,27 +91,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String password = selectedAccount.getPassword();
 
                     if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
-                        copyToClipboard(username + "\t" + password); // Use "\t" for tab separation
+                        String userAndPassword = "Username: " + username + "; Password: " + password;
+                        copyToClipboard(userAndPassword);
+                        autoType();
                     }
-
-                    try {
-                        Robot robot = new Robot();
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-
-                        // Get the clipboard content
-                        Transferable contents = clipboard.getContents(null);
-
-                        // Check if the clipboard has text data
-                        if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                            String clipboardText = (String) contents.getTransferData(DataFlavor.stringFlavor);
-
-                            // Simulate typing the clipboard content
-                            typeString(robot, clipboardText);
-                        }
-                    } catch (Exception ev) {
-                        ev.printStackTrace(); // Handle the exception appropriately
-                    }
-
                 }
             }
         });
@@ -127,26 +110,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String password = selectedAccount.getPassword();
 
                     if (password != null && !password.isEmpty()) {
-                        // Copy the password to the clipboard
                         copyToClipboard(password);
-                    }
-
-                    try {
-                        Robot robot = new Robot();
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-
-                        // Get the clipboard content
-                        Transferable contents = clipboard.getContents(null);
-
-                        // Check if the clipboard has text data
-                        if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                            String clipboardText = (String) contents.getTransferData(DataFlavor.stringFlavor);
-
-                            // Simulate typing the clipboard content
-                            typeString(robot, clipboardText);
-                        }
-                    } catch (Exception ev) {
-                        ev.printStackTrace(); // Handle the exception appropriately
+                        autoType();
                     }
                 }
             }
@@ -232,19 +197,21 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.add(main);
     }
 
-    private static void typeString(Robot robot, String text) {
-        for (char c : text.toCharArray()) {
-            typeCharacter(robot, c);
-        }
-    }
-
-    private static void typeCharacter(Robot robot, char character) {
+    private void autoType() {
         try {
-            int keyCode = KeyEvent.getExtendedKeyCodeForChar(character);
-            robot.keyPress(keyCode);
-            robot.keyRelease(keyCode);
-            Thread.sleep(50); // Adjust this delay if needed
-        } catch (InterruptedException e) {
+            Robot robot = new Robot();
+            robot.delay(1000); // Initial delay, adjust as needed
+
+            // Simulate Ctrl + V to paste from clipboard
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+
+            // Press Enter to submit
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }
