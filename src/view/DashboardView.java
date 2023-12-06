@@ -8,12 +8,21 @@ import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.DeleteAccount.DeleteAccountController;
+import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordState;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
+import interface_adapter.UpdateAccount.UpdateAccountController;
+import interface_adapter.UpdateAccount.UpdateAccountState;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import view.ScanItemView;
-
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,12 +31,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "display dash";
     private final DashboardController dashboardController;
     private final LogOutController logOutController;
+    private final DeleteAccountController deleteAccountController;
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
@@ -61,20 +74,28 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
+    private GeneratePasswordView generatePasswordPanel;
+    private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
 
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
-                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel) {
+                         CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
+                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
+                         DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
+                         GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
+        this.deleteAccountController = deleteAccountController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
-
+        this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, generatePasswordController);
+        this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
+
 
         this.accountsTableModel = new DefaultTableModel();
         this.accountsTableModel.setColumnIdentifiers(new Object[]{"Icon", "Title", "Username", "URL", "Notes", "Date"});
@@ -116,8 +137,76 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 setRightPanelName("create account");
             }
         });
+
+        generatePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(generatePasswordPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("generate password");
+                generatePasswordPanel.lengthSlider.setValue(16);
+                GeneratePasswordState generatePasswordState = generatePasswordViewModel.getState();
+                generatePasswordController.execute(generatePasswordState.getPasswordQuality(), generatePasswordState.getPasswordLength(),
+                        generatePasswordState.isLowerAlpha(), generatePasswordState.isUpperAlpha(), generatePasswordState.isNumericalChars(), generatePasswordState.isExtendedAscii(),
+                        generatePasswordState.isPunctuationOne(), generatePasswordState.isPunctuationTwo(), generatePasswordState.isPunctuationThree(),
+                        generatePasswordState.isPunctuationFour(), generatePasswordState.isPunctuationFive(), generatePasswordState.getAlsoIncludeFrom(),
+                        generatePasswordState.getExcludeFrom());
+            }
+        });
+
+        editViewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int rowIndex = table.getSelectedRow();
+                if (rowIndex == -1){
+                    updateAccountNoAccount();
+                }
+                UpdateAccountState state = updateAccountViewModel.getState();
+                state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                state.setUsernameError(null);
+                updateAccountViewModel.setState(state);
+                main.remove(rightPanel);
+                main.add(updateAccountPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("update account");
+
+                updateAccountPanel.setTitleText(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                updateAccountPanel.setUsernameText(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                updateAccountPanel.setPasswordText(dashboardViewModel.getState().getAccounts().get(rowIndex).getPassword());
+                updateAccountPanel.set2FAKeyText(dashboardViewModel.getState().getAccounts().get(rowIndex).getSecretKey());
+                updateAccountPanel.setURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getURL());
+                updateAccountPanel.setIconURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getIconURL());
+                updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
+            }
+        });
+
         this.setLayout(new GridLayout());
         this.add(main);
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Gets most recent
+                int rowIndex = table.getSelectedRow();
+                if (rowIndex == -1){
+                    deleteAccountNoAccount();
+                } else {
+                    String titleToDelete = (String) table.getValueAt(rowIndex, 1);
+                    String usernameToDelete = (String) table.getValueAt(rowIndex, 2);
+                    deleteAccountController.execute(titleToDelete, usernameToDelete);
+                }
+            }
+        });
+    }
+
+    private void deleteAccountNoAccount() {
+        JOptionPane.showMessageDialog(this, "no account selected");
+    }
+
+    private void updateAccountNoAccount(){
+        JOptionPane.showMessageDialog(this, "no account selected");
     }
 
     private void setRightPanelName(String name){

@@ -1,12 +1,21 @@
 package app;
 
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardPresenter;
 import interface_adapter.Dashboard.DashboardViewModel;
+import interface_adapter.DeleteAccount.DeleteAccountController;
+import interface_adapter.DeleteAccount.DeleteAccountPresenter;
+import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 import interface_adapter.LogOut.LogOutPresenter;
+import interface_adapter.ScanItem.ScanItemController;
+import interface_adapter.UpdateAccount.UpdateAccountController;
+import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
@@ -14,10 +23,15 @@ import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.Dashboard.DashboardInputBoundary;
 import use_case.Dashboard.DashboardInteractor;
 import use_case.Dashboard.DashboardOutputBoundary;
+import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
+import use_case.DeleteAccount.DeleteAccountInputBoundary;
+import use_case.DeleteAccount.DeleteAccountInteractor;
+import use_case.DeleteAccount.DeleteAccountOutputBoundary;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
 import use_case.LogOut.LogOutOutputBoundary;
+import use_case.UpdateAccount.UpdateAccountDataAccessInterface;
 import use_case.ScanItem.ScanItemDataAccessInterface;
 import view.DashboardView;
 import view.ScanItemView;
@@ -37,17 +51,26 @@ public class DashboardUseCaseFactory {
                                        ScanItemViewModel scanItemViewModel,
                                        ScanItemDataAccessInterface scanItemDataAccessObject,
                                        CreateAccountViewModel createAccountViewModel,
+                                       DeleteAccountViewModel deleteAccountViewModel,
+                                       UpdateAccountViewModel updateAccountViewModel,
+                                       GeneratePasswordViewModel generatePasswordViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
         LogOutController logOutController = LogOutUseCaseFactory.createLogOutUseCase(viewManagerModel, authenticationViewModel,
                 (LogOutDataAccessInterface) userDataAccessObject);
+        ScanItemController scanItemController = ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
+                dashboardViewModel);
+        GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.createGeneratePasswordUseCase(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
+        UpdateAccountController updateAccountController = UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
+                updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject);
+        CreateAccountController createAccountController = CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
+                createAccountDataAccessObject, dashboardViewModel);
+        DeleteAccountController deleteAccountController = DeleteAccountUseCaseFactory.createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel, dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject);
 
-        return new DashboardView(dashboardViewModel, dashboardController, logOutController,
-                ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
-                        dashboardViewModel), scanItemViewModel,
-                CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
-                        createAccountDataAccessObject, dashboardViewModel), createAccountViewModel);
+        return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
+                scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
+                deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel);
     }
 
     /**
