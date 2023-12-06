@@ -90,7 +90,6 @@ public class Main {
         views.add(scanItemView, scanItemView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, createAccountViewModel, deleteAccountViewModel, dashDataAccessObject);
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
                 generatePasswordViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
