@@ -1,5 +1,8 @@
 package view;
 
+import interface_adapter.CheckPassQuality.CheckPassQualityController;
+import interface_adapter.CheckPassQuality.CheckPassQualityState;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordState;
@@ -51,14 +54,20 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
     private JPanel qualityPanel;
     private DashboardViewModel dashboardViewModel;
     private GeneratePasswordViewModel generatePasswordViewModel;
+    private CheckPassQualityViewModel checkPassQualityViewModel;
     private GeneratePasswordController generatePasswordController;
+    private CheckPassQualityController checkPassQualityController;
 
     public GeneratePasswordView(DashboardViewModel dashboardViewModel,
                                 GeneratePasswordViewModel generatePasswordViewModel,
-                                GeneratePasswordController generatePasswordController) {
+                                CheckPassQualityViewModel checkPassQualityViewModel,
+                                GeneratePasswordController generatePasswordController,
+                                CheckPassQualityController checkPassQualityController) {
         this.dashboardViewModel = dashboardViewModel;
         this.generatePasswordViewModel = generatePasswordViewModel;
+        this.checkPassQualityViewModel = checkPassQualityViewModel;
         this.generatePasswordController = generatePasswordController;
+        this.checkPassQualityController = checkPassQualityController;
         this.generatePasswordViewModel.addPropertyChangeListener(this);
 
         lengthSlider.setMinimum(1);
@@ -69,6 +78,31 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
         aZButton.setBackground(new Color(0xA3BE8C));
         a09Button.setBackground(new Color(0xA3BE8C));
         lowerazButton.setBackground(new Color(0xA3BE8C));
+        passwordQuality.setMinimum(0);
+        passwordQuality.setMaximum(200);
+
+        this.passwordField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                GeneratePasswordState state = generatePasswordViewModel.getState();
+                state.setPasswordField(passwordField.getText());
+                generatePasswordViewModel.setState(state);
+                checkPasswordQuality();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                GeneratePasswordState state = generatePasswordViewModel.getState();
+                state.setPasswordField(passwordField.getText());
+                generatePasswordViewModel.setState(state);
+                checkPasswordQuality();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        });
 
         this.regenerateButton.addActionListener(new ActionListener() {
             @Override
@@ -404,6 +438,7 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
         Object state = evt.getNewValue();
         if (state instanceof GeneratePasswordState) {
             GeneratePasswordState generatePasswordState = (GeneratePasswordState) evt.getNewValue();
+            CheckPassQualityState checkPassQualityState = checkPassQualityViewModel.getState();
             if (generatePasswordState.getGeneratePasswordError() != null) {
                 JOptionPane.showMessageDialog(this, generatePasswordState.getGeneratePasswordError());
             }
@@ -412,4 +447,27 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
             }
         }
     }
+
+    /**
+     * Helper method which updates the password quality JProgressBar when a new password is generated
+     */
+    private void checkPasswordQuality() {
+        this.checkPassQualityController.execute(generatePasswordViewModel.getState().getPasswordField());
+        int passwordQuality = checkPassQualityViewModel.getState().getPasswordQuality();
+        this.passwordQuality.setValue(Math.min(200, passwordQuality));
+        this.entropyLabel.setText("Entropy: " + passwordQuality + " bits");
+
+        // Calculate normalized quality for color transition
+        double normalizedQuality = (double) Math.min(200, passwordQuality) / this.passwordQuality.getMaximum();
+
+        // Adjust the hue component for a smooth transition from red to yellow to green
+        float hue = (float) (0.0 + normalizedQuality * 0.33);
+
+        // Create a color with the adjusted hue, full saturation, and brightness
+        Color progressBarColor = Color.getHSBColor(hue, 1.0f, 1.0f);
+
+        this.passwordQuality.setForeground(progressBarColor);
+    }
+
+
 }

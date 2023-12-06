@@ -2,6 +2,8 @@ package view;
 
 import entity.AccountInfo;
 import interface_adapter.Authentication.AuthenticationState;
+import interface_adapter.CheckPassQuality.CheckPassQualityController;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountState;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
@@ -85,14 +87,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
-                         GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel) {
+                         GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel,
+                         CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.deleteAccountController = deleteAccountController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
-        this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, generatePasswordController);
+        this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
         this.dashboardViewModel.addPropertyChangeListener(this);
 
