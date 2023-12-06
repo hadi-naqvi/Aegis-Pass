@@ -23,7 +23,8 @@ public class UpdateAccountInteractor implements  UpdateAccountInputBoundary{
      */
     @Override
     public void execute(UpdateAccountInputData updateAccountInputData) {
-        boolean duplicate = isDuplicateAccount(updateAccountInputData.getTitle(), updateAccountInputData.getUsername());
+        boolean duplicate = isDuplicateAccount(updateAccountInputData.getTitle(), updateAccountInputData.getUsername(),
+                updateAccountInputData.getOriginalTitle(), updateAccountInputData.getOriginalUser());
         if (duplicate){
             updateAccountPresenter.prepareFailView("Duplicate Account found");
         }
@@ -44,10 +45,11 @@ public class UpdateAccountInteractor implements  UpdateAccountInputBoundary{
      * @param username The username of the account to be checked
      * @return true if a duplicate account is found, false otherwise
      */
-    public boolean isDuplicateAccount(String title, String username) {
+    public boolean isDuplicateAccount(String title, String username, String originalTitle, String originalUsername) {
         // Check for duplicate title and username combination
         for (AccountInfo account : userDataAccessObject.getAccounts()) {
-            if (account.getTitle().equals(title) && account.getUsername().equals(username)) {
+            if (account.getTitle().equals(title) && account.getUsername().equals(username) &&
+            !(account.getTitle().equals(originalTitle) && account.getUsername().equals(originalUsername))) {
                 return true; // Duplicate title and username combination found
             }
         }

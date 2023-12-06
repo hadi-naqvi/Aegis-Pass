@@ -31,9 +31,10 @@ public class UpdateAccountPresenter implements UpdateAccountOutputBoundary {
      */
     @Override
     public void prepareSuccessView(UpdateAccountOutputData updateAccountOutputData) {
-        DashboardState dashboardState = dashboardViewModel.getState();
-        dashboardState.setAccounts(updateAccountOutputData.getAccounts());
-        dashboardViewModel.setState(dashboardState);
+        UpdateAccountState state = updateAccountViewModel.getState();
+        state.setUsernameError(null);
+        updateAccountViewModel.setState(state);
+        updateAccountViewModel.firePropertyChanged();
 
         switchView();
     }

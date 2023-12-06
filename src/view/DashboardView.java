@@ -133,6 +133,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 UpdateAccountState state = updateAccountViewModel.getState();
                 state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
                 state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                state.setUsernameError(null);
                 updateAccountViewModel.setState(state);
                 main.remove(rightPanel);
                 main.add(updateAccountPanel, BorderLayout.CENTER);

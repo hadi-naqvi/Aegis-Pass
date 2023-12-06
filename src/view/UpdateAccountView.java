@@ -52,18 +52,6 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
                     updateAccountController.execute( state.getOriginalTitle(), state.getOriginalUser(),
                             state.getTitle(), state.getUsername(), state.getPassword(), state.getSecretKey(),
                             state.getURL(), state.getIconURL(), LocalDateTime.now(), state.getNotes());
-                    inputTitle.setText("");
-                    inputUsername.setText("");
-                    inputPassword.setText("");
-                    inputKey.setText("");
-                    inputURL.setText("");
-                    inputIcon.setText("");
-                    inputNotes.setText("");
-
-                    DashboardState state2 = dashboardViewModel.getState();
-                    state2.setAccounts(null);
-                    dashboardViewModel.setState(state2);
-                    dashboardViewModel.firePropertyChanged();
                 }
 
             }
@@ -80,7 +68,6 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
                 setIconURLText("");
                 setNotesText("");
                 updateAccountController.switchView();
-
             }
         });
 
@@ -274,6 +261,15 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
             UpdateAccountState updateAccountState = (UpdateAccountState) evt.getNewValue();
             if (updateAccountState.getUsernameError() != null) {
                 JOptionPane.showMessageDialog(this, updateAccountState.getUsernameError());
+            }
+            else {
+                inputTitle.setText("");
+                inputUsername.setText("");
+                inputPassword.setText("");
+                inputKey.setText("");
+                inputURL.setText("");
+                inputIcon.setText("");
+                inputNotes.setText("");
             }
         }
     }
