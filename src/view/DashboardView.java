@@ -71,7 +71,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
-                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewmodel) {
+                         UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
