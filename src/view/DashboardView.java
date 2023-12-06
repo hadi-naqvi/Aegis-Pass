@@ -9,6 +9,7 @@ import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
+import interface_adapter.GeneratePassword.GeneratePasswordState;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
 
@@ -60,7 +61,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
-    private JPanel generatePasswordPanel;
+    private GeneratePasswordView generatePasswordPanel;
     private JScrollPane tableScrollPane;
 
     public DashboardView(DashboardViewModel dashboardViewModel, DashboardController dashboardController,
@@ -113,6 +114,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(generatePasswordPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("generate password");
+                generatePasswordPanel.lengthSlider.setValue(16);
+                GeneratePasswordState generatePasswordState = generatePasswordViewModel.getState();
+                generatePasswordController.execute(generatePasswordState.getPasswordQuality(), generatePasswordState.getPasswordLength(),
+                        generatePasswordState.isLowerAlpha(), generatePasswordState.isUpperAlpha(), generatePasswordState.isNumericalChars(), generatePasswordState.isExtendedAscii(),
+                        generatePasswordState.isPunctuationOne(), generatePasswordState.isPunctuationTwo(), generatePasswordState.isPunctuationThree(),
+                        generatePasswordState.isPunctuationFour(), generatePasswordState.isPunctuationFive(), generatePasswordState.getAlsoIncludeFrom(),
+                        generatePasswordState.getExcludeFrom());
             }
         });
         this.setLayout(new GridLayout());
