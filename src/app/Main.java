@@ -6,6 +6,7 @@ import data_access.FileScanDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
@@ -52,6 +53,7 @@ public class Main {
         DeleteAccountViewModel deleteAccountViewModel = new DeleteAccountViewModel();
         GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
         UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
+        CheckPassQualityViewModel checkPassQualityViewModel = new CheckPassQualityViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
@@ -91,7 +93,7 @@ public class Main {
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
-                generatePasswordViewModel, createDataAccessObject);
+                generatePasswordViewModel, checkPassQualityViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
