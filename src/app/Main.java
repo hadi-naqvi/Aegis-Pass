@@ -8,7 +8,6 @@ import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
-import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
@@ -49,7 +48,6 @@ public class Main {
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         ScanItemViewModel scanItemViewModel = new ScanItemViewModel();
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
-        DeleteAccountViewModel deleteAccountViewModel = new DeleteAccountViewModel();
         GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
         UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
 
@@ -90,8 +88,7 @@ public class Main {
         views.add(scanItemView, scanItemView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, createAccountViewModel, deleteAccountViewModel, dashDataAccessObject);
-                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
+                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, updateAccountViewModel,
                 generatePasswordViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
