@@ -72,6 +72,13 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setTitleText("");
+                setUsernameText("");
+                setPasswordText("");
+                set2FAKeyText("");
+                setURLText("");
+                setIconURLText("");
+                setNotesText("");
                 updateAccountController.switchView();
 
             }
@@ -269,5 +276,61 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
                 JOptionPane.showMessageDialog(this, updateAccountState.getUsernameError());
             }
         }
+    }
+
+    /**
+     * Method which sets the text of the inputTitle
+     * @param title The title
+     */
+    public void setTitleText(String title) {
+        this.inputTitle.setText(title);
+    }
+
+    /**
+     * Method which sets the text of the inputUsername
+     * @param username The username
+     */
+    public void setUsernameText(String username) {
+        this.inputUsername.setText(username);
+    }
+
+    /**
+     * Method which sets the text of the inputPasword
+     * @param password The password
+     */
+    public void setPasswordText(String password) {
+        this.inputPassword.setText(password);
+    }
+
+    /**
+     * Method which sets the text of the input 2fa key
+     * @param key The 2fa secret key
+     */
+    public void set2FAKeyText(String key) {
+        this.inputKey.setText(key);
+    }
+
+    /**
+     * Method which sets the text of the url input
+     * @param url The url
+     */
+    public void setURLText(String url) {
+        this.inputURL.setText(url);
+    }
+
+    /**
+     * Method which sets the text of the icon url input
+     * @param iconURL The icon's url
+     */
+    public void setIconURLText(String iconURL) {
+        this.inputIcon.setText(iconURL);
+    }
+
+    /**
+     * Method which sets the text of the notes text input
+     * @param notes
+     */
+    public void setNotesText(String notes) {
+        this.inputNotes.setText(notes);
     }
 }

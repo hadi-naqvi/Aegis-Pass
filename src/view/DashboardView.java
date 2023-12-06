@@ -63,7 +63,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel Notes;
     private JLabel Date;
     private JPanel createAccountPanel;
-    private JPanel updateAccountPanel;
+    private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
 
@@ -138,6 +138,14 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(updateAccountPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("update account");
+
+                updateAccountPanel.setTitleText(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                updateAccountPanel.setUsernameText(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                updateAccountPanel.setPasswordText(dashboardViewModel.getState().getAccounts().get(rowIndex).getPassword());
+                updateAccountPanel.set2FAKeyText(dashboardViewModel.getState().getAccounts().get(rowIndex).getSecretKey());
+                updateAccountPanel.setURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getURL());
+                updateAccountPanel.setIconURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getIconURL());
+                updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
             }
         });
 
