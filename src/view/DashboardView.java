@@ -14,7 +14,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -90,8 +92,26 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
                     if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
                         copyToClipboard(username + "\t" + password); // Use "\t" for tab separation
-                        autoType();
                     }
+
+                    try {
+                        Robot robot = new Robot();
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+                        // Get the clipboard content
+                        Transferable contents = clipboard.getContents(null);
+
+                        // Check if the clipboard has text data
+                        if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                            String clipboardText = (String) contents.getTransferData(DataFlavor.stringFlavor);
+
+                            // Simulate typing the clipboard content
+                            typeString(robot, clipboardText);
+                        }
+                    } catch (Exception ev) {
+                        ev.printStackTrace(); // Handle the exception appropriately
+                    }
+
                 }
             }
         });
@@ -107,8 +127,26 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String password = selectedAccount.getPassword();
 
                     if (password != null && !password.isEmpty()) {
+                        // Copy the password to the clipboard
                         copyToClipboard(password);
-                        autoType();
+                    }
+
+                    try {
+                        Robot robot = new Robot();
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+                        // Get the clipboard content
+                        Transferable contents = clipboard.getContents(null);
+
+                        // Check if the clipboard has text data
+                        if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                            String clipboardText = (String) contents.getTransferData(DataFlavor.stringFlavor);
+
+                            // Simulate typing the clipboard content
+                            typeString(robot, clipboardText);
+                        }
+                    } catch (Exception ev) {
+                        ev.printStackTrace(); // Handle the exception appropriately
                     }
                 }
             }
@@ -194,21 +232,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.add(main);
     }
 
-    private void autoType() {
+    private static void typeString(Robot robot, String text) {
+        for (char c : text.toCharArray()) {
+            typeCharacter(robot, c);
+        }
+    }
+
+    private static void typeCharacter(Robot robot, char character) {
         try {
-            Robot robot = new Robot();
-            robot.delay(1000); // Initial delay, adjust as needed
-
-            // Simulate Ctrl + V to paste from clipboard
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-
-            // Press Enter to submit
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-        } catch (AWTException e) {
+            int keyCode = KeyEvent.getExtendedKeyCodeForChar(character);
+            robot.keyPress(keyCode);
+            robot.keyRelease(keyCode);
+            Thread.sleep(50); // Adjust this delay if needed
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
