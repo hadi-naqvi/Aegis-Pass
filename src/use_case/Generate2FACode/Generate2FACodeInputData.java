@@ -4,7 +4,7 @@ public class Generate2FACodeInputData {
     final private String secretKey;
 
     /**
-     * constructor method
+     * Constructor method
      * @param secretKey the secretkey
      */
     public Generate2FACodeInputData(String secretKey) {
@@ -12,9 +12,9 @@ public class Generate2FACodeInputData {
     }
 
     /**
-     * getter method for secretKey
-     * @param secretKey
+     * Getter method for secretKey
      * @return return the secretKey
      */
-    public String getSecretKey(String secretKey){return this.secretKey;}
+    public String getSecretKey() {
+        return this.secretKey;}
 }
