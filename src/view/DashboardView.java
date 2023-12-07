@@ -97,7 +97,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
                          GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel,
-                         GenerateEmailController generateEmailController, GenerateEmailViewModel generateEmailViewModel) {
+                         GenerateEmailController generateEmailController, GenerateEmailViewModel generateEmailViewModel,
                          CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel,
                          Generate2FACodeController generate2FACodeController, Generate2FACodeViewModel generate2FACodeViewModel) {
         this.dashboardViewModel = dashboardViewModel;

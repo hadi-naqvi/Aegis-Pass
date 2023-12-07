@@ -45,7 +45,6 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(generateEmailButton)) {
-                    System.out.println("hello");
                     GenerateEmailState currentState = generateEmailViewModel.getState();
                     try {
                         generateEmailController.execute(currentState.getAccountName(), "nullPass");
@@ -88,7 +87,7 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
 
                 state.setAccountName("");
                 state.setPassName("");
-                state.setError("");
+                state.setError(null);
 
                 emailTextfield.setText("");
 
@@ -130,13 +129,25 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
         Object state = evt.getNewValue();
         if (state instanceof GenerateEmailState){
             GenerateEmailState generateEmailState = (GenerateEmailState) evt.getNewValue();
+            System.out.println("hello");
+            System.out.println(generateEmailState.getAccountName());
             String message = generateEmailState.getAccountName() + " successfully created!\nEmail copied to clipboard";
             if (generateEmailState.getError() == null) {
                 copyToClipboard(generateEmailState.getAccountName());
                 JOptionPane.showMessageDialog(this, message);
+                generateEmailViewModel.getState().setAccountName("");
+                generateEmailViewModel.getState().setPassName("");
+                generateEmailViewModel.getState().setError("");
+
+                emailTextfield.setText("");
 
             } else {
                 JOptionPane.showMessageDialog(this, generateEmailState.getError());
+                generateEmailViewModel.getState().setAccountName("");
+                generateEmailViewModel.getState().setPassName("");
+                generateEmailViewModel.getState().setError(null);
+
+                emailTextfield.setText("");
             }
         }
     }

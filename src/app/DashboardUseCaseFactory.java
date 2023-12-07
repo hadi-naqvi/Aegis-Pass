@@ -61,9 +61,8 @@ public class DashboardUseCaseFactory {
                                        DeleteAccountViewModel deleteAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
                                        GeneratePasswordViewModel generatePasswordViewModel,
-                                       CreateAccountDataAccessInterface createAccountDataAccessObject,
                                        GenerateEmailViewModel generateEmailViewModel,
-                                       GenerateEmailDataAccessInterface generateEmailDataAccessObject) {
+                                       GenerateEmailDataAccessInterface generateEmailDataAccessObject,
                                        CheckPassQualityViewModel checkPassQualityViewModel,
                                        Generate2FACodeViewModel generate2FACodeViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
