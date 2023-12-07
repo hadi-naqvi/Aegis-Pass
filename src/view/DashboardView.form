@@ -133,12 +133,6 @@
                   <text value="Copy P"/>
                 </properties>
               </component>
-              <component id="12e73" class="javax.swing.JButton" binding="copyUPButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Copy UP"/>
-                </properties>
-              </component>
               <component id="b6542" class="javax.swing.JButton" binding="autotypeUAndPButton" default-binding="true">
                 <constraints/>
                 <properties>

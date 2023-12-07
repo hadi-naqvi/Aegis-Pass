@@ -91,9 +91,18 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String password = selectedAccount.getPassword();
 
                     if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
-                        String userAndPassword = "Username: " + username + "; Password: " + password;
-                        copyToClipboard(userAndPassword);
-                        autoType();
+                        String userAndPassword = username + "\t" + password;
+
+                        Container container = SwingUtilities.getAncestorOfClass(JFrame.class, DashboardView.this);
+
+                        // Check if the ancestor is a JFrame
+                        if (container instanceof JFrame) {
+                            JFrame frame = (JFrame) container;
+                            // Set the state of the JFrame to minimized
+                            frame.setState(JFrame.ICONIFIED);
+                        }
+
+                        autoType(userAndPassword);
                     }
                 }
             }
@@ -110,31 +119,20 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String password = selectedAccount.getPassword();
 
                     if (password != null && !password.isEmpty()) {
-                        copyToClipboard(password);
-                        autoType();
+
+                        Container container = SwingUtilities.getAncestorOfClass(JFrame.class, DashboardView.this);
+
+                        // Check if the ancestor is a JFrame
+                        if (container instanceof JFrame) {
+                            JFrame frame = (JFrame) container;
+                            // Set the state of the JFrame to minimized
+                            frame.setState(JFrame.ICONIFIED);
+                        }
+                        autoType(password);
                     }
                 }
             }
         });
-
-        copyUPButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-
-                if (selectedRow != -1) {
-                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
-                    String username = selectedAccount.getUsername();
-                    String password = selectedAccount.getPassword();
-
-                    if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
-                        String userAndPassword = "Username: " + username + "; Password: " + password;
-                        copyToClipboard(userAndPassword);
-                    }
-                }
-            }
-        });
-
 
         copyPButton.addActionListener(new ActionListener() {
             @Override
@@ -197,20 +195,18 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.add(main);
     }
 
-    private void autoType() {
+    private void autoType(String text) {
         try {
             Robot robot = new Robot();
             robot.delay(1000); // Initial delay, adjust as needed
 
-            // Simulate Ctrl + V to paste from clipboard
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
+            char[] characters = text.toCharArray();
 
-            // Press Enter to submit
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
+            for (char character : characters) {
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(character);
+                robot.keyPress(keyCode);
+                robot.keyRelease(keyCode);
+            }
         } catch (AWTException e) {
             e.printStackTrace();
         }
