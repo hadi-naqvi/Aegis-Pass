@@ -23,7 +23,10 @@ import interface_adapter.UpdateAccount.UpdateAccountState;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemViewModel;
-
+import view.ScanItemView;
+import interface_adapter.CheckBreach.CheckBreachController;
+import interface_adapter.CheckBreach.CheckBreachViewModel;
+import view.CheckBreachView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -86,6 +89,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
+    private JPanel checkBreachPanel;
     private JPanel genEmailRightPanel;
     private JScrollPane tableScrollPane;
     private Timer timer;
@@ -93,6 +97,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
+                         CheckBreachController checkBreachController, CheckBreachViewModel checkBreachViewModel,
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
@@ -106,6 +111,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.deleteAccountController = deleteAccountController;
         this.generate2FACodeController = generate2FACodeController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
+        this.checkBreachPanel = new CheckBreachView(checkBreachViewModel, checkBreachController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
         this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
@@ -167,6 +173,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(scanItemPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("scan item");
+            }
+        });
+
+        haveibeenpwnedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(checkBreachPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("check breach");
             }
         });
 
