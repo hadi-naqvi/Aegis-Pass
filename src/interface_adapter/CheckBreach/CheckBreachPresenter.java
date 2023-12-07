@@ -33,6 +33,7 @@ public class CheckBreachPresenter implements CheckBreachOutputBoundary {
     @Override
     public void prepareSuccessView(CheckBreachOutputData checkBreachOutputData) {
         CheckBreachState checkBreachState = checkBreachViewModel.getState();
+        checkBreachState.setError(null);
         this.checkBreachViewModel.setState(checkBreachState);
         checkBreachState.setResults(checkBreachOutputData.getResults());
         checkBreachViewModel.firePropertyChanged();
