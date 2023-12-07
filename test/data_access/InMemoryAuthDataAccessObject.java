@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.CommonUser;
 import entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 import use_case.Authentication.AuthenticationDataAccessInterface;
@@ -14,6 +15,23 @@ public class InMemoryAuthDataAccessObject implements SetupAuthDataAccessInterfac
     private final Map<String, List<String>> users = new HashMap<>();
     private final String PEPPER = "$2a$15$sDwsCyD.ZiWm3zSh1lzR0e";
     private final String SALT = "$2a$15$sDwsCyD.ZiWm3zSh1lzR0e";
+
+    /**
+     * Constructor to initialize with no test user
+     */
+    public InMemoryAuthDataAccessObject() {
+
+    }
+
+    /**
+     * Alternative constructor to initialize and add a user
+     * @param username username for test user
+     * @param password password for test user
+     */
+    public InMemoryAuthDataAccessObject(String username, String password) {
+        User newUser = new CommonUser(username, password);
+        save(newUser);
+    }
 
     /**
      * Method which saves the user's username and password to our "fake database"
@@ -48,6 +66,9 @@ public class InMemoryAuthDataAccessObject implements SetupAuthDataAccessInterfac
     @Override
     public boolean validate(String username, String password) {
         String encryptedPassword = BCrypt.hashpw(password + this.PEPPER, this.SALT);
+        if (users.get(username) == null) {
+            return false;
+        }
         return encryptedPassword.equals(users.get(username).get(1));
     }
 
