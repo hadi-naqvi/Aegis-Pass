@@ -37,6 +37,7 @@
                 </constraints>
                 <properties>
                   <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
                   <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Generate Password"/>
@@ -48,6 +49,7 @@
                 </constraints>
                 <properties>
                   <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
                   <foreground color="-1249292"/>
                   <text value="Generate Email"/>
                 </properties>
@@ -58,6 +60,7 @@
                 </constraints>
                 <properties>
                   <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
                   <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Haveibeenpwned?"/>
@@ -69,6 +72,7 @@
                 </constraints>
                 <properties>
                   <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
                   <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Scan File/URL"/>
@@ -80,6 +84,7 @@
                 </constraints>
                 <properties>
                   <background color="-4234902"/>
+                  <font name="Roboto Light" size="24" style="0"/>
                   <foreground color="-1249292"/>
                   <text value="Sign Out"/>
                 </properties>
@@ -113,6 +118,8 @@
                 <constraints/>
                 <properties>
                   <background color="-8281663"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
                   <text value="Create"/>
                 </properties>
               </component>
@@ -120,41 +127,53 @@
                 <constraints/>
                 <properties>
                   <background color="-8281663"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
                   <text value="Edit"/>
                 </properties>
               </component>
-              <component id="931dd" class="javax.swing.JButton" binding="copyUButton" default-binding="true">
+              <component id="931dd" class="javax.swing.JButton" binding="copyUserButton" default-binding="true">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>
-                  <text value="Copy U"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Copy User"/>
                 </properties>
               </component>
-              <component id="cd25c" class="javax.swing.JButton" binding="copyPButton" default-binding="true">
+              <component id="cd25c" class="javax.swing.JButton" binding="copyPassButton" default-binding="true">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>
-                  <text value="Copy P"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Copy Pass"/>
                 </properties>
               </component>
-              <component id="b6542" class="javax.swing.JButton" binding="autotypeUAndPButton" default-binding="true">
+              <component id="b6542" class="javax.swing.JButton" binding="autotypeLoginButton" default-binding="true">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>
-                  <text value="Autotype U and P"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Autotype Login"/>
                 </properties>
               </component>
-              <component id="82c4c" class="javax.swing.JButton" binding="autotypePButton" default-binding="true">
+              <component id="82c4c" class="javax.swing.JButton" binding="autotypePassButton" default-binding="true">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>
-                  <text value="Autotype P"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Autotype Pass"/>
                 </properties>
               </component>
               <component id="9b1e4" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
                 <constraints/>
                 <properties>
                   <background color="-4234902"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
                   <text value="Delete"/>
                 </properties>
               </component>
@@ -164,7 +183,7 @@
             <constraints border-constraint="South"/>
             <properties>
               <background color="-11774358"/>
-              <visible value="true"/>
+              <visible value="false"/>
             </properties>
             <border type="empty">
               <size top="10" left="10" bottom="10" right="10"/>
@@ -242,8 +261,9 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <icon value="assets/google.png"/>
+                  <icon value="assets/unknown.png"/>
                   <text value=""/>
+                  <visible value="true"/>
                 </properties>
               </component>
               <component id="b4c8d" class="javax.swing.JLabel">

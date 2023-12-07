@@ -32,6 +32,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -42,7 +43,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
-    private JTable accounts;
     private JPanel main;
     private JPanel leftPanel;
     private JPanel rightPanel;
@@ -60,10 +60,10 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton createButton;
     private JButton editViewButton;
     private JButton deleteButton;
-    private JButton copyUButton;
-    private JButton copyPButton;
-    private JButton autotypeUAndPButton;
-    private JButton autotypePButton;
+    private JButton copyUserButton;
+    private JButton copyPassButton;
+    private JButton autotypeLoginButton;
+    private JButton autotypePassButton;
     private JLabel title;
     private JLabel username;
     private JLabel password;
@@ -96,10 +96,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.dashboardViewModel.addPropertyChangeListener(this);
 
 
-        this.accountsTableModel = new DefaultTableModel();
-        this.accountsTableModel.setColumnIdentifiers(new Object[]{"Icon", "Title", "Username", "URL", "Notes", "Date"});
+        this.accountsTableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        this.accountsTableModel.setColumnIdentifiers(new Object[]{"Title", "Username", "URL", "Notes", "Date"});
         table.setModel(this.accountsTableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getTableHeader().setReorderingAllowed(false);
         this.tableScrollPane = new JScrollPane(table);
+        this.tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
 
@@ -111,6 +120,20 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 state.setAccounts(null);
                 dashboardViewModel.setState(state);
                 dashboardViewModel.firePropertyChanged();
+                try {
+                    cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+                } catch (IOException exc) {
+                    exc.printStackTrace();
+                }
+
+                // Resets card view so sensitive data isn't leaked
+                title.setText("Title: ");
+                username.setText("Username: ");
+                password.setText("Password: ");
+                url.setText("URL: ");
+                date.setText("Date: ");
+                notes.setText("Notes: ");
+                cardPanel.setVisible(false);
 
                 // Logs the user out
                 logOutController.execute();
@@ -181,28 +204,35 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
-        try {
-            this.logo.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/image.png"))));
-            this.cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
         this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                cardPanel.setVisible(true);
-                table.getSelectedRow();
-                AccountInfo account = dashboardViewModel.getState().getAccounts().get(table.getSelectedRow());
-                try {
-                    cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+                if (!e.getValueIsAdjusting() && table.getSelectedRow() != -1) {
+                    cardPanel.setVisible(true);
+                    AccountInfo account = dashboardViewModel.getState().getAccounts().get(table.getSelectedRow());
+                    try {
+                        if (!account.getIconURL().equals("") && account.getIconURL() != null) {
+                            cardIcon.setIcon(new ImageIcon(ImageIO.read(new URL(account.getIconURL()))));
+                        }
+                        else {
+                            cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+                        }
+                    }
+                    catch (IOException ex) {
+                        try {
+                            cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+                        } catch (IOException exc) {
+                            exc.printStackTrace();
+                        }
+                    }
+
+                    title.setText(account.getTitle());
+                    username.setText("Username: " + account.getUsername());
+                    password.setText("Password: " + account.getPassword());
+                    url.setText("<html>URL: <a href=\"" + account.getURL() + "\">" + account.getURL() + "</a></html>");
+                    date.setText("Date: " + account.getDate());
+                    notes.setText("Notes: " + account.getNotes());
                 }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                title.setText(account.getTitle());
-                username.setText("Username: " + account.getUsername());
-                password.setText("Password: ");
             }
         });
 
@@ -219,8 +249,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 if (rowIndex == -1){
                     deleteAccountNoAccount();
                 } else {
-                    String titleToDelete = (String) table.getValueAt(rowIndex, 1);
-                    String usernameToDelete = (String) table.getValueAt(rowIndex, 2);
+                    String titleToDelete = (String) table.getValueAt(rowIndex, 0);
+                    String usernameToDelete = (String) table.getValueAt(rowIndex, 1);
                     deleteAccountController.execute(titleToDelete, usernameToDelete);
                 }
             }
@@ -279,9 +309,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
 
             this.dashboardController.execute();
-
             for (AccountInfo account : dashboardState.getAccounts()) {
-                accountsTableModel.addRow(new Object[]{account.getIconURL(), account.getTitle(), account.getUsername(),
+                accountsTableModel.addRow(new Object[]{account.getTitle(), account.getUsername(),
                         account.getURL(), account.getNotes(), account.getDate()});
             }
 
