@@ -103,6 +103,12 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
         this.add(main);
     }
 
+    private void copyToClipboard(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(text);
+        clipboard.setContents(selection, null);
+    }
+
 
     /**
      * Invoked when an action occurs.
@@ -134,12 +140,6 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
                 JOptionPane.showMessageDialog(this, generateEmailState.getError());
             }
         }
-    }
-
-    private void copyToClipboard(String text) {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection selection = new StringSelection(text);
-        clipboard.setContents(selection, null);
     }
 
 }
