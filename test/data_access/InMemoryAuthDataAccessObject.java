@@ -10,6 +10,7 @@ import java.util.*;
 
 public class InMemoryAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
 
+    // a map of the username to a list of the rest of the attribtues of a user
     private final Map<String, List<String>> users = new HashMap<>();
     private final String PEPPER = "$2a$15$sDwsCyD.ZiWm3zSh1lzR0e";
     private final String SALT = "$2a$15$sDwsCyD.ZiWm3zSh1lzR0e";
