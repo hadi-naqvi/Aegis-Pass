@@ -109,10 +109,6 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
             }
         });
 
-        btnGoSignup.setBorderPainted(false);
-        btnGoSignup.setFocusPainted(false);
-        btnGoSignup.setContentAreaFilled(false);
-
         this.setLayout(new GridLayout());
 
         this.add(mainAuthentication);
