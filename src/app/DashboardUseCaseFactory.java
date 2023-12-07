@@ -90,7 +90,7 @@ public class DashboardUseCaseFactory {
         GenerateEmailController generateEmailController = GenerateEmailUseCaseFactory.createGenerateEmailUseCase(viewManagerModel, generateEmailViewModel, generateEmailDataAccessObject,
                 dashboardViewModel);
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
-                scanItemViewModel, checkBreachViewModel, checkBreachDataAccessObject, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
+                scanItemViewModel, checkBreachController, checkBreachViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
                 deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel,
                 generateEmailController, generateEmailViewModel,
                 checkPassQualityController, checkPassQualityViewModel, generate2FACodeController, generate2FACodeViewModel);
