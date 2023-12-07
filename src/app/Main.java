@@ -2,6 +2,7 @@ package app;
 
 import data_access.FileAuthDataAccessObject;
 import data_access.FileDashDataAccessObject;
+import data_access.FileGenEmailDataAccessObject;
 import data_access.FileScanDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
@@ -9,6 +10,7 @@ import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
@@ -52,11 +54,13 @@ public class Main {
         DeleteAccountViewModel deleteAccountViewModel = new DeleteAccountViewModel();
         GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
         UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
+        GenerateEmailViewModel generateEmailViewModel = new GenerateEmailViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
         FileScanDataAccessObject scanDataAccessObject;
         CreateAccountDataAccessInterface createDataAccessObject;
+        FileGenEmailDataAccessObject genEmailDataAccessObject;
 
         try {
             authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(),
@@ -71,6 +75,7 @@ public class Main {
             scanDataAccessObject = new FileScanDataAccessObject(
                     System.getenv("VT_APIKEY"));
             createDataAccessObject = dashDataAccessObject;
+            genEmailDataAccessObject = new FileGenEmailDataAccessObject();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +96,7 @@ public class Main {
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
-                generatePasswordViewModel, createDataAccessObject);
+                generatePasswordViewModel, createDataAccessObject, generateEmailViewModel, genEmailDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
