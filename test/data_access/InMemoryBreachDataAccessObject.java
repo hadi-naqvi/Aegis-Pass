@@ -20,7 +20,7 @@ public class InMemoryBreachDataAccessObject implements CheckBreachDataAccessInte
     @Override
     public String checkEmail(String email) throws IOException, InterruptedException, URISyntaxException {
         if (email.equals("a")) {
-            return "Your password was found in breaches from: Deezer, Canva";
+            return "Your email was found in breaches from: Deezer, Canva";
         } else {
             return "We couldn't find your email in any breaches";
         }
