@@ -19,7 +19,7 @@ public class ScanItemInputData {
 
     /**
      * Getter method for the file path being entered during scanning
-     * @return The file path being entered during authentication
+     * @return The file path being entered during scan file
      */
     public String getFilePath() {
         return filePath;
@@ -27,7 +27,7 @@ public class ScanItemInputData {
 
     /**
      * Getter method for the url being entered during scanning
-     * @return The url being entered during authentication
+     * @return The url being entered during scan url
      */
     public String getUrl() { return url; }
 }

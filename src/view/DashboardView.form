@@ -141,7 +141,7 @@
                   <text value="Copy User 📋"/>
                 </properties>
               </component>
-              <component id="cd25c" class="javax.swing.JButton" binding="copyButton1" default-binding="true">
+              <component id="cd25c" class="javax.swing.JButton" binding="copyPassButton">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>

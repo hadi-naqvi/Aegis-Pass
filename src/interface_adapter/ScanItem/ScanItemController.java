@@ -9,7 +9,7 @@ public class ScanItemController {
     public final ScanItemInputBoundary scanItemInteractor;
 
     /**
-     * Constructor method for the controller for the authentication use case
+     * Constructor method for the controller for the scan item use case
      * @param scanItemInteractor The use case interactor object for the scanItem use case
      */
     public ScanItemController(ScanItemInputBoundary scanItemInteractor) {

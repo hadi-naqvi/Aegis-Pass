@@ -9,7 +9,7 @@ public class ScanItemOutputData {
     private String results;
 
     /**
-     * Constructor method for the Dashboard output data
+     * Constructor method for the ScanItem output data
      */
     public ScanItemOutputData(boolean useCaseFailed, String results) {
         this.useCaseFailed = useCaseFailed;

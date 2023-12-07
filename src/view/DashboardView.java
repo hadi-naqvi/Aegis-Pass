@@ -10,6 +10,8 @@ import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountController;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GenerateEmail.GenerateEmailController;
+import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.Generate2FACode.Generate2FACodeController;
 import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
@@ -21,7 +23,10 @@ import interface_adapter.UpdateAccount.UpdateAccountState;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemViewModel;
-
+import view.ScanItemView;
+import interface_adapter.CheckBreach.CheckBreachController;
+import interface_adapter.CheckBreach.CheckBreachViewModel;
+import view.CheckBreachView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -29,9 +34,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
+
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -67,7 +74,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton editViewButton;
     private JButton deleteButton;
     private JButton copyUserButton;
-    private JButton copyButton1;
+    private JButton copyPassButton;
     private JButton autotypeLogin️Button;
     private JButton autotypeButton;
     private JLabel title;
@@ -84,16 +91,20 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
+    private JPanel checkBreachPanel;
+    private JPanel genEmailRightPanel;
     private JScrollPane tableScrollPane;
     private Timer timer;
 
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
                          ScanItemController scanItemController, ScanItemViewModel scanItemViewModel,
+                         CheckBreachController checkBreachController, CheckBreachViewModel checkBreachViewModel,
                          CreateAccountController createAccountController, CreateAccountViewModel createAccountViewModel,
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
                          GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel,
+                         GenerateEmailController generateEmailController, GenerateEmailViewModel generateEmailViewModel,
                          CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel,
                          Generate2FACodeController generate2FACodeController, Generate2FACodeViewModel generate2FACodeViewModel) {
         this.dashboardViewModel = dashboardViewModel;
@@ -102,9 +113,11 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.deleteAccountController = deleteAccountController;
         this.generate2FACodeController = generate2FACodeController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
+        this.checkBreachPanel = new CheckBreachView(checkBreachViewModel, checkBreachController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
         this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
+        this.genEmailRightPanel = new GenerateEmailView(generateEmailViewModel, generateEmailController, dashboardViewModel);
         this.generate2FACodeViewModel = generate2FACodeViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -124,6 +137,94 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
+
+        autotypeLogin️Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String username = selectedAccount.getUsername();
+                    String password = selectedAccount.getPassword();
+
+                    if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
+                        String userAndPassword = username + "\t" + password;
+
+                        Container container = SwingUtilities.getAncestorOfClass(JFrame.class, DashboardView.this);
+
+                        // Check if the ancestor is a JFrame
+                        if (container instanceof JFrame) {
+                            JFrame frame = (JFrame) container;
+                            // Set the state of the JFrame to minimized
+                            frame.setState(JFrame.ICONIFIED);
+                        }
+
+                        autoType(userAndPassword);
+                    }
+                }
+            }
+        });
+
+
+        autotypeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String password = selectedAccount.getPassword();
+
+                    if (password != null && !password.isEmpty()) {
+
+                        Container container = SwingUtilities.getAncestorOfClass(JFrame.class, DashboardView.this);
+
+                        // Check if the ancestor is a JFrame
+                        if (container instanceof JFrame) {
+                            JFrame frame = (JFrame) container;
+                            // Set the state of the JFrame to minimized
+                            frame.setState(JFrame.ICONIFIED);
+                        }
+                        autoType(password);
+                    }
+                }
+            }
+        });
+
+        copyPassButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String password = selectedAccount.getPassword();
+
+                    if (password != null && !password.isEmpty()) {
+                        copyToClipboard(password);
+                    }
+                }
+            }
+        });
+
+
+        copyUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    AccountInfo selectedAccount = dashboardViewModel.getState().getAccounts().get(selectedRow);
+                    String username = selectedAccount.getUsername();
+
+                    if (username != null && !username.isEmpty()) {
+                        copyToClipboard(username);
+                    }
+                }
+            }
+        });
+
 
         signOutButton.addActionListener(new ActionListener() {
             @Override
@@ -165,6 +266,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
+        haveibeenpwnedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(checkBreachPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("check breach");
+            }
+        });
+
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -172,6 +283,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(createAccountPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("create account");
+            }
+        });
+
+        generateEmailButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(genEmailRightPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("generate email");
             }
         });
 
@@ -325,6 +446,29 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
     private void updateAccountNoAccount(){
         JOptionPane.showMessageDialog(this, "no account selected");
+    }
+
+    private void autoType(String text) {
+        try {
+            Robot robot = new Robot();
+            robot.delay(1000); // Initial delay, adjust as needed
+
+            char[] characters = text.toCharArray();
+
+            for (char character : characters) {
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(character);
+                robot.keyPress(keyCode);
+                robot.keyRelease(keyCode);
+            }
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void copyToClipboard(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(text);
+        clipboard.setContents(selection, null);
     }
 
     private void setRightPanelName(String name){
