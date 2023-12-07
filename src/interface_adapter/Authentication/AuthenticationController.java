@@ -24,6 +24,9 @@ public class AuthenticationController {
         authenticationInteractor.execute(authenticationInputData);
     }
 
+    /**
+     * Method for switching to Set Up view
+     */
     public void switchViews(){
         authenticationInteractor.switchViews();
     }

@@ -36,7 +36,9 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-4234902"/>
+                  <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
+                  <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Generate Password"/>
                 </properties>
@@ -46,7 +48,9 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-3111056"/>
+                  <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
+                  <foreground color="-1249292"/>
                   <text value="Generate Email"/>
                 </properties>
               </component>
@@ -55,7 +59,9 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-1324149"/>
+                  <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
+                  <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Haveibeenpwned?"/>
                 </properties>
@@ -65,7 +71,9 @@
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-6046068"/>
+                  <background color="-10583636"/>
+                  <font name="Roboto Light" size="24" style="0"/>
+                  <foreground color="-1249292"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <text value="Scan File/URL"/>
                 </properties>
@@ -75,7 +83,9 @@
                   <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-4944211"/>
+                  <background color="-4234902"/>
+                  <font name="Roboto Light" size="24" style="0"/>
+                  <foreground color="-1249292"/>
                   <text value="Sign Out"/>
                 </properties>
               </component>
@@ -84,7 +94,8 @@
           <component id="f6bb2" class="javax.swing.JLabel" binding="logo">
             <constraints border-constraint="North"/>
             <properties>
-              <text value="Label"/>
+              <icon value="assets/image.png"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -94,7 +105,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="ddefb" binding="topBar" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+          <grid id="ddefb" binding="topBar" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="North"/>
             <properties>
               <background color="-11774358"/>
@@ -106,31 +117,46 @@
               <component id="38c87" class="javax.swing.JButton" binding="createButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <background color="-8281663"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
                   <text value="Create"/>
                 </properties>
               </component>
               <component id="3ce33" class="javax.swing.JButton" binding="editViewButton" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Edit/View"/>
+                  <background color="-8281663"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Edit"/>
                 </properties>
               </component>
-              <component id="9b1e4" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+              <component id="931dd" class="javax.swing.JButton" binding="copyUserButton" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Delete"/>
+                  <background color="-7814960"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Copy User 📋"/>
                 </properties>
               </component>
-              <component id="931dd" class="javax.swing.JButton" binding="copyUButton" default-binding="true">
+              <component id="cd25c" class="javax.swing.JButton" binding="copyButton1" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Copy U"/>
+                  <background color="-7814960"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Copy 🗝 "/>
                 </properties>
               </component>
-              <component id="cd25c" class="javax.swing.JButton" binding="copyPButton" default-binding="true">
+              <component id="b6542" class="javax.swing.JButton" binding="autotypeLogin️Button" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Copy P"/>
+                  <background color="-7814960"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Autotype Login ⌨️"/>
                 </properties>
               </component>
               <component id="b6542" class="javax.swing.JButton" binding="autotypeUAndPButton" default-binding="true">
@@ -139,10 +165,22 @@
                   <text value="Autotype U and P"/>
                 </properties>
               </component>
-              <component id="82c4c" class="javax.swing.JButton" binding="autotypePButton" default-binding="true">
+              <component id="82c4c" class="javax.swing.JButton" binding="autotypeButton" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Autotype P"/>
+                  <background color="-7814960"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Autotype 🗝"/>
+                </properties>
+              </component>
+              <component id="9b1e4" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <background color="-4234902"/>
+                  <font name="Roboto Light" size="14" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Delete"/>
                 </properties>
               </component>
             </children>
@@ -151,84 +189,132 @@
             <constraints border-constraint="South"/>
             <properties>
               <background color="-11774358"/>
+              <visible value="false"/>
             </properties>
             <border type="empty">
               <size top="10" left="10" bottom="10" right="10"/>
             </border>
             <children>
-              <component id="41534" class="javax.swing.JLabel" binding="Username">
+              <component id="41534" class="javax.swing.JLabel" binding="username">
                 <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font name="Roboto Light" size="18" style="0"/>
+                  <foreground color="-1249292"/>
+                  <text value="Username:"/>
                 </properties>
               </component>
-              <component id="e7d28" class="javax.swing.JLabel" binding="Password">
+              <component id="e7d28" class="javax.swing.JLabel" binding="password">
                 <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font name="Roboto Light" size="18" style="0"/>
+                  <foreground color="-1249292"/>
+                  <text value="Password:"/>
                 </properties>
               </component>
-              <component id="c1552" class="javax.swing.JLabel" binding="URL">
+              <component id="c1552" class="javax.swing.JLabel" binding="url">
                 <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font name="Roboto Light" size="18" style="0"/>
+                  <foreground color="-1249292"/>
+                  <text value="URL:"/>
                 </properties>
               </component>
-              <component id="c24fe" class="javax.swing.JLabel" binding="Notes">
+              <component id="c24fe" class="javax.swing.JLabel" binding="notes">
                 <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font name="Roboto Light" size="18" style="0"/>
+                  <foreground color="-1249292"/>
+                  <text value="Last Modified:"/>
                 </properties>
               </component>
-              <component id="c4fbf" class="javax.swing.JLabel" binding="Date">
+              <component id="c4fbf" class="javax.swing.JLabel" binding="date">
                 <constraints>
-                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="5" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="1.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="Label"/>
+                  <font name="Roboto Light" size="18" style="0"/>
+                  <foreground color="-1249292"/>
+                  <text value="Notes:"/>
                 </properties>
               </component>
-              <grid id="a366f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <component id="2e32f" class="javax.swing.JLabel" binding="title">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <font name="Roboto Light" size="28" style="1"/>
+                  <foreground color="-1249292"/>
+                  <text value="Title:"/>
+                </properties>
+              </component>
+              <component id="862c2" class="javax.swing.JLabel" binding="cardIcon">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <icon value="assets/unknown.png"/>
+                  <text value=""/>
+                  <visible value="true"/>
+                </properties>
+              </component>
+              <component id="b4c8d" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value=" "/>
+                </properties>
+              </component>
+              <grid id="bc6f7" binding="panel2FACode" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <background color="-11774358"/>
+                  <visible value="false"/>
+                </properties>
                 <border type="none"/>
                 <children>
-                  <component id="862c2" class="javax.swing.JLabel">
+                  <component id="99bc4" class="javax.swing.JLabel" binding="code2FA">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Label"/>
+                      <font name="Roboto Light" size="18" style="0"/>
+                      <foreground color="-1249292"/>
+                      <text value="2FA Code: 0 0 0 0 0 0"/>
+                    </properties>
+                  </component>
+                  <component id="cd3f3" class="javax.swing.JButton" binding="copy2FAButton">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-8281663"/>
+                      <font name="Roboto Light" size="14" style="1"/>
+                      <text value="Copy 📋"/>
                     </properties>
                   </component>
                 </children>
               </grid>
-              <component id="2e32f" class="javax.swing.JLabel" binding="Title">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="1.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value="Label"/>
-                </properties>
-              </component>
             </children>
           </grid>
           <component id="f6bde" class="javax.swing.JTable" binding="table">

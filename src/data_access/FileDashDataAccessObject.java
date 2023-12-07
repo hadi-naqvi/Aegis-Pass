@@ -4,7 +4,9 @@ import entity.AccountInfo;
 import entity.AccountInfoFactory;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
+import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
+import use_case.UpdateAccount.UpdateAccountDataAccessInterface;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,12 +15,9 @@ import java.security.Key;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
-public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface {
+public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface, UpdateAccountDataAccessInterface, DeleteAccountDataAccessInterface {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;
@@ -49,6 +48,31 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
     public List<AccountInfo> getAccounts() {
         this.retrieveAccounts();
         return this.accounts;
+    }
+
+    /**
+     * Method that deletes an account with a unique title and username combination
+     *
+     * @param title    the title of the account to be deleted
+     * @param username the username of the account to be deleted
+     */
+    @Override
+    public void deleteAccount(String title, String username) {
+        AccountInfo accountToDelete = getAccountFromTitleUsername(title, username);
+        accounts.remove(accountToDelete);
+        String sql = "DELETE FROM password_manager_data WHERE title = ? AND username = ?";
+        try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
+            statement.setString(1, encrypt(accountToDelete.getTitle(), this.encryptionKey));
+            statement.setString(2, encrypt(accountToDelete.getUsername(), this.encryptionKey));
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected <= 0) {
+                throw new RuntimeException("No rows were deleted.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -88,6 +112,44 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
     }
 
     /**
+     * method to update the account's changes in the database
+     * @param index
+     * @param updatedTitle
+     * @param updatedUsername
+     * @param updatedPassword
+     * @param updatedKey
+     * @param updatedURL
+     * @param updatedIconURL
+     * @param updatedDate
+     * @param updatedNotes
+     */
+    public void updateAccount(String originalTitle, String originalUser, String updatedTitle, String updatedUsername, String updatedPassword,
+                              String updatedKey, String updatedURL, String updatedIconURL,
+                              String updatedDate, String updatedNotes) {
+        String sql = "UPDATE password_manager_data " +
+                "SET title = ?, username = ?, password = ?, two_factor_secret_key = ?, " +
+                "url = ?, icon_url = ?, date = ?, notes = ? " +
+                "WHERE title = ? AND username = ?";
+
+        try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
+            statement.setString(1, encrypt(updatedTitle, this.encryptionKey));
+            statement.setString(2, encrypt(updatedUsername, this.encryptionKey));
+            statement.setString(3, encrypt(updatedPassword, this.encryptionKey));
+            statement.setString(4, encrypt(updatedKey, this.encryptionKey));
+            statement.setString(5, encrypt(updatedURL, this.encryptionKey));
+            statement.setString(6, encrypt(updatedIconURL, this.encryptionKey));
+            statement.setString(7, encrypt(updatedDate, this.encryptionKey));
+            statement.setString(8, encrypt(updatedNotes, this.encryptionKey));
+            statement.setString(9, encrypt(originalTitle, this.encryptionKey));
+            statement.setString(10, encrypt(originalUser, this.encryptionKey));
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Method which retrieves all of the currently signed in user's accounts from the
      * database and saved them to the in-memory list of accounts
      */
@@ -115,6 +177,22 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Gets the account with the given title and username combination
+     * @param title of account to be retrieved
+     * @param username of account to be retrieved
+     * @return the account with matching title and username (throw RuntimeException if not found)
+     */
+    private AccountInfo getAccountFromTitleUsername(String title, String username) {
+        for (AccountInfo account : accounts) {
+            if (Objects.equals(account.getTitle(), title) && Objects.equals(account.getUsername(), username)) {
+                return account;
+            }
+        }
+
+        throw new RuntimeException("Account with title " + title + " and username " + username + " could not be found and deleted.");
     }
 
     /**
