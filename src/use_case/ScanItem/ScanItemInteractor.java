@@ -21,7 +21,8 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
     public void scanFile(ScanItemInputData scanItemInputData) {
         try {
             // Perform business logic, interact with data access, etc.
-            ScanItemOutputData scanItemOutputData = new ScanItemOutputData(true, scanItemDataAccessObject.scanFile(scanItemInputData.getFilePath()));
+            ScanItemOutputData scanItemOutputData = new ScanItemOutputData(true,
+                    scanItemDataAccessObject.scanFile(scanItemInputData.getFilePath()));
             scanItemPresenter.prepareSuccessView(scanItemOutputData);
         } catch (IOException e) {
             // Handle IOException (e.g., log or present an error to the user)
@@ -53,7 +54,6 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
-        }
     }
 
     /**
