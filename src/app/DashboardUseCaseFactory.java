@@ -1,6 +1,8 @@
 package app;
 
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckBreach.CheckBreachController;
+import interface_adapter.CheckBreach.CheckBreachViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
@@ -18,6 +20,7 @@ import interface_adapter.UpdateAccount.UpdateAccountController;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.ViewManagerModel;
+import use_case.CheckBreach.CheckBreachDataAccessInterface;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
 import use_case.Dashboard.DashboardDataAccessInterface;
 import use_case.Dashboard.DashboardInputBoundary;
@@ -50,6 +53,8 @@ public class DashboardUseCaseFactory {
                                        DashboardDataAccessInterface userDataAccessObject,
                                        ScanItemViewModel scanItemViewModel,
                                        ScanItemDataAccessInterface scanItemDataAccessObject,
+                                       CheckBreachViewModel checkBreachViewModel,
+                                       CheckBreachDataAccessInterface checkBreachDataAccessObject,
                                        CreateAccountViewModel createAccountViewModel,
                                        DeleteAccountViewModel deleteAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
@@ -61,6 +66,8 @@ public class DashboardUseCaseFactory {
                 (LogOutDataAccessInterface) userDataAccessObject);
         ScanItemController scanItemController = ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
                 dashboardViewModel);
+        CheckBreachController checkBreachController = CheckBreachUseCaseFactory.createCheckBreachUseCase(viewManagerModel,
+                checkBreachViewModel, checkBreachDataAccessObject, dashboardViewModel);
         GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.createGeneratePasswordUseCase(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
         UpdateAccountController updateAccountController = UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
                 updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject);
@@ -69,7 +76,7 @@ public class DashboardUseCaseFactory {
         DeleteAccountController deleteAccountController = DeleteAccountUseCaseFactory.createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel, dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject);
 
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
-                scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
+                scanItemViewModel, checkBreachController, checkBreachViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
                 deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel);
     }
 
