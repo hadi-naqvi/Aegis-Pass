@@ -2,6 +2,7 @@ package use_case.CheckBreach;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class CheckBreachInteractor implements CheckBreachInputBoundary {
     
@@ -27,9 +28,13 @@ public class CheckBreachInteractor implements CheckBreachInputBoundary {
     public void checkEmail(CheckBreachInputData checkBreachInputData) throws IOException, InterruptedException {
         try {
             // perform business logic, interact with data access
-            CheckBreachOutputData outputData = new CheckBreachOutputData(false,
-                    checkBreachDataAccessObject.checkEmail(checkBreachInputData.getEmail()));
-            checkBreachPresenter.prepareSuccessView(outputData);
+            if (Objects.equals(checkBreachInputData.getEmail(), "")) {
+                checkBreachPresenter.prepareFailView("Please input an email");
+            } else {
+                CheckBreachOutputData outputData = new CheckBreachOutputData(false,
+                        checkBreachDataAccessObject.checkEmail(checkBreachInputData.getEmail()));
+                checkBreachPresenter.prepareSuccessView(outputData);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException | URISyntaxException e) {
@@ -46,9 +51,13 @@ public class CheckBreachInteractor implements CheckBreachInputBoundary {
     public void checkPassword(CheckBreachInputData checkBreachInputData) throws IOException, InterruptedException {
         try {
             // perform business logic, interact with data access
-            CheckBreachOutputData outputData = new CheckBreachOutputData(false,
-                    checkBreachDataAccessObject.checkPassword(checkBreachInputData.getPassword()));
-            checkBreachPresenter.prepareSuccessView(outputData);
+            if (Objects.equals(checkBreachInputData.getPassword(), "")) {
+                checkBreachPresenter.prepareFailView("Please input a password");
+            } else {
+                CheckBreachOutputData outputData = new CheckBreachOutputData(false,
+                        checkBreachDataAccessObject.checkPassword(checkBreachInputData.getPassword()));
+                checkBreachPresenter.prepareSuccessView(outputData);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException | URISyntaxException e) {
