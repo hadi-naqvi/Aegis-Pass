@@ -7,10 +7,12 @@ import data_access.FileScanDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.GenerateEmail.GenerateEmailViewModel;
+import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
@@ -55,6 +57,8 @@ public class Main {
         GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
         UpdateAccountViewModel updateAccountViewModel = new UpdateAccountViewModel();
         GenerateEmailViewModel generateEmailViewModel = new GenerateEmailViewModel();
+        CheckPassQualityViewModel checkPassQualityViewModel = new CheckPassQualityViewModel();
+        Generate2FACodeViewModel generate2FACodeViewModel = new Generate2FACodeViewModel();
 
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
@@ -96,7 +100,8 @@ public class Main {
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
-                generatePasswordViewModel, createDataAccessObject, generateEmailViewModel, genEmailDataAccessObject);
+                generatePasswordViewModel, checkPassQualityViewModel, generateEmailViewModel, generateEmailDataAccessObject,
+                                                                     generate2FACodeViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);

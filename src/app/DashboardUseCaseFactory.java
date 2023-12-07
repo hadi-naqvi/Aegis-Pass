@@ -1,6 +1,8 @@
 package app;
 
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckPassQuality.CheckPassQualityController;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
@@ -11,6 +13,8 @@ import interface_adapter.DeleteAccount.DeleteAccountPresenter;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
 import interface_adapter.GenerateEmail.GenerateEmailController;
 import interface_adapter.GenerateEmail.GenerateEmailViewModel;
+import interface_adapter.Generate2FACode.Generate2FACodeController;
+import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.LogOut.LogOutController;
@@ -60,12 +64,17 @@ public class DashboardUseCaseFactory {
                                        CreateAccountDataAccessInterface createAccountDataAccessObject,
                                        GenerateEmailViewModel generateEmailViewModel,
                                        GenerateEmailDataAccessInterface generateEmailDataAccessObject) {
+                                       CheckPassQualityViewModel checkPassQualityViewModel,
+                                       Generate2FACodeViewModel generate2FACodeViewModel,
+                                       CreateAccountDataAccessInterface createAccountDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
         LogOutController logOutController = LogOutUseCaseFactory.createLogOutUseCase(viewManagerModel, authenticationViewModel,
                 (LogOutDataAccessInterface) userDataAccessObject);
         ScanItemController scanItemController = ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
                 dashboardViewModel);
+        CheckPassQualityController checkPassQualityController = CheckPassQualityUseCaseFactory.createCheckPassQualityUseCase(generatePasswordViewModel, checkPassQualityViewModel);
+        Generate2FACodeController generate2FACodeController = Generate2FACodeUseCaseFactory.createGenerate2FACodeUseCase(viewManagerModel, generate2FACodeViewModel);
         GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.createGeneratePasswordUseCase(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
         UpdateAccountController updateAccountController = UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
                 updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject);
@@ -77,7 +86,8 @@ public class DashboardUseCaseFactory {
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
                 scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
                 deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel,
-                generateEmailController, generateEmailViewModel);
+                generateEmailController, generateEmailViewModel,
+                checkPassQualityController, checkPassQualityViewModel, generate2FACodeController, generate2FACodeViewModel);
     }
 
     /**
