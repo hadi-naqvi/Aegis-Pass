@@ -30,7 +30,7 @@ public class GenerateEmailInteractor implements GenerateEmailInputBoundary {
                             generateEmailInputData.getPassName()));
             generateEmailPresenter.prepareSuccessView(generateEmailOutputData);
         } catch (IOException | InterruptedException | JSONException e){
-            generateEmailPresenter.prepareFailView("Uh oh, something went wrong. Try a different account name or password");
+            generateEmailPresenter.prepareFailView("Account name is already in use or is invalid. Please try again.");
         }
     }
 

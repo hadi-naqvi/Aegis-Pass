@@ -91,7 +91,6 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
                 state.setError("");
 
                 emailTextfield.setText("");
-                passTextField.setText("");
 
                 dashboardViewModel.getState().setRightPanelView("dashboard");
                 dashboardViewModel.firePropertyChanged();
