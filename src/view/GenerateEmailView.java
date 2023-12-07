@@ -4,6 +4,7 @@ import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.GenerateEmail.GenerateEmailController;
 import interface_adapter.GenerateEmail.GenerateEmailState;
 import interface_adapter.GenerateEmail.GenerateEmailViewModel;
+import interface_adapter.GeneratePassword.GeneratePasswordState;
 import interface_adapter.ScanItem.ScanItemState;
 
 import javax.swing.*;
@@ -14,8 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
-public class GenerateEmail extends JPanel implements ActionListener, PropertyChangeListener {
+public class GenerateEmailView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "generate email";
     private final GenerateEmailViewModel generateEmailViewModel;
     private final GenerateEmailController generateEmailController;
@@ -29,44 +31,29 @@ public class GenerateEmail extends JPanel implements ActionListener, PropertyCha
     private JTextField passTextField;
     private JButton copyButton;
 
-    public GenerateEmail(GenerateEmailViewModel generateEmailViewModel, GenerateEmailController generateEmailController,
-                         DashboardViewModel dashboardViewModel) {
+    public GenerateEmailView(GenerateEmailViewModel generateEmailViewModel, GenerateEmailController generateEmailController,
+                             DashboardViewModel dashboardViewModel) {
         this.generateEmailViewModel = generateEmailViewModel;
         this.generateEmailController = generateEmailController;
         this.dashboardViewModel = dashboardViewModel;
         this.generateEmailViewModel.addPropertyChangeListener(this);
 
 
-        generateEmailButton.addActionListener(new ActionListener() {
+        generateEmailButton.addActionListener(
+                new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(generateEmailController)) {
+                if (e.getSource().equals(generateEmailButton)) {
+                    System.out.println("hello");
                     GenerateEmailState currentState = generateEmailViewModel.getState();
-                    generateEmailController.execute(currentState.getAccountName(), currentState.getPassName());
+                    try {
+                        generateEmailController.execute(currentState.getAccountName(), currentState.getPassName());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
-            }
-        });
-
-        emailTextfield.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateState();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateState();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // Plain text components don't fire these events
-            }
-
-            private void updateState() {
-                GenerateEmailState currentState = generateEmailViewModel.getState();
-                currentState.setAccountName(emailTextfield.getText());
-                generateEmailViewModel.setState(currentState);
             }
         });
 
@@ -116,6 +103,23 @@ public class GenerateEmail extends JPanel implements ActionListener, PropertyCha
             }
         });
 
+        this.backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GenerateEmailState state = generateEmailViewModel.getState();
+
+                state.setAccountName("");
+                state.setPassName("");
+                state.setError("");
+
+                emailTextfield.setText("");
+                passTextField.setText("");
+
+                dashboardViewModel.getState().setRightPanelView("dashboard");
+                dashboardViewModel.firePropertyChanged();
+            }
+        });
+
 
         this.setLayout(new GridLayout());
         this.add(main);
@@ -140,6 +144,17 @@ public class GenerateEmail extends JPanel implements ActionListener, PropertyCha
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        Object state = evt.getNewValue();
+        if (state instanceof GenerateEmailState){
+            GenerateEmailState generateEmailState = (GenerateEmailState) evt.getNewValue();
+            String message = generateEmailState.getAccountName() + " successfully created!";
+            if (generateEmailState.getError() == null) {
+                JOptionPane.showMessageDialog(this, message);
+            } else {
+                JOptionPane.showMessageDialog(this, generateEmailState.getError());
+            }
+        }
     }
+
 }
+
