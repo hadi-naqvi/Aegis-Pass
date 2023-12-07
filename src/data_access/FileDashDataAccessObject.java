@@ -22,6 +22,7 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;
     private final Connection CONNECTION;
+    EncryptionStrategy encryptionStrategy = new AES256EncryptionStrategy();
     private int currentUserID;
     private String encryptionKey;
     private List<AccountInfo> accounts;
@@ -62,8 +63,8 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
         accounts.remove(accountToDelete);
         String sql = "DELETE FROM password_manager_data WHERE title = ? AND username = ?";
         try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
-            statement.setString(1, encrypt(accountToDelete.getTitle(), this.encryptionKey));
-            statement.setString(2, encrypt(accountToDelete.getUsername(), this.encryptionKey));
+            statement.setString(1, encryptionStrategy.encrypt(accountToDelete.getTitle(), this.encryptionKey));
+            statement.setString(2, encryptionStrategy.encrypt(accountToDelete.getUsername(), this.encryptionKey));
 
             int rowsAffected = statement.executeUpdate();
 
@@ -96,14 +97,14 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
             statement.setInt(1, this.currentUserID);
-            statement.setString(2, encrypt(account.getTitle(), this.encryptionKey));
-            statement.setString(3, encrypt(account.getUsername(), this.encryptionKey));
-            statement.setString(4, encrypt(account.getPassword(), this.encryptionKey));
-            statement.setString(5, encrypt(account.getSecretKey(), this.encryptionKey));
-            statement.setString(6, encrypt(account.getURL(), this.encryptionKey));
-            statement.setString(7, encrypt(account.getIconURL(), this.encryptionKey));
-            statement.setString(8, encrypt(account.getDate(), this.encryptionKey));
-            statement.setString(9, encrypt(account.getNotes(), this.encryptionKey));
+            statement.setString(2, encryptionStrategy.encrypt(account.getTitle(), this.encryptionKey));
+            statement.setString(3, encryptionStrategy.encrypt(account.getUsername(), this.encryptionKey));
+            statement.setString(4, encryptionStrategy.encrypt(account.getPassword(), this.encryptionKey));
+            statement.setString(5, encryptionStrategy.encrypt(account.getSecretKey(), this.encryptionKey));
+            statement.setString(6, encryptionStrategy.encrypt(account.getURL(), this.encryptionKey));
+            statement.setString(7, encryptionStrategy.encrypt(account.getIconURL(), this.encryptionKey));
+            statement.setString(8, encryptionStrategy.encrypt(account.getDate(), this.encryptionKey));
+            statement.setString(9, encryptionStrategy.encrypt(account.getNotes(), this.encryptionKey));
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -132,16 +133,16 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
                 "WHERE title = ? AND username = ?";
 
         try (PreparedStatement statement = CONNECTION.prepareStatement(sql)) {
-            statement.setString(1, encrypt(updatedTitle, this.encryptionKey));
-            statement.setString(2, encrypt(updatedUsername, this.encryptionKey));
-            statement.setString(3, encrypt(updatedPassword, this.encryptionKey));
-            statement.setString(4, encrypt(updatedKey, this.encryptionKey));
-            statement.setString(5, encrypt(updatedURL, this.encryptionKey));
-            statement.setString(6, encrypt(updatedIconURL, this.encryptionKey));
-            statement.setString(7, encrypt(updatedDate, this.encryptionKey));
-            statement.setString(8, encrypt(updatedNotes, this.encryptionKey));
-            statement.setString(9, encrypt(originalTitle, this.encryptionKey));
-            statement.setString(10, encrypt(originalUser, this.encryptionKey));
+            statement.setString(1, encryptionStrategy.encrypt(updatedTitle, this.encryptionKey));
+            statement.setString(2, encryptionStrategy.encrypt(updatedUsername, this.encryptionKey));
+            statement.setString(3, encryptionStrategy.encrypt(updatedPassword, this.encryptionKey));
+            statement.setString(4, encryptionStrategy.encrypt(updatedKey, this.encryptionKey));
+            statement.setString(5, encryptionStrategy.encrypt(updatedURL, this.encryptionKey));
+            statement.setString(6, encryptionStrategy.encrypt(updatedIconURL, this.encryptionKey));
+            statement.setString(7, encryptionStrategy.encrypt(updatedDate, this.encryptionKey));
+            statement.setString(8, encryptionStrategy.encrypt(updatedNotes, this.encryptionKey));
+            statement.setString(9, encryptionStrategy.encrypt(originalTitle, this.encryptionKey));
+            statement.setString(10, encryptionStrategy.encrypt(originalUser, this.encryptionKey));
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -162,14 +163,14 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     AccountInfo account = ACCOUNTFACTORY.create();
-                    account.setTitle(decrypt(resultSet.getString("title"), this.encryptionKey));
-                    account.setUsername(decrypt(resultSet.getString("username"), this.encryptionKey));
-                    account.setPassword(decrypt(resultSet.getString("password"), this.encryptionKey));
-                    account.setSecretKey(decrypt(resultSet.getString("two_factor_secret_key"), this.encryptionKey));
-                    account.setURL(decrypt(resultSet.getString("url"), this.encryptionKey));
-                    account.setIconURL(decrypt(resultSet.getString("icon_url"), this.encryptionKey));
-                    account.setDate(decrypt(resultSet.getString("date"), this.encryptionKey));
-                    account.setNotes(decrypt(resultSet.getString("notes"), this.encryptionKey));
+                    account.setTitle(encryptionStrategy.decrypt(resultSet.getString("title"), this.encryptionKey));
+                    account.setUsername(encryptionStrategy.decrypt(resultSet.getString("username"), this.encryptionKey));
+                    account.setPassword(encryptionStrategy.decrypt(resultSet.getString("password"), this.encryptionKey));
+                    account.setSecretKey(encryptionStrategy.decrypt(resultSet.getString("two_factor_secret_key"), this.encryptionKey));
+                    account.setURL(encryptionStrategy.decrypt(resultSet.getString("url"), this.encryptionKey));
+                    account.setIconURL(encryptionStrategy.decrypt(resultSet.getString("icon_url"), this.encryptionKey));
+                    account.setDate(encryptionStrategy.decrypt(resultSet.getString("date"), this.encryptionKey));
+                    account.setNotes(encryptionStrategy.decrypt(resultSet.getString("notes"), this.encryptionKey));
 
                     accounts.add(account);
                 }
@@ -225,74 +226,5 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
      */
     public void setEncryptionKey(String key) {
         this.encryptionKey = key;
-    }
-
-    /**
-     * Method which encrypts data using AES-256 given an encryption key
-     * @param plaintext The data being encrypted as a string of regular characters
-     * @param key The encryption key as a hexadecimal string
-     * @return The encrypted data in a hexadecimal string
-     */
-    private static String encrypt(String plaintext, String key) {
-        if (plaintext.equals("")){
-            return "";
-        }
-        try {
-            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes());
-            return byteArrayToHexString(encryptedBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Method which decrypts data using AES-256 given an encryption key
-     * @param ciphertext The data being decrypted as a hexademical string
-     * @param key The encryption key as a hexadeicmal string
-     * @return The decrypted ciphertext as a string of regular characters
-     */
-    private static String decrypt(String ciphertext, String key) {
-        if (ciphertext.equals("")){
-            return "";
-        }
-        try {
-            Key secretKey = new SecretKeySpec(hexStringToByteArray(key), "AES");
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decodedBytes = Base64.getDecoder().decode(ciphertext);
-            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-            return new String(decryptedBytes, "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Method which converts a hex string to a byte array
-     * @param hexString The hex string
-     * @return The byte array
-     */
-    private static byte[] hexStringToByteArray(String hexString) {
-        int len = hexString.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
-                    + Character.digit(hexString.charAt(i + 1), 16));
-        }
-        return data;
-    }
-
-    /**
-     * Method which converts a byte array to a hexadecimal string
-     * @param byteArray The byte array
-     * @return The hexadecimal string
-     */
-    private static String byteArrayToHexString(byte[] byteArray) {
-        return Base64.getEncoder().encodeToString(byteArray);
     }
 }
