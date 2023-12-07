@@ -132,10 +132,6 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
-        btnGoLogin.setBorderPainted(false);
-        btnGoLogin.setFocusPainted(false);
-        btnGoLogin.setContentAreaFilled(false);
-
         this.setLayout(new GridLayout());
         this.add(main);
     }
