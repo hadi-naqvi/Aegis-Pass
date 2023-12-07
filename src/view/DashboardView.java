@@ -10,6 +10,8 @@ import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountController;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.Generate2FACode.Generate2FACodeController;
+import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
 import interface_adapter.GeneratePassword.GeneratePasswordState;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
@@ -26,6 +28,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -40,6 +44,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private final DashboardController dashboardController;
     private final LogOutController logOutController;
     private final DeleteAccountController deleteAccountController;
+    private final Generate2FACodeController generate2FACodeController;
+    private final Generate2FACodeViewModel generate2FACodeViewModel;
     private final DashboardViewModel dashboardViewModel;
     private JButton mainView;
     private DefaultTableModel accountsTableModel;
@@ -61,9 +67,9 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton editViewButton;
     private JButton deleteButton;
     private JButton copyUserButton;
-    private JButton copyPassButton;
-    private JButton autotypeLoginButton;
-    private JButton autotypePassButton;
+    private JButton copyButton1;
+    private JButton autotypeLogin️Button;
+    private JButton autotypeButton;
     private JLabel title;
     private JLabel username;
     private JLabel password;
@@ -71,11 +77,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JLabel notes;
     private JLabel date;
     private JLabel cardIcon;
+    private JPanel panel2FACode;
+    private JLabel code2FA;
+    private JButton copy2FAButton;
     private JPanel createAccountPanel;
     private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
     private JScrollPane tableScrollPane;
+    private Timer timer;
 
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
@@ -84,15 +94,18 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
                          GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel,
-                         CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel) {
+                         CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel,
+                         Generate2FACodeController generate2FACodeController, Generate2FACodeViewModel generate2FACodeViewModel) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardController = dashboardController;
         this.logOutController = logOutController;
         this.deleteAccountController = deleteAccountController;
+        this.generate2FACodeController = generate2FACodeController;
         this.scanItemPanel = new ScanItemView(scanItemViewModel, scanItemController, dashboardViewModel);
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
         this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
+        this.generate2FACodeViewModel = generate2FACodeViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
 
@@ -133,6 +146,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 url.setText("URL: ");
                 date.setText("Date: ");
                 notes.setText("Notes: ");
+                code2FA.setText("");
+                panel2FACode.setVisible(false);
                 cardPanel.setVisible(false);
 
                 // Logs the user out
@@ -232,10 +247,48 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     url.setText("<html>URL: <a href=\"" + account.getURL() + "\">" + account.getURL() + "</a></html>");
                     date.setText("Date: " + account.getDate());
                     notes.setText("Notes: " + account.getNotes());
+                    generate2FACodeController.execute(account.getSecretKey());
+                    String code = generate2FACodeViewModel.getState().getFaCode();
+                    if (!code.equals("")) {
+                        code2FA.setText("2FA Code: " + code);
+                        panel2FACode.setVisible(true);
+                    } else {
+                        code2FA.setText("");
+                        panel2FACode.setVisible(false);
+                    }
+
+                    if (!account.getSecretKey().equals("") && !timer.isRunning()) {
+                        timer.start();
+                    }
+                    else {
+                        timer.stop();
+                    }
+                }
+                else if (table.getSelectedRow() == -1) {
+                    timer.stop();
+                    panel2FACode.setVisible(false);
+                    cardPanel.setVisible(false);
                 }
             }
         });
 
+        timer = new Timer(30000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow() != -1) {
+                    AccountInfo account = dashboardViewModel.getState().getAccounts().get(table.getSelectedRow());
+                    generate2FACodeController.execute(account.getSecretKey());
+                    String code = generate2FACodeViewModel.getState().getFaCode();
+                    if (!code.equals("")) {
+                        code2FA.setText("2FA Code: " + code);
+                        panel2FACode.setVisible(true);
+                    } else {
+                        code2FA.setText("");
+                        panel2FACode.setVisible(false);
+                    }
+                }
+            }
+        });
 
 
         this.setLayout(new GridLayout());
@@ -253,6 +306,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                     String usernameToDelete = (String) table.getValueAt(rowIndex, 1);
                     deleteAccountController.execute(titleToDelete, usernameToDelete);
                 }
+            }
+        });
+
+        this.copy2FAButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringSelection stringSelection = new StringSelection(code2FA.getText().substring(10, code2FA.getText().length()));
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
             }
         });
     }
@@ -317,6 +379,4 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         }
 
     }
-
-
 }
