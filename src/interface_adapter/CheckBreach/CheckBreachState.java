@@ -3,7 +3,8 @@ package interface_adapter.CheckBreach;
 public class CheckBreachState {
 
     private String results = "";
-    private String url = "";
+    private String email = "";
+    private String password = "";
     private String error = null;
 
     /**
@@ -12,7 +13,8 @@ public class CheckBreachState {
      */
     public CheckBreachState(CheckBreachState copy) {
         this.results = copy.results;
-        this.url = copy.url;
+        this.email = copy.email;
+        this.password = copy.password;
         this.error = copy.error;
     }
 
@@ -40,19 +42,35 @@ public class CheckBreachState {
     }
 
     /**
-     * Getter method for the url
-     * @return the url
+     * Getter method for the email
+     * @return the email
      */
-    public String getUrl() {
-        return url;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * Setter method for the url
-     * @param url what to set url to
+     * Setter method for the email
+     * @param email what to set email to
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Getter method for the password
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Setter method for the password
+     * @param password what to set password to
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
