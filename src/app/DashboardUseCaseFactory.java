@@ -1,6 +1,8 @@
 package app;
 
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckPassQuality.CheckPassQualityController;
+import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
@@ -54,6 +56,7 @@ public class DashboardUseCaseFactory {
                                        DeleteAccountViewModel deleteAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
                                        GeneratePasswordViewModel generatePasswordViewModel,
+                                       CheckPassQualityViewModel checkPassQualityViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
         DashboardController dashboardController = createDashboardUseCase(viewManagerModel, dashboardViewModel,
                 userDataAccessObject);
@@ -61,6 +64,7 @@ public class DashboardUseCaseFactory {
                 (LogOutDataAccessInterface) userDataAccessObject);
         ScanItemController scanItemController = ScanItemUseCaseFactory.createScanItemUseCase(viewManagerModel, scanItemViewModel, scanItemDataAccessObject,
                 dashboardViewModel);
+        CheckPassQualityController checkPassQualityController = CheckPassQualityUseCaseFactory.createCheckPassQualityUseCase(generatePasswordViewModel, checkPassQualityViewModel);
         GeneratePasswordController generatePasswordController = GeneratePasswordUseCaseFactory.createGeneratePasswordUseCase(viewManagerModel, dashboardViewModel, generatePasswordViewModel);
         UpdateAccountController updateAccountController = UpdateAccountUseCaseFactory.createUpdateAccountUseCase(viewManagerModel,
                 updateAccountViewModel, dashboardViewModel, (UpdateAccountDataAccessInterface) userDataAccessObject);
@@ -70,7 +74,8 @@ public class DashboardUseCaseFactory {
 
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
                 scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
-                deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel);
+                deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel,
+                checkPassQualityController, checkPassQualityViewModel);
     }
 
     /**

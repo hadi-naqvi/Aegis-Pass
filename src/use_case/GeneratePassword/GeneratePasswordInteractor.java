@@ -43,7 +43,6 @@ public class GeneratePasswordInteractor implements GeneratePasswordInputBoundary
                     generatePasswordInputData.isPunctuationThree(), generatePasswordInputData.isPunctuationFour(),
                     generatePasswordInputData.isPunctuationFive(), generatePasswordInputData.getAlsoIncludeFrom(),
                     generatePasswordInputData.getExcludeFrom());
-            System.out.println(generatedPassword);
             GeneratePasswordOutputData generatePasswordOutputData = new GeneratePasswordOutputData(false, generatedPassword);
             generatePasswordPresenter.prepareSuccessView(generatePasswordOutputData);
         }
