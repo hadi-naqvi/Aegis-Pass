@@ -1,8 +1,11 @@
 package use_case.GenerateEmail;
 
+import org.json.JSONException;
 import use_case.Dashboard.DashboardOutputData;
 import use_case.ScanItem.ScanItemDataAccessInterface;
 import use_case.ScanItem.ScanItemOutputBoundary;
+
+import java.io.IOException;
 
 public class GenerateEmailInteractor implements GenerateEmailInputBoundary {
 
@@ -20,9 +23,22 @@ public class GenerateEmailInteractor implements GenerateEmailInputBoundary {
      * @param generateEmailInputData The input data for the use case interactor
      */
     @Override
-    public void execute(GenerateEmailInputData generateEmailInputData) {
-        GenerateEmailOutputData generateEmailOutputData = new GenerateEmailOutputData(true,
-                generateEmailDataAccessObject.getAccounts());
-        generateEmailPresenter.prepareSuccessView(generateEmailOutputData);
+    public void execute(GenerateEmailInputData generateEmailInputData) throws IOException, InterruptedException {
+        try {
+            GenerateEmailOutputData generateEmailOutputData = new GenerateEmailOutputData(true,
+                    generateEmailDataAccessObject.createEmail(generateEmailInputData.getAccountName(),
+                            generateEmailInputData.getPassName()));
+            generateEmailPresenter.prepareSuccessView(generateEmailOutputData);
+        } catch (IOException | InterruptedException | JSONException e){
+            generateEmailPresenter.prepareFailView("Uh oh, something went wrong. Try a different account name or password");
+        }
+    }
+
+
+    /**
+     * Method for switching to Dashboard view
+     */
+    public void switchView(){
+        generateEmailPresenter.switchView();
     }
 }
