@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -29,7 +31,6 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
     private JTextField emailTextfield;
     private JPanel main;
     private JTextField passTextField;
-    private JButton copyButton;
 
     public GenerateEmailView(GenerateEmailViewModel generateEmailViewModel, GenerateEmailController generateEmailController,
                              DashboardViewModel dashboardViewModel) {
@@ -47,7 +48,7 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
                     System.out.println("hello");
                     GenerateEmailState currentState = generateEmailViewModel.getState();
                     try {
-                        generateEmailController.execute(currentState.getAccountName(), currentState.getPassName());
+                        generateEmailController.execute(currentState.getAccountName(), "nullPass");
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     } catch (InterruptedException ex) {
@@ -76,29 +77,6 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
             private void updateState() {
                 GenerateEmailState currentState = generateEmailViewModel.getState();
                 currentState.setAccountName(emailTextfield.getText());
-                generateEmailViewModel.setState(currentState);
-            }
-        });
-
-        passTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateState();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateState();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                // Plain text components don't fire these events
-            }
-
-            private void updateState() {
-                GenerateEmailState currentState = generateEmailViewModel.getState();
-                currentState.setPassName(passTextField.getText());
                 generateEmailViewModel.setState(currentState);
             }
         });
@@ -147,13 +125,21 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
         Object state = evt.getNewValue();
         if (state instanceof GenerateEmailState){
             GenerateEmailState generateEmailState = (GenerateEmailState) evt.getNewValue();
-            String message = generateEmailState.getAccountName() + " successfully created!";
+            String message = generateEmailState.getAccountName() + " successfully created!\nEmail copied to clipboard";
             if (generateEmailState.getError() == null) {
+                copyToClipboard(generateEmailState.getAccountName());
                 JOptionPane.showMessageDialog(this, message);
+
             } else {
                 JOptionPane.showMessageDialog(this, generateEmailState.getError());
             }
         }
+    }
+
+    private void copyToClipboard(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(text);
+        clipboard.setContents(selection, null);
     }
 
 }
