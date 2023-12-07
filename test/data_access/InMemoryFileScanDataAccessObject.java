@@ -1,5 +1,6 @@
 package data_access;
 
+import org.json.JSONException;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.ScanItem.ScanItemDataAccessInterface;
 
@@ -39,7 +40,9 @@ public class InMemoryFileScanDataAccessObject implements ScanItemDataAccessInter
      */
     @Override
     public String scanFile(String filePath) throws IOException, InterruptedException {
-        if (filePath.equals("a")) {
+        if (filePath.isEmpty()) {
+            throw new JSONException("file path is empty");
+        } else if (filePath.equals("a")) {
             return generateResponse(3, 5, 1123, 6);
         } else {
             return generateResponse(0, 0, 0, 0);
@@ -62,7 +65,9 @@ public class InMemoryFileScanDataAccessObject implements ScanItemDataAccessInter
      */
     @Override
     public String scanUrl(String filePath) throws IOException, InterruptedException, URISyntaxException {
-        if (filePath.equals("x")) {
+        if (filePath.isEmpty()) {
+            throw new JSONException("file path is empty");
+        } else if (filePath.equals("x")) {
             return generateResponse(5, 42, 1, 0);
         } else {
             return generateResponse(0, 0, 0, 0);

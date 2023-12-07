@@ -1,5 +1,6 @@
 package data_access;
 
+import org.json.JSONException;
 import use_case.GenerateEmail.GenerateEmailDataAccessInterface;
 
 import java.io.IOException;
@@ -14,6 +15,9 @@ public class InMemoryGenEmailDataAccessObject implements GenerateEmailDataAccess
      */
     @Override
     public String createEmail(String accountName, String passName) throws IOException, InterruptedException {
+        if (accountName.isEmpty()) {
+            throw new JSONException("Account name is empty");
+        }
         return accountName + "@domain.com";
     }
 }
