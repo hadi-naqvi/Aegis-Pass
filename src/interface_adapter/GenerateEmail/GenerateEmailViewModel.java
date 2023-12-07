@@ -1,8 +1,6 @@
 package interface_adapter.GenerateEmail;
 
-import interface_adapter.ScanItem.ScanItemState;
 import interface_adapter.ViewModel;
-import view.GenerateEmail;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

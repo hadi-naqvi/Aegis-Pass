@@ -6,6 +6,8 @@ import use_case.GenerateEmail.GenerateEmailInteractor;
 import use_case.ScanItem.ScanItemInputBoundary;
 import use_case.ScanItem.ScanItemInputData;
 
+import java.io.IOException;
+
 public class GenerateEmailController {
     public final GenerateEmailInputBoundary generateEmailInteractor;
 
@@ -20,8 +22,8 @@ public class GenerateEmailController {
     /**
      * Method which is executed when the user generates an ephemeral email
      */
-    public void execute(String accountName) {
-        GenerateEmailInputData generateEmailInputData = new GenerateEmailInputData(accountName);
+    public void execute(String accountName, String passName) throws IOException, InterruptedException {
+        GenerateEmailInputData generateEmailInputData = new GenerateEmailInputData(accountName, passName);
         generateEmailInteractor.execute(generateEmailInputData);
     }
 
