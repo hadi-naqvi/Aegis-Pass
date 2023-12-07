@@ -1,11 +1,9 @@
 package view;
 
 import entity.AccountInfo;
-import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.CheckPassQuality.CheckPassQualityController;
 import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountController;
-import interface_adapter.CreateAccount.CreateAccountState;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardController;
 import interface_adapter.Dashboard.DashboardState;
@@ -21,7 +19,8 @@ import interface_adapter.UpdateAccount.UpdateAccountState;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ScanItem.ScanItemController;
 import interface_adapter.ScanItem.ScanItemViewModel;
-import view.ScanItemView;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,11 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -66,15 +62,15 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton deleteButton;
     private JButton copyUButton;
     private JButton copyPButton;
-    private JButton copyUPButton;
     private JButton autotypeUAndPButton;
     private JButton autotypePButton;
-    private JLabel Title;
-    private JLabel Username;
-    private JLabel Password;
-    private JLabel URL;
-    private JLabel Notes;
-    private JLabel Date;
+    private JLabel title;
+    private JLabel username;
+    private JLabel password;
+    private JLabel url;
+    private JLabel notes;
+    private JLabel date;
+    private JLabel cardIcon;
     private JPanel createAccountPanel;
     private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
@@ -184,6 +180,33 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
             }
         });
+
+        try {
+            this.logo.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/image.png"))));
+            this.cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                cardPanel.setVisible(true);
+                table.getSelectedRow();
+                AccountInfo account = dashboardViewModel.getState().getAccounts().get(table.getSelectedRow());
+                try {
+                    cardIcon.setIcon(new ImageIcon(ImageIO.read(new File("src/assets/unknown.png"))));
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                title.setText(account.getTitle());
+                username.setText("Username: " + account.getUsername());
+                password.setText("Password: ");
+            }
+        });
+
+
 
         this.setLayout(new GridLayout());
         this.add(main);
