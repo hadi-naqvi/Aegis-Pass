@@ -1,11 +1,13 @@
 package app;
 
 import data_access.FileAuthDataAccessObject;
+import data_access.FileBreachDataAccessObject;
 import data_access.FileDashDataAccessObject;
 import data_access.FileScanDataAccessObject;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
+import interface_adapter.CheckBreach.CheckBreachViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
@@ -48,6 +50,7 @@ public class Main {
         AuthenticationViewModel authenticationViewModel = new AuthenticationViewModel();
         DashboardViewModel dashboardViewModel = new DashboardViewModel();
         ScanItemViewModel scanItemViewModel = new ScanItemViewModel();
+        CheckBreachViewModel checkBreachViewModel = new CheckBreachViewModel();
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
         DeleteAccountViewModel deleteAccountViewModel = new DeleteAccountViewModel();
         GeneratePasswordViewModel generatePasswordViewModel = new GeneratePasswordViewModel();
@@ -56,6 +59,7 @@ public class Main {
         FileAuthDataAccessObject authDataAccessObject;
         FileDashDataAccessObject dashDataAccessObject;
         FileScanDataAccessObject scanDataAccessObject;
+        FileBreachDataAccessObject breachDataAccessObject;
         CreateAccountDataAccessInterface createDataAccessObject;
 
         try {
@@ -70,6 +74,7 @@ public class Main {
                     System.getenv("DB_PASSWORD"));
             scanDataAccessObject = new FileScanDataAccessObject(
                     System.getenv("VT_APIKEY"));
+            breachDataAccessObject = new FileBreachDataAccessObject(System.getenv("PWN_APIKEY"));
             createDataAccessObject = dashDataAccessObject;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -89,9 +94,13 @@ public class Main {
                 dashboardViewModel);
         views.add(scanItemView, scanItemView.viewName);
 
+        CheckBreachView checkBreachView = CheckBreachUseCaseFactory.create(viewManagerModel, checkBreachViewModel,
+                breachDataAccessObject, dashboardViewModel);
+        views.add(checkBreachView, checkBreachView.viewName);
+
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
-                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, createAccountViewModel, deleteAccountViewModel, updateAccountViewModel,
-                generatePasswordViewModel, createDataAccessObject);
+                dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, checkBreachViewModel, breachDataAccessObject,
+                createAccountViewModel, deleteAccountViewModel, updateAccountViewModel, generatePasswordViewModel, createDataAccessObject);
         views.add(dashboardView, dashboardView.viewName);
 
         viewManagerModel.setActiveView(setupAuthView.viewName);
