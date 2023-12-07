@@ -29,7 +29,7 @@ public class SetupAuthViewTest {
         jf.pack();
         jf.setVisible(true);
 
-        // get references to all the fields and buttons in the SetupAuthView
+        // get references to all the fields and buttons in the SetupAuthView (get all components with trial and error, and print them to see what's what)
         JPanel panel = (JPanel) setupAuthView.getComponent(0);
 //        JButton confirmButton = (JButton) panel.getComponent(0);
         JPasswordField repeatPasswordField = (JPasswordField) panel.getComponent(1);
