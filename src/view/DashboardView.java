@@ -456,6 +456,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             char[] characters = text.toCharArray();
 
             for (char character : characters) {
+                robot.delay(100);
                 int keyCode = KeyEvent.getExtendedKeyCodeForChar(character);
                 robot.keyPress(keyCode);
                 robot.keyRelease(keyCode);

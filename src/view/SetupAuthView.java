@@ -47,6 +47,9 @@ public class SetupAuthView extends JPanel implements ActionListener, PropertyCha
                                     currentState.getPassword(),
                                     currentState.getRepeatedPassword()
                             );
+                            usernameInputField.setText("");
+                            passwordInputField.setText("");
+                            repeatPasswordInputField.setText("");
                         }
                     }
                 }

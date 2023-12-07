@@ -36,9 +36,8 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
     @Override
     public void prepareSuccessView(ScanItemOutputData scanItemOutputData) {
         ScanItemState scanItemState = scanItemViewModel.getState();
-        this.scanItemViewModel.setState(scanItemState);
-
         scanItemState.setResults(scanItemOutputData.getResults());
+        this.scanItemViewModel.setState(scanItemState);
         scanItemViewModel.firePropertyChanged();
     }
 

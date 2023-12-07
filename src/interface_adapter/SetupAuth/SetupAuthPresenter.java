@@ -1,5 +1,6 @@
 package interface_adapter.SetupAuth;
 
+import interface_adapter.Authentication.AuthenticationState;
 import interface_adapter.Authentication.AuthenticationViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.SetupAuth.SetupAuthOutputBoundary;
@@ -30,6 +31,12 @@ public class SetupAuthPresenter implements SetupAuthOutputBoundary {
      */
     @Override
     public void prepareSuccessView(SetupAuthOutputData setupAuthOutputData) {
+        SetupAuthState state = this.setupAuthViewModel.getState();
+        state.setPasswordError(null);
+        state.setPassword("");
+        state.setUsername("");
+        this.setupAuthViewModel.setState(state);
+
         viewManagerModel.setActiveView(authenticationViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

@@ -35,6 +35,12 @@ public class AuthenticationPresenter implements AuthenticationOutputBoundary {
      */
     @Override
     public void prepareSuccessView(AuthenticationOutputData authenticationOutputData) {
+        AuthenticationState state = this.authenticationViewModel.getState();
+        state.setUsername("");
+        state.setPassword("");
+        state.setPasswordError(null);
+        this.authenticationViewModel.setState(state);
+
         DashboardState dashboardState = dashboardViewModel.getState();
         dashboardState.setRightPanelView("dashboard");
         this.dashboardViewModel.setState(dashboardState);

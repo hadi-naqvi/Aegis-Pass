@@ -72,7 +72,8 @@
               <columns value="0"/>
               <editable value="true"/>
               <enabled value="true"/>
-              <foreground color="-1249292"/>
+              <font name="Roboto Light" size="12" style="0"/>
+              <foreground color="-13749184"/>
               <minimumSize width="336" height="35"/>
               <preferredSize width="336" height="35"/>
               <text value=""/>
@@ -128,7 +129,7 @@
               <columns value="0"/>
               <editable value="true"/>
               <enabled value="true"/>
-              <foreground color="-1249292"/>
+              <foreground color="-13749184"/>
               <margin top="2" left="6" bottom="2" right="6"/>
               <minimumSize width="336" height="35"/>
               <preferredSize width="336" height="35"/>
@@ -146,7 +147,7 @@
               <columns value="0"/>
               <editable value="true"/>
               <enabled value="true"/>
-              <foreground color="-1249292"/>
+              <foreground color="-13749184"/>
               <margin top="2" left="6" bottom="2" right="6"/>
               <minimumSize width="336" height="35"/>
               <preferredSize width="336" height="35"/>
