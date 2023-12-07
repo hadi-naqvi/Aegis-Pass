@@ -5,7 +5,7 @@ import entity.AccountInfo;
 import java.util.List;
 
 public class Generate2FACodeState {
-    private String faCode = null;
+    private String faCode = "";
 
     /**
      * Constructor method for the Generate2FACode's view state

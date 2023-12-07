@@ -14,7 +14,7 @@ public class Generate2FACodeViewModel extends ViewModel {
      * Constructor method for the Generate2FACode view's view model
      */
     public Generate2FACodeViewModel() {
-        super("dashboard");
+        super("generate 2fa code");
     }
 
     /**
