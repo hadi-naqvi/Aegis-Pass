@@ -11,8 +11,8 @@ public class GenerateEmailState {
     private String error = null;
 
     /**
-     * Constructor method for the Authentication view's state
-     * @param copy A copy of the Authentication's state
+     * Constructor method for the Generate Email view's state
+     * @param copy A copy of the Generate Email's state
      */
     public GenerateEmailState(GenerateEmailState copy) {
         this.accountName = copy.accountName;
@@ -21,7 +21,7 @@ public class GenerateEmailState {
     }
 
     /**
-     * Alternative constructor method for the Authentication state for no copy
+     * Alternative constructor method for the Generate Email state for no copy
      * which keeps attributes initialized as null/empty strings
      */
     public GenerateEmailState() {

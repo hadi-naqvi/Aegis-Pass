@@ -14,7 +14,7 @@ public class GenerateEmailPresenter implements GenerateEmailOutputBoundary {
     private final DashboardViewModel dashboardViewModel;
 
     /**
-     * Constructor method for the Scan Item use case's presenter
+     * Constructor method for the Generate Email use case's presenter
      * @param generateEmailViewModel The view model for the generate email view
      * @param viewManagerModel The view model
      */
@@ -27,8 +27,7 @@ public class GenerateEmailPresenter implements GenerateEmailOutputBoundary {
     }
 
     /**
-     * These methods are empty as Dashboard view simply displays accounts based on user(no failview)
-     *
+     * Method which updates the view manager model to display the email that is generated
      * @param generateEmailOutputData
      */
     @Override
@@ -41,7 +40,7 @@ public class GenerateEmailPresenter implements GenerateEmailOutputBoundary {
     }
 
     /**
-     * Method which updates the view manager model to display the failed analysis for a file
+     * Method which updates the view manager model to display failure when generating email
      * @param error The error message which explains why Authentication failed
      */
     @Override

@@ -1,13 +1,11 @@
 package data_access;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import use_case.GenerateEmail.GenerateEmailDataAccessInterface;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -35,8 +33,8 @@ public class FileGenEmailDataAccessObject implements GenerateEmailDataAccessInte
     }
 
     /**
-     * Method which uses Virus Total's API to scan URL for a POST request
-     * @return returns the path parameter that is passed into Virus Total's GET request
+     * Method which uses mail.gw's API to get possible domains
+     * @return returns the first possible domain name
      */
     public String getDomain() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,9 +50,9 @@ public class FileGenEmailDataAccessObject implements GenerateEmailDataAccessInte
     }
 
     /**
-     * Helper method for extracting the path parameter for the GET request
-     * @param jsonResponse the json that is returned after the POST request
-     * @return returns the path parameter that is passed into Virus Total's GET request
+     * Helper method for extracting the domain name from the GET request
+     * @param jsonResponse the json that is returned after the GET request
+     * @return returns the domain name from the GET request
      */
     private String extractDomains(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -66,8 +64,8 @@ public class FileGenEmailDataAccessObject implements GenerateEmailDataAccessInte
     }
 
     /**
-     * Method which uses Virus Total's API to scan URL for a POST request
-     * @return returns the path parameter that is passed into Virus Total's GET request
+     * Method which uses mail.gw's API to create an email account
+     * @return returns the generated email
      */
     public String getAccount(String accountName, String pass) throws IOException, InterruptedException {
         String jsonPayload = "{\"address\": \"" + accountName + "\", \"password\": \"" + pass + "\"}";
@@ -85,6 +83,11 @@ public class FileGenEmailDataAccessObject implements GenerateEmailDataAccessInte
         return name;
     }
 
+    /**
+     * Helper method for extracting the email account from the GET request
+     * @param jsonResponse the json that is returned after the GET request
+     * @return returns the email account from the GET request
+     */
     private String extractAccount(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
 

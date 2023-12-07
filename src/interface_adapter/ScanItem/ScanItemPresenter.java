@@ -45,7 +45,7 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
 
     /**
      * Method which updates the view manager model to display the failed analysis for a file
-     * @param error The error message which explains why Authentication failed
+     * @param error The error message which explains why ScanItem failed
      */
     @Override
     public void prepareFailView(String error) {

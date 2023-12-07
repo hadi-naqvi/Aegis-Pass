@@ -21,7 +21,7 @@ import view.ScanItemView;
 
 public class GenerateEmailUseCaseFactory {
     /**
-     * Method which creates a new ScanItem view by instantiating all necessary interface adapters
+     * Method which creates a new Generate Email view by instantiating all necessary interface adapters
      * @param viewManagerModel The view manager model
      * @param generateEmailViewModel The view model for the generate email view
      * @param userDataAccessObject The data access object scanItem
@@ -36,7 +36,7 @@ public class GenerateEmailUseCaseFactory {
     }
 
     /**
-     * Method which creates and returns a new controller object for the Scan Item use case
+     * Method which creates and returns a new controller object for the Generate Email use case
      * @param viewManagerModel The view manager model
      * @param generateEmailViewModel The view model for the generateEmail view
      * @param userDataAccessObject The data access object for scanItem

@@ -5,12 +5,12 @@ import use_case.Dashboard.DashboardOutputData;
 public interface GenerateEmailOutputBoundary {
 
     /**
-     * These methods are empty as Dashboard view simply displays accounts based on user(no failview)
+     * Method which updates the view manager model to display the email that is generated
      */
     void prepareSuccessView(GenerateEmailOutputData generateEmailOutputData);
 
     /**
-     * Method which updates the view manager model to display the failed analysis for a file
+     * Method which updates the view manager model to display failure when generating email
      * @param error The error message which explains why Authentication failed
      */
     void prepareFailView(String error);
