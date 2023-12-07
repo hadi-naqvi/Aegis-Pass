@@ -10,6 +10,8 @@ import interface_adapter.Dashboard.DashboardState;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountController;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GenerateEmail.GenerateEmailController;
+import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.Generate2FACode.Generate2FACodeController;
 import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
@@ -84,6 +86,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private GeneratePasswordView generatePasswordPanel;
     private UpdateAccountView updateAccountPanel;
     private JPanel scanItemPanel;
+    private JPanel genEmailRightPanel;
     private JScrollPane tableScrollPane;
     private Timer timer;
 
@@ -94,6 +97,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                          UpdateAccountController updateAccountController, UpdateAccountViewModel updateAccountViewModel,
                          DeleteAccountController deleteAccountController, DeleteAccountViewModel deleteAccountViewModel,
                          GeneratePasswordController generatePasswordController, GeneratePasswordViewModel generatePasswordViewModel,
+                         GenerateEmailController generateEmailController, GenerateEmailViewModel generateEmailViewModel,
                          CheckPassQualityController checkPassQualityController, CheckPassQualityViewModel checkPassQualityViewModel,
                          Generate2FACodeController generate2FACodeController, Generate2FACodeViewModel generate2FACodeViewModel) {
         this.dashboardViewModel = dashboardViewModel;
@@ -105,6 +109,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.createAccountPanel = new CreateAccountView(dashboardViewModel, createAccountViewModel, createAccountController);
         this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
+        this.genEmailRightPanel = new GenerateEmailView(generateEmailViewModel, generateEmailController, dashboardViewModel);
         this.generate2FACodeViewModel = generate2FACodeViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -172,6 +177,16 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 main.add(createAccountPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("create account");
+            }
+        });
+
+        generateEmailButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                main.remove(rightPanel);
+                main.add(genEmailRightPanel, BorderLayout.CENTER);
+                updateView();
+                setRightPanelName("generate email");
             }
         });
 

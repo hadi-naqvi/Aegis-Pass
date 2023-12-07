@@ -11,6 +11,8 @@ import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountController;
 import interface_adapter.DeleteAccount.DeleteAccountPresenter;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
+import interface_adapter.GenerateEmail.GenerateEmailController;
+import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.Generate2FACode.Generate2FACodeController;
 import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordController;
@@ -31,6 +33,7 @@ import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
 import use_case.DeleteAccount.DeleteAccountInputBoundary;
 import use_case.DeleteAccount.DeleteAccountInteractor;
 import use_case.DeleteAccount.DeleteAccountOutputBoundary;
+import use_case.GenerateEmail.GenerateEmailDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.LogOut.LogOutInputBoundary;
 import use_case.LogOut.LogOutInteractor;
@@ -58,6 +61,8 @@ public class DashboardUseCaseFactory {
                                        DeleteAccountViewModel deleteAccountViewModel,
                                        UpdateAccountViewModel updateAccountViewModel,
                                        GeneratePasswordViewModel generatePasswordViewModel,
+                                       GenerateEmailViewModel generateEmailViewModel,
+                                       GenerateEmailDataAccessInterface generateEmailDataAccessObject,
                                        CheckPassQualityViewModel checkPassQualityViewModel,
                                        Generate2FACodeViewModel generate2FACodeViewModel,
                                        CreateAccountDataAccessInterface createAccountDataAccessObject) {
@@ -75,10 +80,12 @@ public class DashboardUseCaseFactory {
         CreateAccountController createAccountController = CreateAccountUseCaseFactory.createAccountUseCase(viewManagerModel, createAccountViewModel,
                 createAccountDataAccessObject, dashboardViewModel);
         DeleteAccountController deleteAccountController = DeleteAccountUseCaseFactory.createDeleteAccountUseCase(viewManagerModel, deleteAccountViewModel, dashboardViewModel, (DeleteAccountDataAccessInterface) userDataAccessObject);
-
+        GenerateEmailController generateEmailController = GenerateEmailUseCaseFactory.createGenerateEmailUseCase(viewManagerModel, generateEmailViewModel, generateEmailDataAccessObject,
+                dashboardViewModel);
         return new DashboardView(dashboardViewModel, dashboardController, logOutController, scanItemController,
                 scanItemViewModel, createAccountController, createAccountViewModel, updateAccountController, updateAccountViewModel,
                 deleteAccountController, deleteAccountViewModel, generatePasswordController, generatePasswordViewModel,
+                generateEmailController, generateEmailViewModel,
                 checkPassQualityController, checkPassQualityViewModel, generate2FACodeController, generate2FACodeViewModel);
     }
 
