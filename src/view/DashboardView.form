@@ -141,7 +141,7 @@
                   <text value="Copy User 📋"/>
                 </properties>
               </component>
-              <component id="cd25c" class="javax.swing.JButton" binding="copyButton1" default-binding="true">
+              <component id="cd25c" class="javax.swing.JButton" binding="copyPassButton">
                 <constraints/>
                 <properties>
                   <background color="-7814960"/>
@@ -157,12 +157,6 @@
                   <font name="Roboto Light" size="14" style="1"/>
                   <foreground color="-1249292"/>
                   <text value="Autotype Login ⌨️"/>
-                </properties>
-              </component>
-              <component id="b6542" class="javax.swing.JButton" binding="autotypeUAndPButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Autotype U and P"/>
                 </properties>
               </component>
               <component id="82c4c" class="javax.swing.JButton" binding="autotypeButton" default-binding="true">

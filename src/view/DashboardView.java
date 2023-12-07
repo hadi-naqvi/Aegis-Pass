@@ -30,9 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -71,7 +69,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton editViewButton;
     private JButton deleteButton;
     private JButton copyUserButton;
-    private JButton copyButton1;
+    private JButton copyPassButton;
     private JButton autotypeLogin️Button;
     private JButton autotypeButton;
     private JLabel title;
@@ -129,7 +127,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
 
-        autotypeUAndPButton.addActionListener(new ActionListener() {
+        autotypeLogin️Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
@@ -158,7 +156,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         });
 
 
-        autotypePButton.addActionListener(new ActionListener() {
+        autotypeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
@@ -183,7 +181,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
-        copyPButton.addActionListener(new ActionListener() {
+        copyPassButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
@@ -200,7 +198,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         });
 
 
-        copyUButton.addActionListener(new ActionListener() {
+        copyUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
