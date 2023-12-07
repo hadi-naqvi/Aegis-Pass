@@ -54,6 +54,7 @@ public class ScanItemInteractor implements ScanItemInputBoundary {
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
+        }
     }
 
     /**
