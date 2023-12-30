@@ -19,7 +19,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
-public class GenerateEmailView extends JPanel implements ActionListener, PropertyChangeListener {
+public class GenerateEmailView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
     public final String viewName = "generate email";
     private final GenerateEmailViewModel generateEmailViewModel;
     private final GenerateEmailController generateEmailController;
@@ -85,11 +85,7 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
             public void actionPerformed(ActionEvent e) {
                 GenerateEmailState state = generateEmailViewModel.getState();
 
-                state.setAccountName("");
-                state.setPassName("");
-                state.setError(null);
-
-                emailTextfield.setText("");
+                resetView();
 
                 dashboardViewModel.getState().setRightPanelView("dashboard");
                 dashboardViewModel.firePropertyChanged();
@@ -152,5 +148,16 @@ public class GenerateEmailView extends JPanel implements ActionListener, Propert
         }
     }
 
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        GenerateEmailState state = generateEmailViewModel.getState();
+        state.setAccountName("");
+        state.setPassName("");
+        state.setError(null);
+        emailTextfield.setText("");
+    }
 }
 

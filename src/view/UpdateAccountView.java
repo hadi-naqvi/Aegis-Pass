@@ -18,7 +18,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 
-public class UpdateAccountView extends JPanel implements ActionListener, PropertyChangeListener {
+public class UpdateAccountView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
 
 
     public final String viewName = "update account";
@@ -60,13 +60,7 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setTitleText("");
-                setUsernameText("");
-                setPasswordText("");
-                set2FAKeyText("");
-                setURLText("");
-                setIconURLText("");
-                setNotesText("");
+                resetView();
                 updateAccountController.switchView();
             }
         });
@@ -263,13 +257,7 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
                 JOptionPane.showMessageDialog(this, updateAccountState.getUsernameError());
             }
             else {
-                inputTitle.setText("");
-                inputUsername.setText("");
-                inputPassword.setText("");
-                inputKey.setText("");
-                inputURL.setText("");
-                inputIcon.setText("");
-                inputNotes.setText("");
+                resetView();
             }
         }
     }
@@ -328,5 +316,19 @@ public class UpdateAccountView extends JPanel implements ActionListener, Propert
      */
     public void setNotesText(String notes) {
         this.inputNotes.setText(notes);
+    }
+
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        inputTitle.setText("");
+        inputUsername.setText("");
+        inputPassword.setText("");
+        inputKey.setText("");
+        inputURL.setText("");
+        inputIcon.setText("");
+        inputNotes.setText("");
     }
 }

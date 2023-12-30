@@ -52,7 +52,6 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
     @Override
     public String scanUrl(String url) throws IOException, InterruptedException, URISyntaxException {
         String scanResponse = sendPostRequestUrl(url);
-        System.out.println(scanResponse);
         String scanId = getResponse(scanResponse);
         return scanId;
     }

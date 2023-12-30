@@ -44,6 +44,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class DashboardView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -67,7 +68,6 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JButton scanFileURLButton;
     private JButton signOutButton;
     private JTable table;
-    private JScrollBar scrollbar;
     private JPanel topBar;
     private JPanel cardPanel;
     private JButton createButton;
@@ -95,6 +95,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
     private JPanel genEmailRightPanel;
     private JScrollPane tableScrollPane;
     private Timer timer;
+    private ArrayList<ResettableView> views;
 
     public DashboardView(DashboardViewModel dashboardViewModel,
                          DashboardController dashboardController, LogOutController logOutController,
@@ -118,6 +119,13 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         this.generatePasswordPanel = new GeneratePasswordView(dashboardViewModel, generatePasswordViewModel, checkPassQualityViewModel, generatePasswordController, checkPassQualityController);
         this.updateAccountPanel = new UpdateAccountView(dashboardViewModel, updateAccountViewModel, updateAccountController);
         this.genEmailRightPanel = new GenerateEmailView(generateEmailViewModel, generateEmailController, dashboardViewModel);
+        this.views = new ArrayList<ResettableView>();
+        views.add((ResettableView) scanItemPanel);
+        views.add((ResettableView) checkBreachPanel);
+        views.add((ResettableView) createAccountPanel);
+        views.add(generatePasswordPanel);
+        views.add(updateAccountPanel);
+        views.add((ResettableView) genEmailRightPanel);
         this.generate2FACodeViewModel = generate2FACodeViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
@@ -132,8 +140,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         table.setModel(this.accountsTableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
+        table.setRowHeight(40);
         this.tableScrollPane = new JScrollPane(table);
-        this.tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
 
         this.rightPanel.add(this.tableScrollPane, BorderLayout.CENTER);
@@ -229,6 +237,7 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         signOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resetViews();
                 // Removes the passwords in the UI/view model when logging out to prevent this sensitive data leaking
                 DashboardState state = dashboardViewModel.getState();
                 state.setAccounts(null);
@@ -259,7 +268,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         scanFileURLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.remove(rightPanel);
+                resetViews();
+                main.remove(1);
                 main.add(scanItemPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("scan item");
@@ -269,7 +279,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         haveibeenpwnedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.remove(rightPanel);
+                resetViews();
+                main.remove(1);
                 main.add(checkBreachPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("check breach");
@@ -279,7 +290,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.remove(rightPanel);
+                resetViews();
+                main.remove(1);
                 main.add(createAccountPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("create account");
@@ -289,7 +301,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         generateEmailButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.remove(rightPanel);
+                resetViews();
+                main.remove(1);
                 main.add(genEmailRightPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("generate email");
@@ -299,7 +312,8 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         generatePasswordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.remove(rightPanel);
+                resetViews();
+                main.remove(1);
                 main.add(generatePasswordPanel, BorderLayout.CENTER);
                 updateView();
                 setRightPanelName("generate password");
@@ -320,23 +334,26 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
                 if (rowIndex == -1){
                     updateAccountNoAccount();
                 }
-                UpdateAccountState state = updateAccountViewModel.getState();
-                state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
-                state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
-                state.setUsernameError(null);
-                updateAccountViewModel.setState(state);
-                main.remove(rightPanel);
-                main.add(updateAccountPanel, BorderLayout.CENTER);
-                updateView();
-                setRightPanelName("update account");
+                else {
+                    resetViews();
+                    UpdateAccountState state = updateAccountViewModel.getState();
+                    state.setOriginalTitle(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                    state.setOriginalUser(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                    state.setUsernameError(null);
+                    updateAccountViewModel.setState(state);
+                    main.remove(1);
+                    main.add(updateAccountPanel, BorderLayout.CENTER);
+                    updateView();
+                    setRightPanelName("update account");
 
-                updateAccountPanel.setTitleText(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
-                updateAccountPanel.setUsernameText(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
-                updateAccountPanel.setPasswordText(dashboardViewModel.getState().getAccounts().get(rowIndex).getPassword());
-                updateAccountPanel.set2FAKeyText(dashboardViewModel.getState().getAccounts().get(rowIndex).getSecretKey());
-                updateAccountPanel.setURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getURL());
-                updateAccountPanel.setIconURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getIconURL());
-                updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
+                    updateAccountPanel.setTitleText(dashboardViewModel.getState().getAccounts().get(rowIndex).getTitle());
+                    updateAccountPanel.setUsernameText(dashboardViewModel.getState().getAccounts().get(rowIndex).getUsername());
+                    updateAccountPanel.setPasswordText(dashboardViewModel.getState().getAccounts().get(rowIndex).getPassword());
+                    updateAccountPanel.set2FAKeyText(dashboardViewModel.getState().getAccounts().get(rowIndex).getSecretKey());
+                    updateAccountPanel.setURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getURL());
+                    updateAccountPanel.setIconURLText(dashboardViewModel.getState().getAccounts().get(rowIndex).getIconURL());
+                    updateAccountPanel.setNotesText(dashboardViewModel.getState().getAccounts().get(rowIndex).getNotes());
+                }
             }
         });
 
@@ -478,10 +495,19 @@ public class DashboardView extends JPanel implements ActionListener, PropertyCha
         dashboardViewModel.setState(dashboardState);
     }
 
-    private void updateView(){
+    private void updateView() {
         this.validate();
         this.repaint();
+        this.rightPanel.validate();
+        this.rightPanel.repaint();
     }
+
+    private void resetViews() {
+        for (ResettableView view : views) {
+            view.resetView();
+        }
+    }
+
     /**
      * Invoked when an action occurs.
      *
