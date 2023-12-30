@@ -9,7 +9,7 @@ import use_case.SetupAuth.SetupAuthDataAccessInterface;
 import java.security.SecureRandom;
 import java.sql.*;
 
-public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
+public class AuthDataAccessObject implements SetupAuthDataAccessInterface, AuthenticationDataAccessInterface {
     private final UserFactory USERFACTORY;
     private final Connection CONNECTION;
     private final String PEPPER;
@@ -19,7 +19,7 @@ public class FileAuthDataAccessObject implements SetupAuthDataAccessInterface, A
      * @param userFactory The factory object which will create new user entities
      * @throws SQLException An exception thrown by SQL database connection
      */
-    public FileAuthDataAccessObject(UserFactory userFactory, String dbURL, String dbUsername, String dbPassword, String pepper) throws SQLException {
+    public AuthDataAccessObject(UserFactory userFactory, String dbURL, String dbUsername, String dbPassword, String pepper) throws SQLException {
         this.USERFACTORY = userFactory;
         this.CONNECTION = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
         this.PEPPER = pepper;

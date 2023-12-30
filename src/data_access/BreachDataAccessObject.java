@@ -1,9 +1,7 @@
 package data_access;
 
-import com.mysql.cj.util.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import use_case.CheckBreach.CheckBreachDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
 
@@ -16,7 +14,7 @@ import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class FileBreachDataAccessObject implements CheckBreachDataAccessInterface, LogOutDataAccessInterface {
+public class BreachDataAccessObject implements CheckBreachDataAccessInterface, LogOutDataAccessInterface {
 
     private final String API_KEY;
     private int currentUserID;
@@ -26,7 +24,7 @@ public class FileBreachDataAccessObject implements CheckBreachDataAccessInterfac
      * Constructor for the Data Access Object of the Check Breach use case
      * @param api_key the API key for the HaveIBeenPWNED API
      */
-    public FileBreachDataAccessObject(String api_key) {
+    public BreachDataAccessObject(String api_key) {
         this.API_KEY = api_key;
     }
 
