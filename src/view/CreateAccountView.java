@@ -20,7 +20,7 @@ import java.beans.PropertyChangeListener;
 import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 
-public class CreateAccountView extends JPanel implements ActionListener, PropertyChangeListener{
+public class CreateAccountView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
 
     public final String viewName = "create account";
     private final CreateAccountController createAccountController;
@@ -52,13 +52,7 @@ public class CreateAccountView extends JPanel implements ActionListener, Propert
                     createAccountController.execute(
                             state.getTitle(), state.getUsername(), state.getPassword(), state.getSecretKey(),
                             state.getURL(), state.getIconURL(), LocalDateTime.now(), state.getNotes());
-                    inputTitle.setText("");
-                    inputUsername.setText("");
-                    inputPassword.setText("");
-                    inputKey.setText("");
-                    inputURL.setText("");
-                    inputIcon.setText("");
-                    inputNotes.setText("");
+                    resetView();
 
                     DashboardState state2 = dashboardViewModel.getState();
                     state2.setAccounts(null);
@@ -74,8 +68,8 @@ public class CreateAccountView extends JPanel implements ActionListener, Propert
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resetView();
                 createAccountController.switchView();
-
             }
         });
 
@@ -271,5 +265,19 @@ public class CreateAccountView extends JPanel implements ActionListener, Propert
                 JOptionPane.showMessageDialog(this, createAccountState.getUsernameError());
             }
         }
+    }
+
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        inputTitle.setText("");
+        inputUsername.setText("");
+        inputPassword.setText("");
+        inputKey.setText("");
+        inputURL.setText("");
+        inputIcon.setText("");
+        inputNotes.setText("");
     }
 }

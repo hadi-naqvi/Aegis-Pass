@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class GeneratePasswordView extends JPanel implements ActionListener, PropertyChangeListener {
+public class GeneratePasswordView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
     private JPanel generatePasswordPanel;
     private JPanel topPanel;
     private JTextField passwordField;
@@ -384,29 +384,7 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
                 GeneratePasswordState state = generatePasswordViewModel.getState();
 
                 // Resetting the UI/state upon exiting
-                state.setPasswordField("");
-                state.setPasswordLength(16);
-                state.setUpperAlpha(true);
-                state.setLowerAlpha(true);
-                state.setNumericalChars(true);
-                state.setPunctuationOne(false);
-                state.setPunctuationTwo(false);
-                state.setPunctuationThree(false);
-                state.setPunctuationFour(false);
-                state.setPunctuationFive(false);
-                state.setAlsoIncludeFrom("");
-                state.setExcludeFrom("");
-                passwordField.setText("");
-                aZButton.setBackground(new Color(0xA3BE8C));
-                lowerazButton.setBackground(new Color(0xA3BE8C));
-                a09Button.setBackground(new Color(0xA3BE8C));
-                punctOneButton.setBackground(new Color(0xD8DEE9));
-                punctTwoButton.setBackground(new Color(0xD8DEE9));
-                punctThreeButton.setBackground(new Color(0xD8DEE9));
-                punctFourButton.setBackground(new Color(0xD8DEE9));
-                punctFiveButton.setBackground(new Color(0xD8DEE9));
-                includeFrom.setText("");
-                excludeFrom.setText("");
+                resetView();
 
                 dashboardViewModel.getState().setRightPanelView("dashboard");
                 dashboardViewModel.firePropertyChanged();
@@ -470,4 +448,34 @@ public class GeneratePasswordView extends JPanel implements ActionListener, Prop
     }
 
 
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        GeneratePasswordState state = generatePasswordViewModel.getState();
+        state.setPasswordField("");
+        state.setPasswordLength(16);
+        state.setUpperAlpha(true);
+        state.setLowerAlpha(true);
+        state.setNumericalChars(true);
+        state.setPunctuationOne(false);
+        state.setPunctuationTwo(false);
+        state.setPunctuationThree(false);
+        state.setPunctuationFour(false);
+        state.setPunctuationFive(false);
+        state.setAlsoIncludeFrom("");
+        state.setExcludeFrom("");
+        passwordField.setText("");
+        aZButton.setBackground(new Color(0xA3BE8C));
+        lowerazButton.setBackground(new Color(0xA3BE8C));
+        a09Button.setBackground(new Color(0xA3BE8C));
+        punctOneButton.setBackground(new Color(0xD8DEE9));
+        punctTwoButton.setBackground(new Color(0xD8DEE9));
+        punctThreeButton.setBackground(new Color(0xD8DEE9));
+        punctFourButton.setBackground(new Color(0xD8DEE9));
+        punctFiveButton.setBackground(new Color(0xD8DEE9));
+        includeFrom.setText("");
+        excludeFrom.setText("");
+    }
 }

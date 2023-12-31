@@ -15,7 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
-public class ScanItemView extends JPanel implements ActionListener, PropertyChangeListener {
+public class ScanItemView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
     public final String viewName = "scan item";
     private final ScanItemViewModel scanItemViewModel;
     private final ScanItemController scanItemController;
@@ -79,6 +79,7 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resetView();
                 scanItemController.switchView();
 
             }
@@ -158,5 +159,16 @@ public class ScanItemView extends JPanel implements ActionListener, PropertyChan
                 JOptionPane.showMessageDialog(this, scanItemState.getError());
             }
         }
+    }
+
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        this.selectFileButton.setEnabled(true);
+        this.typeURLTextField.setText("");
+        this.scanFileRadioButton.setSelected(true);
+        this.scanURLRadioButton.setSelected(false);
     }
 }

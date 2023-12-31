@@ -8,7 +8,6 @@ import use_case.ScanItem.ScanItemDataAccessInterface;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -17,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 
-public class FileScanDataAccessObject implements ScanItemDataAccessInterface, LogOutDataAccessInterface {
+public class ScanDataAccessObject implements ScanItemDataAccessInterface, LogOutDataAccessInterface {
     private final String API_KEY;
 
     private int currentUserID;
@@ -27,7 +26,7 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
      * Constructor for FileScanDataAccessObject
      * @param apiKey The api key in our environment variables
      */
-    public FileScanDataAccessObject(String apiKey) {
+    public ScanDataAccessObject(String apiKey) {
         this.API_KEY = apiKey;
     }
 
@@ -52,7 +51,6 @@ public class FileScanDataAccessObject implements ScanItemDataAccessInterface, Lo
     @Override
     public String scanUrl(String url) throws IOException, InterruptedException, URISyntaxException {
         String scanResponse = sendPostRequestUrl(url);
-        System.out.println(scanResponse);
         String scanId = getResponse(scanResponse);
         return scanId;
     }

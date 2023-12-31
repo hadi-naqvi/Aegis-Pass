@@ -15,7 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
-public class CheckBreachView extends JPanel implements ActionListener, PropertyChangeListener {
+public class CheckBreachView extends JPanel implements ActionListener, PropertyChangeListener, ResettableView {
 
     public final String viewName = "check breach";
     private final CheckBreachViewModel checkBreachViewModel;
@@ -164,6 +164,7 @@ public class CheckBreachView extends JPanel implements ActionListener, PropertyC
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resetView();
                 checkBreachController.switchView();
             }
         });
@@ -201,4 +202,16 @@ public class CheckBreachView extends JPanel implements ActionListener, PropertyC
         }
     }
 
+    /**
+     * Method which resets the components and state of the view
+     */
+    @Override
+    public void resetView() {
+        this.typeEmailTextField.setEnabled(true);
+        this.confirmEmailButton.setEnabled(true);
+        this.checkEmailRadioButton.setSelected(true);
+        this.checkPasswordRadioButton.setSelected(false);
+        this.typeEmailTextField.setText("");
+        this.typePasswordTextField.setText("");
+    }
 }

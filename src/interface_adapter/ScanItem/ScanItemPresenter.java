@@ -36,9 +36,8 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
     @Override
     public void prepareSuccessView(ScanItemOutputData scanItemOutputData) {
         ScanItemState scanItemState = scanItemViewModel.getState();
-        this.scanItemViewModel.setState(scanItemState);
-
         scanItemState.setResults(scanItemOutputData.getResults());
+        scanItemState.setError(null);
         scanItemViewModel.firePropertyChanged();
     }
 
@@ -50,6 +49,7 @@ public class ScanItemPresenter implements ScanItemOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         ScanItemState scanItemState = scanItemViewModel.getState();
+        scanItemState.setResults(null);
         scanItemState.setError(error);
         scanItemViewModel.firePropertyChanged();
     }

@@ -10,12 +10,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class FileGenEmailDataAccessObject implements GenerateEmailDataAccessInterface {
+public class GenEmailDataAccessObject implements GenerateEmailDataAccessInterface {
 
     /**
      * Constructor for FileGenEmailDataAccessObject
      */
-    public FileGenEmailDataAccessObject() {
+    public GenEmailDataAccessObject() {
     }
 
     /**

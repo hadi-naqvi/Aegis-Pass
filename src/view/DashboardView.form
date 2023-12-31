@@ -22,7 +22,7 @@
           <size top="10" left="10" bottom="10" right="10"/>
         </border>
         <children>
-          <grid id="2bd8f" binding="buttonPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="2bd8f" binding="buttonPanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="50" vgap="20">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="Center"/>
             <properties>
@@ -318,10 +318,6 @@
               <maximumSize width="2147483647" height="2147483647"/>
               <minimumSize width="30" height="32"/>
             </properties>
-          </component>
-          <component id="6136b" class="javax.swing.JScrollBar" binding="scrollbar">
-            <constraints border-constraint="East"/>
-            <properties/>
           </component>
         </children>
       </grid>

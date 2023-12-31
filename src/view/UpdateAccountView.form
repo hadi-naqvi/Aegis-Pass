@@ -184,7 +184,7 @@
               <background color="-1249292"/>
               <font name="Roboto Light" size="20" style="0"/>
               <foreground color="-1249292"/>
-              <text value="IconURL"/>
+              <text value="Icon URL"/>
             </properties>
           </component>
           <component id="898ca" class="javax.swing.JTextField" binding="inputIcon">

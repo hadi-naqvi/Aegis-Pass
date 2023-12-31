@@ -8,16 +8,11 @@ import use_case.DeleteAccount.DeleteAccountDataAccessInterface;
 import use_case.LogOut.LogOutDataAccessInterface;
 import use_case.UpdateAccount.UpdateAccountDataAccessInterface;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class FileDashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface, UpdateAccountDataAccessInterface, DeleteAccountDataAccessInterface {
+public class DashDataAccessObject implements DashboardDataAccessInterface, LogOutDataAccessInterface, CreateAccountDataAccessInterface, UpdateAccountDataAccessInterface, DeleteAccountDataAccessInterface {
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
     private final AccountInfoFactory ACCOUNTFACTORY;
@@ -35,8 +30,8 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
      * @param dbPassword The password for database authentication
      * @throws SQLException An exception thrown by SQL database connection
      */
-    public FileDashDataAccessObject(AccountInfoFactory accountInfoFactory,
-                                    String dbURL, String dbUsername, String dbPassword) throws SQLException {
+    public DashDataAccessObject(AccountInfoFactory accountInfoFactory,
+                                String dbURL, String dbUsername, String dbPassword) throws SQLException {
         this.ACCOUNTFACTORY = accountInfoFactory;
         this.CONNECTION = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
     }
@@ -114,7 +109,6 @@ public class FileDashDataAccessObject implements DashboardDataAccessInterface, L
 
     /**
      * method to update the account's changes in the database
-     * @param index
      * @param updatedTitle
      * @param updatedUsername
      * @param updatedPassword

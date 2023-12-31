@@ -47,6 +47,8 @@ public class AuthenticationView extends JPanel implements ActionListener, Proper
                                     currentState.getUsername(),
                                     currentState.getPassword()
                             );
+                            tfUsername.setText("");
+                            pfPassword.setText("");
                         }
                     }
                 }

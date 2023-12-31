@@ -1,10 +1,6 @@
 package app;
 
-import data_access.FileAuthDataAccessObject;
-import data_access.FileBreachDataAccessObject;
-import data_access.FileDashDataAccessObject;
-import data_access.FileGenEmailDataAccessObject;
-import data_access.FileScanDataAccessObject;
+import data_access.*;
 import entity.CommonAccountInfoFactory;
 import entity.CommonUserFactory;
 import interface_adapter.Authentication.AuthenticationViewModel;
@@ -13,23 +9,25 @@ import interface_adapter.CheckPassQuality.CheckPassQualityViewModel;
 import interface_adapter.CreateAccount.CreateAccountViewModel;
 import interface_adapter.Dashboard.DashboardViewModel;
 import interface_adapter.DeleteAccount.DeleteAccountViewModel;
-import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.Generate2FACode.Generate2FACodeViewModel;
+import interface_adapter.GenerateEmail.GenerateEmailViewModel;
 import interface_adapter.GeneratePassword.GeneratePasswordViewModel;
 import interface_adapter.ScanItem.ScanItemViewModel;
 import interface_adapter.SetupAuth.SetupAuthViewModel;
 import interface_adapter.UpdateAccount.UpdateAccountViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.CreateAccount.CreateAccountDataAccessInterface;
-import use_case.ScanItem.ScanItemDataAccessInterface;
 import view.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         //Build the main program window, the main panel containing the
         //various cards, and the layout, and stitch them together.
 
@@ -37,7 +35,8 @@ public class Main {
         JFrame application = new JFrame("");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
-        application.setResizable(false);
+        application.setTitle("Aegis Pass");
+        application.setIconImage(ImageIO.read(new File("src/assets/icon.png")));
 
         CardLayout cardLayout = new CardLayout();
 
@@ -63,28 +62,28 @@ public class Main {
         CheckPassQualityViewModel checkPassQualityViewModel = new CheckPassQualityViewModel();
         Generate2FACodeViewModel generate2FACodeViewModel = new Generate2FACodeViewModel();
 
-        FileAuthDataAccessObject authDataAccessObject;
-        FileDashDataAccessObject dashDataAccessObject;
-        FileScanDataAccessObject scanDataAccessObject;
-        FileBreachDataAccessObject breachDataAccessObject;
+        AuthDataAccessObject authDataAccessObject;
+        DashDataAccessObject dashDataAccessObject;
+        ScanDataAccessObject scanDataAccessObject;
+        BreachDataAccessObject breachDataAccessObject;
         CreateAccountDataAccessInterface createDataAccessObject;
-        FileGenEmailDataAccessObject genEmailDataAccessObject;
+        GenEmailDataAccessObject genEmailDataAccessObject;
 
         try {
-            authDataAccessObject = new FileAuthDataAccessObject(new CommonUserFactory(),
+            authDataAccessObject = new AuthDataAccessObject(new CommonUserFactory(),
                     System.getenv("DB_URL"),
                     System.getenv("DB_USERNAME"),
                     System.getenv("DB_PASSWORD"),
                     System.getenv("DB_PEPPER"));
-            dashDataAccessObject = new FileDashDataAccessObject(new CommonAccountInfoFactory(),
+            dashDataAccessObject = new DashDataAccessObject(new CommonAccountInfoFactory(),
                     System.getenv("DB_URL"),
                     System.getenv("DB_USERNAME"),
                     System.getenv("DB_PASSWORD"));
-            scanDataAccessObject = new FileScanDataAccessObject(
+            scanDataAccessObject = new ScanDataAccessObject(
                     System.getenv("VT_APIKEY"));
-            breachDataAccessObject = new FileBreachDataAccessObject(System.getenv("PWN_APIKEY"));
+            breachDataAccessObject = new BreachDataAccessObject(System.getenv("PWN_APIKEY"));
             createDataAccessObject = dashDataAccessObject;
-            genEmailDataAccessObject = new FileGenEmailDataAccessObject();
+            genEmailDataAccessObject = new GenEmailDataAccessObject();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -98,14 +97,6 @@ public class Main {
                 authenticationViewModel, dashboardViewModel, setupAuthViewModel,
                 authDataAccessObject, dashDataAccessObject);
         views.add(authenticationView, authenticationView.viewName);
-
-        ScanItemView scanItemView = ScanItemUseCaseFactory.create(viewManagerModel, scanItemViewModel, scanDataAccessObject,
-                dashboardViewModel);
-        views.add(scanItemView, scanItemView.viewName);
-
-        CheckBreachView checkBreachView = CheckBreachUseCaseFactory.create(viewManagerModel, checkBreachViewModel,
-                breachDataAccessObject, dashboardViewModel);
-        views.add(checkBreachView, checkBreachView.viewName);
 
         DashboardView dashboardView = DashboardUseCaseFactory.create(viewManagerModel, authenticationViewModel,
                 dashboardViewModel, dashDataAccessObject, scanItemViewModel, scanDataAccessObject, checkBreachViewModel, breachDataAccessObject,
