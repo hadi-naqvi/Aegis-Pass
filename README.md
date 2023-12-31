@@ -1,5 +1,5 @@
 # Aegis Pass - Password & Security Manager
-A robust and secure password and security management app designed to safeguard login credentials and enhance overall digital security. Aegis Pass functions as both an anti-virus software and password manager through its various features. Aegis Pass uses modern hashing algorithms such as bcrypt and Argon2 for secure password hashing, as well as the AES-256 encryption protocol in order to securely manage login credentials. Watch the following [video]() for a demo of Aegis Pass.   
+A robust and secure password and security management app designed to safeguard login credentials and enhance overall digital security. Aegis Pass functions as both an anti-virus software and password manager through its various features. Aegis Pass uses modern hashing algorithms such as bcrypt and Argon2 for secure password hashing, as well as the AES-256 encryption protocol in order to securely manage login credentials. Watch the following [video](https://drive.google.com/file/d/1_V0XC_BZzbE2enYxWh5WpJc8_yfds1t_/view?usp=sharing) for a demo of Aegis Pass.   
 
 ## Features
 - Login system with ability to create/use multiple accounts for multiple users to use the app
@@ -13,6 +13,12 @@ A robust and secure password and security management app designed to safeguard l
 - Autotype passwords and login credentials and copy login credentials to clipboard
 
 ## Preview
+![Screenshot from 2023-12-30 19-46-58](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/427a464b-5a3c-4d23-8815-1a728e1f64c8)
+![Screenshot from 2023-12-30 20-07-53](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/d84410ae-f5c1-4501-979f-cada2c9e1989)
+![Screenshot from 2023-12-30 19-53-51](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/3ddfc6f1-f5cf-456c-87de-90dae55c081c)
+![Screenshot from 2023-12-30 19-53-18](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/b0c5dbd8-235e-484c-ad57-4099a0a759be)
+![Screenshot from 2023-12-30 19-52-50](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/e339c522-763d-4ac5-852e-a009d5c1d307)
+![Screenshot from 2023-12-30 19-52-33](https://github.com/hadi-naqvi/Aegis-Pass/assets/92334527/3a86dc43-9c7c-4e53-8187-47e0823b7121)
 
 
 ## Project Dependencies
